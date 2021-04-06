@@ -1,0 +1,126 @@
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Mantenimiento Grupo Vendedor</h1>
+  <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Grupo Vendedor</h6>
+      <button type="button" (click)="abrirModal(0)" class="btn btn-primary" style="float: right;"><i
+          class="fa fa-plus"></i> Agregar</button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered" width="100%">
+          <thead>
+            <tr>
+              <th style="width: 40px;text-align: center;">ID</th>
+              <th>Cod Empresa</th>
+              <th>Grupo Vendedor</th>
+              <th style="width: 380px;text-align: center;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listaGPs?.length != 0">
+            <tr *ngFor="let gp of listaGPs; let i = index">
+              <td style="text-align: center">{{i +  1}}</td>
+              <td>{{ gp.cod_empresa }}</td>
+              <td>{{ gp.grupo_vendedor }}</td>
+              <td *ngIf="gp.estado == 1">
+                <button class="btn btn-primary" (click)="abrirModalActualizar(gp.cod_empresa)"><i class="fa fa-edit"></i>
+                  Editar</button>
+                <button class="btn btn-danger" (click)="abrirModalDesactivar(gp.cod_empresa)"><i class="fa fa-close"></i>
+                  Desactivar</button>
+              </td>
+              <td *ngIf="gp.estado == 0">
+                <button class="btn btn-primary" (click)="abrirModalActualizar(gp.cod_empresa)"><i class="fa fa-edit"></i>
+                  Editar</button>
+                <button class="btn btn-success" (click)="abrirModalActivar(gp.cod_empresa)"><i class="fa fa-check"></i>
+                  Activar</button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="listaGPs?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">
+                <div class="alert alert-info">
+                  Buscando resultados...
+                </div>
+              </td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add -->
+<div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog"
+  aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo grupo vendedor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form [formGroup]="registerGPForm">
+          <div class="alert alert-info">
+            Se ingresa el grupo vendedor que tiene la empresa.
+          </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Código Empresa</label>
+              <input type="text" formControlName="cod_empresa" class="form-control" id="codEmpresaAdd"
+                >
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Grupo Vendedor</label>
+              <input type="text" formControlName="grupo_vendedor" class="form-control" id="gpAdd"
+                >
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnUserRegister" type="button" class="btn btn-primary" (click)="btnRegistrar()" [disabled]='registerGPForm.invalid'>Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update -->
+<div class="modal fade" id="contentModalActualizar" tabindex="-1" role="dialog"
+  aria-labelledby="contentModalActualizarLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Grupo Vendedor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form  [formGroup]="updateGPForm">
+          <div class="form-group">
+            <label for="descripcionUpdate">Código Empresa</label>
+            <input type="text" formControlName="cod_empresa" class="form-control" id="codEmpresaUpdate"
+              >
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Grupo Vendedor</label>
+            <input type="text" formControlName="grupo_vendedor" class="form-control" id="gpUpdate"
+              >
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnActtionDataInfo" type="button" class="btn btn-primary"  (click)="btnActualizar()" [disabled]='updateGPForm.invalid'>Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

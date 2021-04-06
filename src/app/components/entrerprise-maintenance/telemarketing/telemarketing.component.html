@@ -1,0 +1,193 @@
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Mantenimiento Empresas Telemarketing</h1>
+    <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Empresas</h6>
+            <button type="button" (click)="abrirModalRegistrar()" class="btn btn-primary" style="float: right;"><i
+                    class="fa fa-plus"></i> Agregar</button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered"
+                    width="100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;text-align: center;">ID</th>
+                            <th>Razón Social</th>
+                            <th>BP SAP</th>
+                            <th style="width: 380px;text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="listaEmpresas?.length != 0">
+                        <tr *ngFor="let empresa of listaEmpresas; let i = index">
+                            <td style="text-align: center">{{i + 1}}</td>
+                            <td>{{ empresa.empresa }}</td>
+                            <td>{{ empresa.bp_sap }}</td>
+                            <td *ngIf="empresa.estado == 1">
+                                <button class="btn btn-primary" (click)="abrirModalActualizar(empresa.ruc)"><i
+                                        class="fa fa-edit"></i>
+                                    Editar</button>
+                                <button class="btn btn-danger" (click)="abrirModalDesactivar(empresa.id_empresa)"><i
+                                        class="fa fa-close"></i>
+                                    Desactivar</button>
+                            </td>
+                            <td *ngIf="empresa.estado == 0">
+                                <button class="btn btn-primary" (click)="abrirModalActualizar(empresa.ruc)"><i
+                                        class="fa fa-edit"></i>
+                                    Editar</button>
+                                <button class="btn btn-success" (click)="abrirModalActivar(empresa.id_empresa)"><i
+                                        class="fa fa-check"></i>
+                                    Activar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="listaEmpresas?.length == 0">
+                        <tr>
+                            <td colspan="8" class="no-data-available">
+                                <div class="alert alert-info">
+                                    Buscando resultados...
+                                </div>
+                            </td>
+                        </tr>
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add -->
+<div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog"
+    aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nueva empresa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="alert alert-info">
+                        Se ingresa una empresa.
+                    </div>
+                    <div class="form-group">
+                        <label for="staticEmail">Canal</label>
+                        <div class="form-group">
+                            <select name="canalSelected" [(ngModel)]="canalSelected" id="" class="form-control"
+                                disabled>
+                                <option value="2" selected>Telemarketing</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="staticTipo" class="col-sm-2" style="padding-left: 1px;">Tipo</label>
+                        <div class="col-sm-10">
+                            <div class="radio-inline">
+                                <label><input type="radio" name="optradio" id="regular" checked>Alta Regular</label>
+                            </div>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="optradio" id="pospc">Alta POS PC</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcionUpdate">RUC</label>
+                        <input type="text" name="ruc_empresa" [(ngModel)]="ruc_empresa"
+                            class="form-control errorborderdata" id="rucAdd" maxlength="11" mask="00000000000">
+                    </div>
+                    <span *ngIf="errorRucTmk" class="colorError">Ingrese ruc</span>
+                    <div class="form-group">
+                        <label for="descripcionUpdate">Razón Social</label>
+                        <input type="text" name="nom_empresa" [(ngModel)]="nom_empresa" class="form-control"
+                            id="razonSocialAdd">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcionUpdate">BP SAP Recaudador</label>
+                        <input type="text" name="bp_sap" [(ngModel)]="bp_sap" class="form-control" id="bpSapRecaudAdd">
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button id="btnUserRegister" type="button" class="btn btn-primary"
+                    (click)="btnRegistrar()">Agregar</button>
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button id="btnUserRegister" type="button" class="btn btn-primary" (click)="btnRegistrar()"
+                    [disabled]='registerCmrForm.invalid'>Agregar</button>
+            </div>-->
+</div>
+
+<!-- Update -->
+<div class="modal fade" id="contentModalActualizar" tabindex="-1" role="dialog"
+    aria-labelledby="contentModalActualizarLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Actualizar empresa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="msjReponnseModal"></div>
+                <form>
+                    <div class="alert alert-info">
+                        Actualiza una empresa.
+                    </div>
+                    <div class="form-group">
+                        <label for="staticEmail">Canal</label>
+                        <div class="form-group">
+                            <select name="canalSelected" [(ngModel)]="canalSelected" id="" class="form-control"
+                                disabled>
+                                <option value="2">Telemarketing</option>
+                            </select>
+                        </div>
+                    </div>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <label class="col-form-label col-sm-2 pt-0">Tipo</label>
+                            <div class="col-sm-10">
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="optradio" id="regular2" value="0">Alta Regular</label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="optradio" id="pospc2" value="1">Alta POS PC</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        <label for="descripcionUpdate">RUC</label>
+                        <input type="text" name="ruc_empresa" [(ngModel)]="ruc_empresa" class="form-control" id="rucAdd"
+                            maxlength="11" mask="00000000000" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcionUpdate">Razón Social</label>
+                        <input type="text" name="nom_empresa" [(ngModel)]="nom_empresa" class="form-control"
+                            id="razonSocialAdd" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcionUpdate">BP SAP Recaudador</label>
+                        <input type="text" name="bp_sap" [(ngModel)]="bp_sap" class="form-control" id="bpSapRecaudAdd">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="btnActtionDataInfo" type="button" class="btn btn-primary"
+                            (click)="btnActualizar()">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

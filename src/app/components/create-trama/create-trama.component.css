@@ -1,0 +1,16 @@
+.form-error {
+    border-color: red !important;
+    padding-right: 32px !important;
+}
+
+.form-error:focus {
+    border-color: red !important;
+    padding-right: 32px !important;
+}
+
+.colorError {
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 18px;
+    color: #e84545;
+}

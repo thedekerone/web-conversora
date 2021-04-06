@@ -1,0 +1,75 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../src/assets/css/sb-admin-2.css";
+@import "../node_modules/datatables.net-dt/css/jquery.dataTables.css";
+@import "../node_modules/font-awesome/css/font-awesome.css";
+@import "../node_modules/bootstrap-toggle/css/bootstrap2-toggle.min.css";
+
+.toggle{
+    height: 40px!important;
+    float: right;
+}
+
+
+/* AUNA DESIGN */
+.btn{
+    border-radius: 26px!important;
+    line-height: 30px!important;
+    padding-bottom: 10px!important;
+    padding-left: 15px!important;
+    padding-right: 15px!important;
+    min-width: 120px!important;
+}
+
+/* AUNA DESIGN */
+
+.no-data-available {
+    text-align: center;
+  }
+
+.dataTables_empty {
+    display: none;
+}
+
+.dataTables_filter input{
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.dataTables_length select{
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+    background: #00b0ca !important;
+    color: white!important;
+    border-color: white;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+    background: #00b0ca !important;
+    color: white!important;
+    border-color: white;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover{
+    color:white!important;
+}
+
+.sidebar .nav-item .nav-link[data-toggle="collapse"]::after{
+  content: ""!important;
+}

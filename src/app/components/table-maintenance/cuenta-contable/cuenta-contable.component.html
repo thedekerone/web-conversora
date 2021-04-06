@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Mantenimiento Cuenta Contable</h1>
+  <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Cuenta Contable</h6>
+      <button type="button" (click)="abrirModal(0)" class="btn btn-primary" style="float: right;"><i
+          class="fa fa-plus"></i> Agregar</button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered" width="100%">
+          <thead>
+            <tr>
+              <th style="width: 40px;text-align: center;">ID</th>
+              <th>Procesadora</th>
+              <th>Cuenta Contable</th>
+              <th>Segmento</th>
+              <th>Cebe</th>
+              <th style="width: 380px;text-align: center;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listaContables?.length != 0">
+            <tr *ngFor="let contable of listaContables; let i = index">
+              <td style="text-align: center">{{i +  1}}</td>
+              <td>{{ contable.origen }}</td>
+              <td>{{ contable.cuenta_contable }}</td>
+              <td>{{ contable.segmento }}</td>
+              <td>{{ contable.cebe }}</td>
+              <td *ngIf="contable.estado == 1">
+                <button class="btn btn-primary" (click)="abrirModalActualizar(contable.id_cuenta_contable)"><i class="fa fa-edit"></i>
+                  Editar</button>
+                <button class="btn btn-danger" (click)="abrirModalDesactivar(contable.id_cuenta_contable)"><i class="fa fa-close"></i>
+                  Desactivar</button>
+              </td>
+              <td *ngIf="contable.estado == 0">
+                <button class="btn btn-primary" (click)="abrirModalActualizar(contable.id_cuenta_contable)"><i class="fa fa-edit"></i>
+                  Editar</button>
+                <button class="btn btn-success" (click)="abrirModalActivar(contable.id_cuenta_contable)"><i class="fa fa-check"></i>
+                  Activar</button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="listaContables?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">
+                <div class="alert alert-info">
+                  Buscando resultados...
+                </div>
+              </td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add -->
+<div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog"
+  aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar nueva Cuenta Contable</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form [formGroup]="registerContableForm">
+          <div class="alert alert-info">
+            Se registra una nueva Cuenta Contable.
+          </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Procesadora</label>
+              <input type="text" formControlName="origen" class="form-control" id="origenAdd"
+                >
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Cuenta Contable</label>
+              <input type="text" formControlName="cuenta_contable" class="form-control" id="cuentaContableAdd"
+                >
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Segmento</label>
+              <input type="text" formControlName="segmento" class="form-control" id="segmentoAdd"
+                >
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Cebe</label>
+              <input type="text" formControlName="cebe" class="form-control" id="cebeAdd"
+                >
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnUserRegister" type="button" class="btn btn-primary" (click)="btnRegistrar()" [disabled]='registerContableForm.invalid'>Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update -->
+<div class="modal fade" id="contentModalActualizar" tabindex="-1" role="dialog"
+  aria-labelledby="contentModalActualizarLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Cuenta Contable</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form  [formGroup]="updateContableForm">
+          <div class="form-group">
+            <label for="descripcionUpdate">Procesadora</label>
+            <input type="text" formControlName="origen" class="form-control" id="origenUpdate"
+              >
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Cuenta Contable</label>
+            <input type="text" formControlName="cuenta_contable" class="form-control" id="cuentaContableUpdate"
+              >
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Segmento</label>
+            <input type="text" formControlName="segmento" class="form-control" id="segmentoUpdate"
+              >
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Cebe</label>
+            <input type="text" formControlName="cebe" class="form-control" id="cebeUpdate"
+              >
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnActtionDataInfo" type="button" class="btn btn-primary"  (click)="btnActualizar()" [disabled]='updateContableForm.invalid'>Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

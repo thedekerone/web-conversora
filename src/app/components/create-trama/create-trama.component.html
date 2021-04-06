@@ -1,0 +1,370 @@
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Cargar trama</h1>
+  <p class="mb-4">En este módulo podras cargar las tramas que necesites</p>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">{{titleData}}</h6>
+    </div>
+    <div class="card-body">
+
+      <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Canal</label>
+        <div class="col-sm-10">
+          <select id="tipoCanal" [(ngModel)]="tipoCanal" name="tipoCanal" (change)="onChangeCanal($event.target.value)"
+            class="form-control">
+            <option value="0" selected>Seleccione un canal</option>
+            <option *ngFor="let canal of listaCanales" [hidden]="canal.id_canal==1" [value]="canal.id_canal">
+              {{canal.canal}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="telemarketing">
+        <form>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Tipo de archivo</label>
+            <div class="col-sm-10">
+              <select id="tipoCanalTmk" [(ngModel)]="tiposelected" name="tiposelected"
+                (change)="onChangeTipoArchivo($event.target.value)" class="form-control errorborderdata">
+                <option value="0" selected>Seleccione tipo archivo</option>
+                <option *ngFor="let data of listaInfo" [value]="data.id_tipo_trama">{{data.tipo_trama}}</option>
+              </select>
+              <span *ngIf="errorTipo" class="colorError">Seleccione un tipo de archivo</span>
+            </div>
+          </div>
+          <div *ngIf="mostrarArchivo">
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Empresa</label>
+              <div class="col-sm-10">
+                <select name="" [(ngModel)]="empresaselected" name="empresaselected"
+                  class="form-control errorborderdata2" (change)="onChangeEmpresa($event.target.value)">
+                  <option value="0" selected>Seleccione la empresa</option>
+                  <option *ngFor="let data of listaEmpresa" [value]="data.id_empresa">{{data.empresa}}</option>
+                </select>
+                <span *ngIf="errorEmpresa" class="colorError">Seleccione una empresa</span>
+              </div>
+            </div>
+            <!--<div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Convenio</label>
+            <div class="col-sm-10">
+              <select type="text" class="form-control" disabled>
+                <option value="" selected>{{convenio}}</option>
+              </select>
+            </div>
+            </div>
+            <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Tipo de pago</label>
+            <div class="col-sm-10">
+              <select name="" id="" class="form-control" (change)="onChangeTipoPagoArchivo($event.target.value)">
+                <option value="" selected>Seleccione tipo de pago</option>
+                <option *ngFor="let data of listaTipoPago" [value]="data.id_tipo_pago">{{data.tipo_pago}}</option>
+              </select>
+            </div>
+            </div>-->
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">{{ archivoPago }}</label>
+              <div class="col-sm-10">
+                <input type="file" id="fileInput0" accept=".xls,.xlsx,.csv" (change)="openFile($event)"><br>
+                <label style="margin-top:10px;" for="">Tiempo transcurrido : <span
+                    style="color: #00b0ca;font-weight: bold;">{{ horaTransc }} h {{ minutosTransc }} min</span>
+                </label><br>
+                <!--<label for="">Tramas : <span style="color: #00b0ca;font-weight: bold;">22</span>
+                </label>-->
+                <!--<label style="float: right;top: -30px;position: relative;cursor: pointer;"><span
+                  style="color: #00b0ca;font-weight: bold;" (click)="alertError()">Remplazar</span>
+                </label>-->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Cargar trama</label>
+              <div class="col-sm-10">
+                <input type="file" id="fileInput1" accept=".txt" (change)="openFileTrama($event)"><br>
+                <span *ngIf="errorTrama" class="colorError">Seleccione archivo de trama</span>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <button class="btn btn-primary" (click)="procesarDatos(1)" style="width: 200px;">Continuar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="bancayseguros">
+        <form>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Tipo de archivo</label>
+            <div class="col-sm-10">
+              <select id="tipoCanalByS" [(ngModel)]="tiposelected2" name="tiposelected2"
+                (change)="onChangeTipoArchivo($event.target.value)" class="form-control errorborderdata3">
+                <option value="0" selected>Seleccione Tipo de Archivo</option>
+                <option *ngFor="let data of listaInfo" [value]="data.id_tipo_trama">{{data.tipo_trama}}</option>
+              </select>
+              <span *ngIf="errorTipo2" class="colorError">Seleccione un tipo de archivo</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Empresa</label>
+            <div class="col-sm-10">
+              <select [(ngModel)]="empresaselected2" name="empresaselected2" class="form-control errorborderdata4"
+                (change)="onChangeEmpresa($event.target.value)">
+                <option value="0" selected>Seleccione la Empresa</option>
+                <option *ngFor="let data of listaEmpresa" [value]="data.id_empresa">{{data.empresa}}</option>
+              </select>
+              <span *ngIf="errorEmpresa2" class="colorError">Seleccione una empresa</span>
+            </div>
+          </div>
+          <div *ngIf="mostrarConvenios">
+            <!--<div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Convenio rol vendedor</label>
+              <div class="col-sm-10">
+                <select type="text" class="form-control" id="convenioAdd" disabled>
+                  <option selected>{{convenioVendedor}}</option>
+                </select>
+              </div>
+            </div>-->
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Convenio rol recaudador</label>
+              <div class="col-sm-10">
+                <select type="text" class="form-control" id="convenioAdd" disabled>
+                  <option selected>{{convenioRolRecaudador}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Convenio rol unidad de venta</label>
+              <div class="col-sm-10">
+                <select type="text" class="form-control" id="convenioAdd" disabled>
+                  <option selected>{{convenioRolUnidVenta}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Convenio rol broker</label>
+              <div class="col-sm-10">
+                <select type="text" class="form-control" id="convenioAdd" disabled>
+                  <option selected>{{convenioRolBroker}}</option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="hide" class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Codigo Empresa Oncosys</label>
+              <div class="col-sm-10">
+                <select type="text" class="form-control" id="convenioAdd" disabled>
+                  <option selected>{{convenioRolBroker}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Cargar archivo trama</label>
+            <div class="col-sm-10">
+              <input type="file" id="fileInput2" accept=".txt" (change)="openFileTrama($event, 2)"><br>
+              <span *ngIf="errorTrama2" class="colorError">Seleccione archivo de trama</span>
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <button class="btn btn-primary" (click)="procesarDatos(2)" style="width: 200px;">Continuar</button>
+          </div>
+        </form>
+      </div>
+      
+      <div *ngIf="grupales">
+        <form>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Tipo de archivo</label>
+            <div class="col-sm-10">
+              <select id="tipoCanalGrup" [(ngModel)]="tiposelected3" name="tiposelected3"
+                class="form-control errorborderdata5" (change)="onChangeTipoArchivo($event.target.value)">
+                <option value="0" selected>Seleccione Tipo de Archivo</option>
+                <option *ngFor="let data of listaInfo" [value]="data.id_tipo_trama">{{data.tipo_trama}}</option>
+              </select>
+              <span *ngIf="errorTipo3" class="colorError">Seleccione un tipo de archivo</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Tipo empresa</label>
+            <div class="col-sm-10">
+              <select [(ngModel)]="tipoempresaselected" name="tipoempresaselected"
+                (change)="onChangeTipoEmpresa($event.target.value)" class="form-control errorborderdata9">
+                <option value="0" selected>Seleccione la Empresa</option>
+                <option value="1">Empresa independiente</option>
+                <option value="2">Empresa subrogadas</option>
+              </select>
+              <span *ngIf="errorEmpresa5" class="colorError">Seleccione una empresa</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Empresa</label>
+            <div class="col-sm-10">
+              <select [(ngModel)]="empresaselected3" name="empresaselected3" class="form-control errorborderdata6"
+                (change)="onChangeEmpresa($event.target.value)">
+                <option value="0" selected>Seleccione la Empresa</option>
+                <option *ngFor="let data of listaEmpresa" [value]="data.id_empresa">{{data.empresa}}</option>
+              </select>
+              <span *ngIf="errorEmpresa3" class="colorError">Seleccione una empresa</span>
+            </div>
+          </div>
+          <div *ngIf="showConvenio">
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Convenio rol cliente</label>
+              <div class="col-sm-10">
+                <select type="text" class="form-control" id="convenioAdd" disabled>
+                  <option selected>{{convenioRolCliente}}</option>
+                </select>
+              </div>
+            </div>
+            <!--<div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Plan</label>
+            <div class="col-sm-10">
+              <select name="" id="" class="form-control">
+                <option selected>{{plan}}</option>
+              </select>
+            </div>
+          </div>-->
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Sede</label>
+              <div class="col-sm-10">
+                <select name="" id="" class="form-control">
+                  <option selected>{{sede}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Convenio rol unidad de venta</label>
+              <div class="col-sm-10">
+                <select name="" id="" class="form-control">
+                  <option value="">{{convenioRolUnidVenta}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!--<div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Código BP unidad venta</label>
+            <div class="col-sm-10">
+              <select type="text" class="form-control" id="convenioAdd" disabled>
+                <option selected>{{codigoBp}}</option>
+              </select>
+            </div>
+          </div>-->
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Cargar archivo trama</label>
+            <div class="col-sm-10">
+              <input type="file" id="fileInput3" accept=".xls,.xlsx,.csv" (change)="openFileTrama($event, 3)"><br>
+              <span *ngIf="errorTrama3" class="colorError">Seleccione archivo de trama</span>
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <button class="btn btn-primary" (click)="procesarDatos(3)" style="width: 200px;">Continuar</button>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="generica">
+        <form>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Tipo de archivo</label>
+            <div class="col-sm-10">
+              <select name="" [(ngModel)]="tiposelected4" name="tiposelected4" class="form-control errorborderdata7"
+                (change)="onChangeTipoArchivo($event.target.value)">
+                <option value="0" selected>Seleccione Tipo de Archivo</option>
+                <option *ngFor="let data of listaInfo" [value]="data.id_tipo_trama">{{data.tipo_trama}}</option>
+              </select>
+              <span *ngIf="errorTipo4" class="colorError">Seleccione un tipo de archivo</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Empresa</label>
+            <div class="col-sm-10">
+              <select name="" [(ngModel)]="empresaselected4" name="empresaselected4"
+                class="form-control errorborderdata8" (change)="onChangeEmpresa($event.target.value)">
+                <option value="0" selected>Seleccione la Empresa</option>
+                <option *ngFor="let data of listaEmpresa" [value]="data.id_empresa">{{data.empresa}}</option>
+              </select>
+              <span *ngIf="errorEmpresa4" class="colorError">Seleccione una empresa</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Cargar trama</label>
+            <div class="col-sm-10">
+              <input type="file" id="fileInput4" accept=".txt" (change)="openFileTrama($event, 4)">
+              <span *ngIf="errorTrama4" class="colorError">Seleccione archivo de trama</span>
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <button class="btn btn-primary" (click)="procesarDatos(4)" style="width: 200px;">Continuar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--<ng-template #showPermission>
+      <div class="card-body">
+        <div *ngIf="telemarketing">
+          <form>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Cana</label>
+              <div class="col-sm-10">
+                <select name="" id="" (change)="onChangeCanal($event.target.value)" class="form-control">
+                  <option value="" selected>Seleccione un canal</option>
+                  <option *ngFor="let canal of listaCanales" [value]="canal.id_canal">{{canal.canal}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Tipo de archivo</label>
+              <div class="col-sm-10">
+                <select name="" id="" (change)="onChangeTipoTrama($event.target.value)" class="form-control">
+                  <option value="" selected>Seleccione tipo de archivo</option>
+                  <option *ngFor="let data of listaInfo" [value]="data.id_tipo_trama">{{data.tipo_trama}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Empresa</label>
+              <div class="col-sm-10">
+                <select name="" id="" class="form-control" (change)="onChangeEmpresa($event.target.value)">
+                  <option value="" selected>Seleccione l empresa</option>
+                  <option *ngFor="let data of listaEmpresa" [value]="data.id_empresa">{{data.empresa}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Convenio</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="convenioAdd" disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Tipo de pago</label>
+              <div class="col-sm-10">
+                <select name="" id="" class="form-control">
+                  <option value="" selected>Seleccione Tipo de Pago</option>
+                  <option *ngFor="let data of listaTipoPago" [value]="data.id_tipo_pago">{{data.tipo_pago}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Cargar archivo de pago</label>
+              <div class="col-sm-10">
+                <input type="file" accept=".xls,.xlsx,.csv"><br>
+                <label style="margin-top:10px;" for="">Tiempo para el reinicio : <span
+                    style="color: #00b0ca;font-weight: bold;">2h 31 min</span></label><br>
+                <label for="">Tramas : <span style="color: #00b0ca;font-weight: bold;">22</span></label>
+                <label style="float: right;top: -30px;position: relative;cursor: pointer;"><span
+                    style="color: #00b0ca;font-weight: bold;" (click)="alertError()">Remplazar</span></label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Cargar trama</label>
+              <div class="col-sm-10">
+                <input type="file" accept=".xls,.xlsx,.csv">
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <button class="btn btn-primary" (click)="procesarDatos(1)" style="width: 200px;">Continuar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-template>-->
+  </div>
+</div>

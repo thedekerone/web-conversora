@@ -1,0 +1,112 @@
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Historial de tramas</h1>
+    <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Tramas registradas</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered" width="100%">
+            <thead>
+              <tr>
+                <th style="width: 40px;text-align: center;">ID Archivo</th>
+                <th>Canal</th>
+                <th>Usuario</th>
+                <th>Empresa</th>
+                <th>Nombre del archivo</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th style="width: 150px;text-align: center;">Estado</th>
+                <th style="width: 150px;text-align: center;">Log</th>
+                <th style="width: 150px;text-align: center;">Descargar Log</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="listaHistorial?.length != 0">
+              <tr *ngFor="let historial of listaHistorial">
+                <td style="text-align: center">{{ historial.id_carga_trama }}</td>
+                <td>{{ historial.canal }}</td>
+                <td>{{ historial.nommbres_apellidos }}</td>
+                <td>{{ historial.empresa }}</td>
+                <td><a style="cursor: pointer;" href={{historial.url_archivo}} download="{{historial.nombre_archivo}}">{{ historial.nombre_archivo }}</a></td>
+                <td>{{ historial.fecha_registro.toString().substr(0,10) }}</td>
+                <td>{{ historial.fecha_registro.toString().substr(11,19) }}</td>
+                <td *ngIf="historial.estado == 1" style="text-align: center;">
+                  <span class="badge badge-info">En Progreso</span>
+                </td>
+                <td *ngIf="historial.estado == 2" style="text-align: center;">
+                  <span class="badge badge-success">Completado</span>
+                </td>
+                <td *ngIf="historial.estado == 0" style="text-align: center;">
+                  <span class="badge badge-danger">Archivo Rechazado</span>
+                </td>
+                <td>
+                  <button class="btn btn-primary " style="text-align: center;" (click)="abrirModal(historial.id_carga_trama)"><i class="fa fa-eye"></i> Ver Log</button>
+                </td>
+                <td>
+                  <button class="btn btn-primary " style="text-align: center;" (click)="descargarLog(historial.id_carga_trama, historial.nombre_archivo)"><i class="fa fa-download"></i> Descargar</button>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="listaHistorial?.length == 0">
+              <tr>
+                <td colspan="8" class="no-data-available">
+                  <div class="alert alert-info">
+                    Buscando resultados...
+                  </div>
+                </td>
+              </tr>
+            <tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Ver log -->
+    <div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog" aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Historial de la trama</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table tableLog" width="100%">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Descripción</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="listaLog?.length == 0">
+                <tr *ngFor="let log of listaLog | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <th scope="row">Sistema</th>
+                  <th>{{log.Log}}</th>
+                </tr>
+              </tbody>
+              <tbody *ngIf="listaLog?.length == 0">
+                <tr>
+                    <td colspan="8" class="no-data-available">
+                        <div class="alert alert-info">
+                            Buscando resultados...
+                        </div>
+                    </td>
+                </tr>
+            <tbody>
+            </table>
+            <div>
+              <pagination-controls (pageChange)="p = $event" previousLabel="Anterior"
+              nextLabel="Siguiente"></pagination-controls>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>

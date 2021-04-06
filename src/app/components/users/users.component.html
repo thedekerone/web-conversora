@@ -1,0 +1,418 @@
+
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Mantenimiento de Usuarios</h1>
+  <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Usuarios Registrados</h6>
+      <button type="button" (click)="abrirModal(0)" class="btn btn-primary" style="float: right;"><i
+          class="fa fa-plus"></i> Agregar nuevo usuario</button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered" width="100%">
+          <thead>
+            <tr>
+              <th style="width: 40px;text-align: center;">ID</th>
+              <th>Nombres y Apellidos</th>
+              <th>Email</th>
+              <th>Documento</th>
+              <th>Tipo de Usuario</th>
+              <th>Canal</th>
+              <th>Empresa</th>
+              <th style="width: 380px;text-align: center;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listaUsers?.length != 0">
+            <tr *ngFor="let user of listaUsers; let i = index">
+              <td style="text-align: center">{{i +  1}}</td>
+              <td>{{ user.nombre }} {{ user.apellido_paterno }} {{ user.apellido_materno }}</td>
+              <td>{{ user.correo }}</td>
+              <td>{{ user.documento }}</td>
+              <td *ngIf="user.id_rol == 1">Negocio</td>
+              <td *ngIf="user.id_rol == 2">Externo</td>
+              <td>{{ user.canal }}</td>
+              <td>{{ user.empresa }}</td>
+              <td *ngIf="user.estado == 1">
+                <button class="btn btn-primary" (click)="abrirModalActualizar(user.id_usuario)"><i class="fa fa-edit"></i>
+                  Editar</button>
+                <button class="btn btn-danger" (click)="abrirModalDesactivar(user.id_usuario)"><i class="fa fa-close"></i>
+                  Desactivar</button>
+                <button class="btn btn-primary"
+                  (click)="abrirModalPermisosEditar(user.id_usuario,user.nombre,user.apellido_paterno)"><i
+                    class="fa fa-edit"></i> Permisos</button>
+              </td>
+              <td *ngIf="user.estado == 0">
+                <button class="btn btn-primary" (click)="abrirModalActualizar(user.id_usuario)"><i class="fa fa-edit"></i>
+                  Editar</button>
+                <button class="btn btn-success" (click)="abrirModalActivar(user.id_usuario)"><i class="fa fa-check"></i>
+                  Activar</button>
+                <button class="btn btn-primary"
+                  (click)="abrirModalPermisosEditar(user.id_usuario,user.nombre,user.apellido_paterno)"><i
+                    class="fa fa-edit"></i> Permisos</button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="listaUsers?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">
+                <div class="alert alert-info">
+                  Buscando resultados...
+                </div>
+              </td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add -->
+<div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog"
+  aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form [formGroup]="registerUserForm">
+          <div class="alert alert-info">
+            LLegará un correo de confirmación para poder activar la cuenta.
+          </div>
+          <input type="hidden" id="enviarDataModal" value="1">
+          <input type="hidden" id="idAdminUpdate" value="0">
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="grupovendedoresSelcted">Tipo de usuario</label>
+              <select class="form-control" formControlName="id_rol"  (change)="onChangeTipoUsuario($event.target.value)" >
+                <option value="" selected="selected">Seleccione un tipo de usuario</option>
+                <option *ngFor="let rol of roles" [value]="rol.id">{{rol.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="formDisplay">
+            <div class="row form-group">
+              <div class="col-md-6"  *ngIf="showCanalInfo">
+                <label for="grupovendedoresSelcted">Canal</label>
+                <select class="form-control" formControlName="id_canal" (change)="onChangeTipoCanal($event.target.value)">
+                  <option value="">Seleccione un canal</option>
+                  <option *ngFor="let canal of listaCanals" [ngValue]="canal.id_canal">{{canal.canal}}</option>
+                </select>
+              </div>
+
+              <div class="col-md-12" *ngIf="!showCanalInfo; else showOtherCanal">
+                <label for="grupovendedoresSelcted">Empresa</label>
+                <select class="form-control" formControlName="id_empresa" >
+                  <option value="" selected="selected">Seleccione una empresa</option>
+                  <option *ngFor="let empresaauna of empresaaunas" >{{empresaauna.name}}</option>
+                </select>
+              </div>
+              <ng-template #showOtherCanal>
+                <div class="col-md-6" >
+                  <label for="grupovendedoresSelcted">Empresa</label>
+                  <select class="form-control" formControlName="id_empresa" (change)="onChangeEmpresa($event)" id="type_document">
+                    <option value="" selected="selected">Seleccione una empresa</option>
+                    <option *ngFor="let listacompany of listaCompanies" [ngValue]="listacompany.id_empresa">{{listacompany.empresa}}</option>
+                  </select>
+                </div>
+              </ng-template>
+
+            </div>
+            <div class="form-group row"  *ngIf="!showCanalInfo">
+              <div class="col-md-6">
+                <label for="grupovendedoresSelcted">Tipo de documento</label>
+                <select class="form-control" formControlName="tipo_documento" (change)="onChangeTipoDocumento($event.target.value)">
+                  <option value="" selected>Seleccione Tipo Documento</option>
+                  <option *ngFor="let tipodocumento of tipodocumentos" [value]="tipodocumento.id">{{tipodocumento.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Número de documento</label>
+                <input type="text" formControlName="documento" class="form-control" id="documentoAdds" (keypress)="keyPressNumDoc($event)" placeholder="Ingrese su documento">
+              </div>
+            </div>
+            <div class="form-group row"  *ngIf="showCanalInfo">
+              <div class="col-md-6">
+                <label for="grupovendedoresSelcted">RUC</label>
+                <input type="text" formControlName="tipo_documento" class="form-control" id="rucAdd" placeholder="Ingrese RUC" disabled>
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Razón social</label>
+                <input type="text" formControlName="documento" class="form-control" id="razonSocialAdd" placeholder="Ingrese Razón social" disabled>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="showCanalInfo">
+              <div class="col-md-12">
+
+              <label for="nombreSedeUpdate">Grupo de vendedor</label>
+              <input type="text" class="form-control" id="grupovendedorAdd" placeholder="Ingrese Grupo Vendedor" disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Nombres</label>
+                <input type="text" formControlName="nombre" class="form-control" id="nombreAdd" placeholder="Ingrese sus nombres">
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Apellido Paterno</label>
+                <input type="text" formControlName="apellido_paterno" class="form-control" id="apellidoPatAdd" placeholder="Ingrese su apellido paterno">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Apellido Materno</label>
+                <input type="text" formControlName="apellido_materno" class="form-control" id="apellidoMatAdd" placeholder="Ingrese su apellido materno">
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Fecha de nacimiento</label>
+                <input type="date" formControlName="fecha_nacimiento" class="form-control errorborderdata8" 
+                  id="fechaAdd"
+                  (change)="handleOnChangeNacimiento()" 
+                  [(ngModel)]="nacimiento" name="nacimiento"
+                  max="{{date}}"  
+                  placeholder="Ingrese su fecha de nacimiento del usuario">
+                <span *ngIf="errorNacimiento" class="colorError"
+                  >Ingresa una fecha válida.</span
+                >
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Correo electrónico</label>
+              <input type="email" formControlName="correo" class="form-control" id="emailAdd"
+                placeholder="Ingrese un correo electrónico para el usuario">
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Contraseña</label>
+              <input type="password" formControlName="clave" class="form-control" id="claveAdd"
+                placeholder="Ingrese una contraseña para el usuario">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnUserRegister" type="button" class="btn btn-primary" (click)="btnRegistrar()" >Agregar usuario</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update -->
+<div class="modal fade" id="contentModalActualizar" tabindex="-1" role="dialog"
+  aria-labelledby="contentModalActualizarLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form  [formGroup]="updateUserForm">
+          <div class="alert alert-info">
+            LLegará un correo de confirmación para poder activar la cuenta.
+          </div>
+          <input type="hidden" value="1">
+          <input type="hidden" value="0">
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label for="grupovendedoresSelcted">Tipo de usuario</label>
+                <select class="form-control" formControlName="id_rol"  (change)="onChangeTipoUsuarioActualizar($event.target.value)"  id="selectTypeUpdate" disabled>
+                  <option value="" selected="selected">Seleccione un tipo de usuario</option>
+                  <option *ngFor="let rol of roles" [value]="rol.id">{{rol.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="formDisplayUpdate">
+            <div class="row form-group">
+              <div class="col-md-6"  *ngIf="showCanalInfo">
+                <label for="grupovendedoresSelcted">Canal</label>
+                <select class="form-control" id="canalUpdate" formControlName="id_canal">
+                  <option *ngFor="let canal of listaCanals" value="canal.id_canal">{{canal.canal}}</option>
+                </select>
+              </div>
+              <div class="col-md-6" *ngIf="!showCanalInfo; else showOtherCanal">
+                <label for="grupovendedoresSelcted">Empresa</label>
+                <select class="form-control" formControlName="id_empresa" id="empresaAunaUpdate">
+                  <option value="" selected="selected">Seleccione una empresa</option>
+                  <option *ngFor="let empresaauna of empresaaunas" value="Auna" selected>{{empresaauna.name}}</option>
+                </select>
+              </div>
+              <ng-template #showOtherCanal>
+                <div class="col-md-12" >
+                  <label for="grupovendedoresSelcted">Empresa</label>
+                  <select class="form-control" formControlName="id_empresa" (change)="onChangeEmpresaActualizar($event)" id="empresaUpdate">
+                    <option value="" selected="selected">Seleccione una empresa</option>
+                    <option *ngFor="let listacompany of listaCompanies" [ngValue]="listacompany.id_empresa" selected>{{listacompany.empresa}}</option>
+                  </select>
+                </div>
+              </ng-template>
+            </div>
+            <div class="form-group row"  *ngIf="!showCanalInfo">
+              <div class="col-md-6">
+                <label for="grupovendedoresSelcted">Tipo de document</label>
+                <select class="form-control" formControlName="tipo_documento" id="tipoDocumentoUpdate"  (change)="onChangeTipoDocumentoActualizar($event.target.value)">
+                  <option *ngFor="let tipodocumento of tipodocumentos" [value]="tipodocumento.id">{{tipodocumento.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Número de documento</label>
+                <input type="text" class="form-control" formControlName="documento" id="documentoUpdate" placeholder="Ingrese su documento">
+              </div>
+            </div>
+            <div class="form-group row"  *ngIf="showCanalInfo">
+              <div class="col-md-6">
+                <label for="grupovendedoresSelcted">RUC</label>
+                <input type="text" class="form-control"  formControlName="tipo_documento" id="rucUpdate" placeholder="Ingrese RUC" disabled>
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Razón social</label>
+                <input type="text" class="form-control" formControlName="documento" id="razonSocialUpdate" placeholder="Ingrese Razón social" disabled>
+              </div>
+            </div>
+            <div class="form-group row"  *ngIf="showCanalInfo">
+              <div class="col-md-12">
+
+              <label for="nombreSedeUpdate">Grupo de vendedor</label>
+              <input type="text" class="form-control" id="grupovendedorUpdate" placeholder="Ingrese Grupo Vendedor" disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Nombres</label>
+                <input type="text" class="form-control"  formControlName="nombre" id="nombreUpdate" placeholder="Ingrese sus nombres">
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Apellido Paterno</label>
+                <input type="text" class="form-control" formControlName="apellido_paterno" id="apepaternoUpdate" placeholder="Ingrese su apellido paterno">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Apellido Materno</label>
+                <input type="text" class="form-control" formControlName="apellido_materno" id="apematernoUpdate" placeholder="Ingrese su apellido materno">
+              </div>
+              <div class="col-md-6">
+                <label for="nombreSedeUpdate">Fecha de nacimiento</label>
+                <input type="date" class="form-control" formControlName="fecha_nacimiento" id="fechaUpdate"
+                  placeholder="Ingrese su fecha de nacimiento del usuario">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Correo electrónico</label>
+              <input type="email" class="form-control" formControlName="correo" id="correoUpdate"
+                placeholder="Ingrese un correo electrónico para el usuario">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="btnActtionDataInfo" type="button" class="btn btn-primary"  (click)="btnActualizar()" [disabled]='updateUserForm.invalid'>Actualizar usuario</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- permission -->
+<div class="modal fade" id="contentModalSettings" tabindex="-1" role="dialog"
+  aria-labelledby="contentModalSettingsLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Permisos actuales : <span id="nameUserActive"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form >
+          <div class="checkbox">
+            <p>
+              Creación de usuarios&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoUno" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Cargar Trama - Banca y Seguros&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoDos" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Cargar Trama - Grupales&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoTres" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Cargar Trama - Telemarketing&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoCuatro" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Cargar Trama - Subrogada&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoCinco" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Mantenimiento tabla de equivalencia&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoSeis" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Mantenimiento Empresa Telemarketing&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoSiete" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Mantenimiento Empresas Banca Seguro&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoOcho" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <div class="checkbox">
+            <p>
+              Mantenimiento Empresa Grupales&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoNueve" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>
+          <br>
+          <!--<div class="checkbox">
+            <p>
+              Mantenimiento Empresas subrogadas &nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" id="permisoNueve" class="toggleGeneral" data-toggle="toggle" style="height: 40px;">
+            </p>
+          </div>-->
+        </form>
+        <br>
+        <p style="text-align: center;">
+          <button class="btn btn-primary" (click)="actualizarPermisos()">Registrar</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

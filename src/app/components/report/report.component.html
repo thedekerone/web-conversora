@@ -1,0 +1,151 @@
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Reportes de tramas</h1>
+  <br>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Reportes en excel y KPIs</h6>
+    </div>
+    <div class="card-body">
+
+      <div class="text-center" *ngIf="showLoading; else showStadistics">
+        <div class="spinner-border m-3" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <ng-template #showStadistics>
+      <div class="row">
+        
+        <div class="col-xl-3 col-md-3 mb-3">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Archivos cargados</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">#{{subidos}}</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fa fa-users fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-3 mb-3">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Archivos Rechazados</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">#{{rechazados}}</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fa fa-check fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-3 mb-3">
+          <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Archivos procesados web conversora</div>
+                  <div class="row no-gutters align-items-center">
+                    <div class="col-auto">
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">#{{webconversora}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <i class="fa fa-check fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-3 mb-3">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Archivos procesados web conversora y sap</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">#{{exitosos}}</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fa fa-check fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ng-template>
+
+      <div class="row">
+
+        <div class="col-lg-6">
+
+          <div class="card mb-4 py-3 border-left-primary">
+            <div class="card-body" style="padding-top: 5px;padding-bottom: 5px;">
+              <span style="float: left;line-height: 50px;">Exportar lista de Altas Banca y Seguros</span>
+              <button class="btn btn-success"  style="float: right;" (click)="exportarAltaByC()" [disabled]="isLoading">
+                <span [ngClass]="{'spinner-border spinner-border-sm mr-3': isLoading == true}" role="status" aria-hidden="true"></span>
+                <span class="sr-only">Loading...</span>
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar Excel</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card mb-4 py-3 border-left-primary">
+            <div class="card-body" style="padding-top: 5px;padding-bottom: 5px;">
+              <span style="float: left;line-height: 50px;">Exportar lista de Recaudo Banca y Seguros</span>
+              <button class="btn btn-success"   style="float: right;" (click)="exportarRecaudoByC()" [disabled]="isLoading2">
+                <span [ngClass]="{'spinner-border spinner-border-sm mr-3': isLoading2 == true}" role="status" aria-hidden="true"></span>
+                <span class="sr-only">Loading...</span>
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar Excel</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card mb-4 py-3 border-left-primary">
+            <div class="card-body" style="padding-top: 5px;padding-bottom: 5px;">
+              <span style="float: left;line-height: 50px;">Exportar lista de Bajas Banca y Seguros</span>
+              <button class="btn btn-success"   style="float: right;" (click)="exportarBajaByC()" [disabled]="isLoading3">
+                <span [ngClass]="{'spinner-border spinner-border-sm mr-3': isLoading3 == true}" role="status" aria-hidden="true"></span>
+                <span class="sr-only">Loading...</span>
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar Excel</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card mb-4 py-3 border-left-primary">
+            <div class="card-body" style="padding-top: 5px;padding-bottom: 5px;">
+              <span style="float: left;line-height: 50px;">Exportar lista de Grupales</span>
+              <button class="btn btn-success"   style="float: right;" (click)="exportarGrupales()" [disabled]="isLoading4">
+                <span [ngClass]="{'spinner-border spinner-border-sm mr-3': isLoading4 == true}" role="status" aria-hidden="true"></span>
+                <span class="sr-only">Loading...</span>
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar Excel</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card mb-4 py-3 border-left-primary">
+            <div class="card-body" style="padding-top: 5px;padding-bottom: 5px;">
+              <span style="float: left;line-height: 50px;">Exportar lista de Telemarketing</span>
+              <button class="btn btn-success"   style="float: right;" (click)="exportarTelemarketing()" [disabled]="isLoading5">
+                <span [ngClass]="{'spinner-border spinner-border-sm mr-3': isLoading5 == true}" role="status" aria-hidden="true"></span>
+                <span class="sr-only">Loading...</span>
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar Excel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
