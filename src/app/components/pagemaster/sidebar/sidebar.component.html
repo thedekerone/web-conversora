@@ -1,0 +1,83 @@
+<ul *ngIf="authSer.loggedIn()" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+    id="accordionSidebar">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="/">
+        <div class="sidebar-brand-icon rotate-n-15">
+        </div>
+        <div class="sidebar-brand-text mx-3">
+            <img src="/assets/img/auna_white.png" alt="AUNA" style="width: 100%;">
+        </div>
+    </a>
+    <hr class="sidebar-divider my-0">
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        Módulo - Centro de servicios
+    </div>
+    <li *ngIf="authSer.usuarioRolCargaTrama()" class="nav-item">
+        <a class="nav-link" routerLink="/trama">
+            <i class="fa fa-upload"></i>
+            <span>Carga de Trama</span></a>
+    </li>
+    <li *ngIf="authSer.usuarioRolRepTrama()" class="nav-item">
+        <a class="nav-link" routerLink="/reportes">
+            <i class="fa fa-line-chart"></i>
+            <span>Reporte de Tramas</span></a>
+    </li>
+    <li *ngIf="authSer.usuarioRolMantUsua()" class="nav-item">
+        <a class="nav-link" routerLink="/usuarios">
+            <i class="fa fa-users"></i>
+            <span>Mantenimiento de Usuario</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/historial">
+            <i class="fa fa-history"></i>
+            <span>Historial de tramas</span></a>
+    </li>
+    <li *ngIf="authSer.usuarioRolMantEquiv()" class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false"
+            aria-controls="collapsePages">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Mantenimiento de tablas</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/programa">Programa Banca Seguro</a>
+                <!--<a class="collapse-item" routerLink="/tabla-mantenimiento/djs">DJS</a>
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/lddp">LDDP</a>
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/convenio">Convenios</a>
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/codigo-bp">Código BP</a>
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/grupo-vendedor">Grupo Vendedor</a>-->
+                <a style="max-width: 180px; word-wrap: break-word;" class="collapse-item" routerLink="/tabla-mantenimiento/plan-campana">
+                <pre>Plan y Campaña Banco 
+Seguro</pre>
+</a>
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/cuenta-contable">Cuenta Contable</a>
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/programa-grupales">Programa Grupales</a>
+                <a class="collapse-item" routerLink="/tabla-mantenimiento/programa-cmr">Plan CMR</a>
+            </div>
+        </div>
+    </li>
+    <li *ngIf="authSer.usuarioRolMantEmpresas()" class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="false"
+            aria-controls="collapsePages">
+            <i class="fa fa-history"></i>
+            <span>Mantenimiento de empresas</span>
+        </a>
+        <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" routerLink="/empresas-mantenimiento/grupales">Mantenimiento Grupales</a>
+                <a class="collapse-item" routerLink="/empresas-mantenimiento/telemarketing" style="max-width: 180px; word-wrap: break-word;">
+                <pre>Mantenimiento 
+Telemarketing</pre></a>
+                <a class="collapse-item" routerLink="/empresas-mantenimiento/banca-seguro"><pre>Mantenimiento Banca 
+Seguro</pre></a>
+            </div>
+        </div>
+    </li>
+    <hr class="sidebar-divider">
+    <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0)" (click)="cerrarSesion()">
+            <i class="fa fa-sign-out"></i>
+            <span>Cerrar sesión</span></a>
+    </li>
+
+</ul>

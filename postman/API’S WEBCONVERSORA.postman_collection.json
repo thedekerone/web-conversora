@@ -1,0 +1,314 @@
+{
+	"id": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+	"name": "API’S WEBCONVERSORA",
+	"description": "",
+	"order": [
+		"4ce4eeb1-74b7-6012-4b8f-93b1623edd14",
+		"db19ddcd-56c8-5ca3-e25f-6900a618db7d",
+		"f8792bdb-c334-5c2f-5f57-a7aaeae4c00b",
+		"0384466f-1172-e382-ff03-ac16b2aeab1a",
+		"ef4f0a5d-4a3b-c084-c7ab-a8fcb841436b",
+		"b0a45d28-f8b8-9aec-ead7-05c248899ada",
+		"fb9fea8b-6ec7-e766-3490-dfedf733d130",
+		"8438b54c-fc35-5ecf-1645-ceed12c0a5ee",
+		"e3733f3d-bbca-2412-4c26-d805b8ec8285",
+		"affa1e92-1bae-a8f4-4f62-0bccad7ae0d6",
+		"1b00afed-2988-0144-c101-2dc793489bba",
+		"620b5ae7-f9d9-4410-22be-d991fe454627",
+		"93b8c028-b690-5678-75f4-1a5133974f06"
+	],
+	"folders_order": [],
+	"folders": [],
+	"owner": "10600883",
+	"hasRequests": true,
+	"requests": [
+		{
+			"id": "0384466f-1172-e382-ff03-ac16b2aeab1a",
+			"name": "registrar usuario",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"crear\",\r\n    \"id_canal\": \"1\",\r\n    \"id_empresa\": \"1\",\r\n    \"id_rol\": \"1\",\r\n    \"nombre\": \"demo nom\",\r\n    \"apellido_paterno\": \"demo pa\",\r\n    \"apellido_materno\": \"demo ma\",\r\n    \"fecha_nacimiento\": \"2020-12-10\",\r\n    \"tipo_documento\": \"0\",\r\n    \"documento\": \"71458167\",\r\n    \"correo\": \"demo@gmail.com\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "1b00afed-2988-0144-c101-2dc793489bba",
+			"name": "tipo archivo por canal",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"tipoArchivo\",\r\n    \"canal\": \"3\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "4ce4eeb1-74b7-6012-4b8f-93b1623edd14",
+			"name": "login",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"login\",\r\n    \"correo\": \"codedemo809@gmail.com\",\r\n    \"clave\": \"40844\"\r\n}",
+			"url": "https://d9111ljnt9.execute-api.us-east-1.amazonaws.com/dev/api-acceso-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "620b5ae7-f9d9-4410-22be-d991fe454627",
+			"name": "empresa por tipo de archivo",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"empresas\",\r\n    \"tipoArchivo\": \"1\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "8438b54c-fc35-5ecf-1645-ceed12c0a5ee",
+			"name": "cargar archivos",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "params",
+			"data": [
+				{
+					"key": "file",
+					"type": "file",
+					"src": "/C:/Users/User/Downloads/sc-2ALTA-1601506860364.txt",
+					"value": ""
+				}
+			],
+			"rawModeData": "",
+			"url": "https://5tdfrp6542.execute-api.us-east-1.amazonaws.com/dev/api-conversor-trama-dev",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "93b8c028-b690-5678-75f4-1a5133974f06",
+			"name": "tipo de pago por empresa",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"tipoPago\",\r\n    \"empresa\": \"2\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "affa1e92-1bae-a8f4-4f62-0bccad7ae0d6",
+			"name": "canal por usuario",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"canal\",\r\n    \"usuario\": \"6\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "b0a45d28-f8b8-9aec-ead7-05c248899ada",
+			"name": "Lista de usuarios",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"lista\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "db19ddcd-56c8-5ca3-e25f-6900a618db7d",
+			"name": "actualizar datos usuario",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"crear\",\r\n    \"id_canal\": \"1\",\r\n    \"id_empresa\": \"1\",\r\n    \"id_rol\": \"1\",\r\n    \"nombre\": \"demo nom\",\r\n    \"apellido_paterno\": \"demo pa\",\r\n    \"apellido_materno\": \"demo ma\",\r\n    \"fecha_nacimiento\": \"2020-12-10\",\r\n    \"tipo_documento\": \"0\",\r\n    \"documento\": \"71458167\",\r\n    \"correo\": \"demo@gmail.com\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "e3733f3d-bbca-2412-4c26-d805b8ec8285",
+			"name": "consultaDatosEmpresa api auna",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n   \"Request\": {\r\n      \"ConsultaDatosEmpresa\": {\r\n         \"TipoIdentificacion\": \"Stri\",\r\n         \"NroIdentificacion\": \"String 2\",\r\n         \"CodigoEmpresa\": \"String 3\",\r\n         \"RazonSocial\": \"String 4\",\r\n         \"EstadoConvenio\": \"Stri\",\r\n         \"Rol\": \"St\" \r\n      }\r\n   }\r\n}",
+			"url": "http://10.41.190.68:8080/ServiciosIntegracionSAP/proxySAP/consultaDatosEmpresa",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "ef4f0a5d-4a3b-c084-c7ab-a8fcb841436b",
+			"name": "actualizar acceso web",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \r\n    \"action\": \"acceso\",\r\n    \"id_usuario\": \"1\",\r\n    \"estado\": \"0\"\r\n}\r\n",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "f8792bdb-c334-5c2f-5f57-a7aaeae4c00b",
+			"name": "recupear clave",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"recuperar\",\r\n    \"correo\": \"codedemo809@gmail.com\"\r\n}",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		},
+		{
+			"id": "fb9fea8b-6ec7-e766-3490-dfedf733d130",
+			"name": "Administrar permisos",
+			"description": "",
+			"collectionId": "944b6e4b-675c-d63e-3372-eb62d327ae79",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"action\": \"permisos\",\r\n    \"operacion\": \"1\",\r\n    \"usuario\": \"1\",\r\n    \"estado\": \"0\"\r\n}\r\n",
+			"url": "https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+				}
+			],
+			"collection_id": "944b6e4b-675c-d63e-3372-eb62d327ae79"
+		}
+	]
+}

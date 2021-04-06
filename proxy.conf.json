@@ -1,0 +1,7 @@
+{
+    "/conversora/*": {
+        "target": "https://afiliacion-procesadoras.s3.amazonaws.com",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
