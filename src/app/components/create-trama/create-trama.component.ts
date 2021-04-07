@@ -103,6 +103,7 @@ export class CreateTramaComponent implements OnInit {
   provincia = ""
   distrito = ""
   referencia = ""
+  archivoDePagoExpirado: any;
 
   constructor(public loadServ: LoadService, public authSer: AuthService,
     public reportSer: ReportsService, public tramaSer: TramaService, public emprSer: EmpresasService) {
@@ -201,9 +202,13 @@ export class CreateTramaComponent implements OnInit {
     console.log(usuario)
     var id_usuario = usuario["id_usuario"]
     var id_empresa = usuario["id_empresa"]
-
-    var nombreCanal = $("#tipoCanal option:selected").text()
-    var nombreCanal = nombreCanal.substring(1, nombreCanal.length)
+  
+    var nombreCanal =this.listaInfo.find(el=>el.id_tipo_trama==this.tiposelected).tipo_trama
+    console.log(nombreCanal)
+    console.log(data)
+    console.log(this.tiposelected)
+    console.log(this.listaInfo)
+    console.log(this.horaTransc)
 
     if (data == "1") {
       $(".errorborderdata").removeClass("form-error");
@@ -212,23 +217,49 @@ export class CreateTramaComponent implements OnInit {
       this.errorTipo = false;
       this.errorEmpresa = false;
       this.errorTrama = false;
-
+      console.log("1")
+      if(this.horaTransc && Number(this.horaTransc)>=24){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al cargar la trama',
+          text: "Debes volver a cargar el archivo de pago",
+        });
+        return false;
+      }
+      
+      console.log("2")
       if (this.tiposelected == "0") {
         this.errorTipo = true;
         $(".errorborderdata").addClass("form-error");
         return false;
       }
-
+      console.log("3")
+      
       if (this.empresaselected == "0") {
         this.errorEmpresa = true;
         $(".errorborderdata2").addClass("form-error");
         return false;
       }
+      console.log("4")
 
+      console.log(this.nombre_archivo)
       if ($('#fileInput1').val() == '') {
         this.errorTrama = true;
         return false;
       }
+      if(!this.nombre_archivo){
+        this.errorTrama = true;
+        return false;
+      }
+
+      Swal.fire({
+        title:"Cargando trama",
+        didOpen:()=>{
+          Swal.showLoading()
+        },
+        
+      })
+  
       var nombreTrama = $("#tipoCanalTmk option:selected").text();
       console.log(nombreTrama)
 
@@ -244,6 +275,9 @@ export class CreateTramaComponent implements OnInit {
         this.tiposelected,
         id_empresa).subscribe(
           response => {
+            Swal.close()
+
+
             console.log(response)
             if (response["success"]) {
               Swal.fire({
@@ -251,7 +285,12 @@ export class CreateTramaComponent implements OnInit {
                 title: 'Proceso completado',
                 text: 'El archivo se cargó exitosamente',
               });
-
+            }else{
+              Swal.fire({
+                icon: 'error',
+                title: 'Error al cargar la trama',
+                text: response["message"],
+              });
             }
           })
     }
@@ -595,6 +634,7 @@ export class CreateTramaComponent implements OnInit {
         var tiempoTranscurrido = response["data"][0].horas_transcurridas
         this.horaTransc = tiempoTranscurrido.split(":")[0]
         this.minutosTransc = tiempoTranscurrido.split(":")[1]
+        this.archivoDePagoExpirado= Number(tiempoTranscurrido.split(":")[0])>=24
       })
       this.archivoPago = "Cargar archivo de pago"
       this.mostrarArchivo = true
@@ -606,10 +646,15 @@ export class CreateTramaComponent implements OnInit {
         var tiempoTranscurrido = response["data"][0].horas_transcurridas
         this.horaTransc = tiempoTranscurrido.split(":")[0]
         this.minutosTransc = tiempoTranscurrido.split(":")[1]
+        this.archivoDePagoExpirado= Number(tiempoTranscurrido.split(":")[0])>=24
+
       })
+      this.archivoDePagoExpirado= Number(this.horaTransc)>=24
       this.archivoPago = "Cargar archivo de afiliación"
       this.mostrarArchivo = true
     }
+
+   
 
     this.loadServ.listarEmpresaTipoArchivo(data).subscribe(response => {
       this.listaEmpresa = response["data"];

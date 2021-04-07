@@ -114,12 +114,12 @@ export class TelemarketingComponent implements OnInit {
     var temppospc = false;
     var tipo_trama = "";
 
-    if ($("#regular").is(':checked')) {
+
       tempregu = true;
-    }
-    if ($("#pospc").is(':checked')) {
+    
+
       temppospc = true;
-    }
+
     if(tempregu == true && temppospc == true ){
       tipo_trama = "19-20"
     }else if(tempregu){
