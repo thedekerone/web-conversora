@@ -61,6 +61,14 @@ export class TramaService {
     console.log(params)
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));
   }
+  revisarEstadoProceso(codProceso) {
+    const params = {
+      "action": "proceso",
+      "carga_trama": codProceso
+     }
+    console.log(params)
+    return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_ESTADO_CARGA_PROCESOS, params).pipe(map(res => res));
+  }
 
   registrarTramaByS(extension, file, nombre_archivo, canal, id_canal, tipo_trama, empresa_bp,
     id_usuario, id_tipo_trama, id_empresa,

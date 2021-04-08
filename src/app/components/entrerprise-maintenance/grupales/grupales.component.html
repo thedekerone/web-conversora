@@ -357,7 +357,10 @@
                 <thead>
                   <tr>
                     <th>ID</th>
+                    <th>Subrogador</th>
+                    <th>RUC Subrogador</th>
                     <th>Razon Social Subrogada</th>
+                    <th>RUC Subrogada</th>
                     <th>BP Subrogada</th>
                     <th>Acciones</th>
                   </tr>
@@ -365,10 +368,20 @@
                 <tbody>
                   <tr *ngFor="let lista of listaSubrog2; let i = index">
                     <td *ngIf="lista.estado == 1">{{ i + 1 }}</td>
+                    <td *ngIf="lista.estado == 1">
+                      {{ nom_empresa }}
+                    </td>
+                    <td *ngIf="lista.estado == 1">
+                      {{ ruc_empresa }}
+                    </td>
                     <td *ngIf="lista.estado == 1">{{ lista.subrogador }}</td>
+                    <td *ngIf="lista.estado == 1">
+                      {{ lista.ruc_subrogador }}
+                    </td>
                     <td *ngIf="lista.estado == 1">
                       {{ lista.bp_sap_subrogador }}
                     </td>
+
                     <td *ngIf="lista.estado == 1">
                       <button
                         class="btn btn-primary"

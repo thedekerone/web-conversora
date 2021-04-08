@@ -26,6 +26,7 @@ export class ApiService {
     BASE_ROUTE_PATH_MANT_CAMPANAS: `${environment.baseRoutePathMantCampanas}/dev-conversora-plancampana`,
     BASE_ROUTE_PATH_MANT_CONTABLES: `${environment.baseRoutePathMantContables}/dev-conversor-cuentacontables`,
     BASE_ROUTE_PATH_MANT_PROGRAM_GRUPALES: `${environment.baseRoutePathMantProgramGrupales}/dev-api-conversor-cargaarchivo`,
+    BASE_ROUTE_PATH_ESTADO_CARGA_PROCESOS: "https://5tdfrp6542.execute-api.us-east-1.amazonaws.com/dev/api-conversor-trama-dev"
   };
 }
 

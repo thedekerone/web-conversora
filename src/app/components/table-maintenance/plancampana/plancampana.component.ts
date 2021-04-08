@@ -77,12 +77,14 @@ export class PlanCampanaComponent implements OnInit {
       $("#codEmpresaUpdate").val(listaPlan.cod_empresa);
       $("#planSapUpdate").val(listaPlan.plan_sap);
       $("#campanaSapUpdate").val(listaPlan.cod_bp_broker);
-
+      console.log(listaPlan)
       this.updatePYCForm.controls.cod_empresa.setValue(listaPlan.cod_empresa);
-      this.updatePYCForm.controls.procedencia.setValue(listaPlan.programa);
-      this.updatePYCForm.controls.cod_empresa.setValue(listaPlan.procedencia);
+      this.updatePYCForm.controls.programa.setValue(listaPlan.programa);
+      this.updatePYCForm.controls.procedencia.setValue(listaPlan.procedencia);
       this.updatePYCForm.controls.plan_sap.setValue(listaPlan.plan_sap);
       this.updatePYCForm.controls.campana_sap.setValue(listaPlan.campana_sap);
+      console.log(this.updatePYCForm.valid)
+      console.log(this.updatePYCForm)
     });
   }
 

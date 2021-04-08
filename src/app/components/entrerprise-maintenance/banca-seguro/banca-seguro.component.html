@@ -36,12 +36,12 @@
               <th>Tipo</th>
               <th>RUC</th>
               <th>Razón Social</th>
-              <th>Capitalizado</th>
               <th>Cod Empresa Oncosys</th>
               <th>BP SAP Racaudor</th>
               <th>Nombre banca seguro</th>
               <th>Convenio Recaudador</th>
 
+              <th>Capitado</th>
               <th style="width: 380px; text-align: center">Acciones</th>
             </tr>
           </thead>
@@ -51,7 +51,6 @@
               <td>{{ empresa.estado == 1 ? "Regular" : "CMR" }}</td>
               <td>{{ empresa.ruc }}</td>
               <td>{{ empresa.empresa }}</td>
-              <td>{{ empresa.capitalizado == 0 ? "no" : "si" }}</td>
               <td>{{ empresa.cod_empresa_oncosys }}</td>
               <td>{{ empresa.bp_sap_recaudador }}</td>
               <td>
@@ -60,7 +59,11 @@
                 }}
               </td>
               <td>{{ empresa.n_convenio_recaudador }}</td>
-              <td *ngIf="empresa.estado == 1">
+              <td>{{ empresa.capitalizado == 0 ? "no" : "si" }}</td>
+              <td
+                style="display: flex; justify-content: center"
+                *ngIf="empresa.estado == 1"
+              >
                 <button
                   class="btn btn-primary"
                   (click)="abrirModalActualizar(empresa.ruc)"

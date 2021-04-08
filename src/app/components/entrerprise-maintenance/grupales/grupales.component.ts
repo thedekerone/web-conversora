@@ -13,52 +13,52 @@ declare var $: any;
 @Component({
   selector: 'app-grupales',
   templateUrl: './grupales.component.html',
-  styleUrls: ['./grupales.component.css']
+  styleUrls: ['./grupales.component.css'],
 })
 export class GrupalesComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any>;
   listaEmpresas = [];
-  listaCanales = []
-  listaCanales2 = []
+  listaCanales = [];
+  listaCanales2 = [];
   telemarketing: boolean = false;
   bancayseguros: boolean = false;
   grupales: boolean = false;
-  idCanals = ""
-  canalSelected = ""
-  ruc_empresa = ""
-  nom_empresa = ""
-  bp_sap = ""
-  codEmprOn = ""
-  bpSapRec = ""
-  bancaSeguro = ""
-  nConvenioRec = ""
-  bpSapCliente = ""
-  emprSubrogada = ""
-  rucSubrogada = ""
-  bpSubrogada = ""
-  id_empresa = ""
-  id_empresa_sub = ""
-  bpSapX = ""
-  updateSubrogado: boolean = false
-  rucEmpresa = ""
-  mostrar: boolean = false
-  showTable: boolean = false
-  listaSubrog = []
-  listaSubrog2 = []
-  listaSubrogados = []
+  idCanals = '';
+  canalSelected = '';
+  ruc_empresa = '';
+  nom_empresa = '';
+  bp_sap = '';
+  codEmprOn = '';
+  bpSapRec = '';
+  bancaSeguro = '';
+  nConvenioRec = '';
+  bpSapCliente = '';
+  emprSubrogada = '';
+  rucSubrogada = '';
+  bpSubrogada = '';
+  id_empresa = '';
+  id_empresa_sub = '';
+  bpSapX = '';
+  updateSubrogado: boolean = false;
+  rucEmpresa = '';
+  mostrar: boolean = false;
+  showTable: boolean = false;
+  listaSubrog = [];
+  listaSubrog2 = [];
+  listaSubrogados = [];
   errorRucTmk = false;
-  listaSubrogAntes = []
-  showTableEdit: boolean = false
-  emprSubrogadaUpdate = ""
-  rucSubrogadaUpdate = ""
-  bpSubrogadaUpdate = ""
+  listaSubrogAntes = [];
+  showTableEdit: boolean = false;
+  emprSubrogadaUpdate = '';
+  rucSubrogadaUpdate = '';
+  bpSubrogadaUpdate = '';
   mostrarRadioTmk = false;
-  mostrarRadioBS = false
-  radioTmkReg
-  radioTmkPos
-  listaEmpresa = []
-  tipoData
+  mostrarRadioBS = false;
+  radioTmkReg;
+  radioTmkPos;
+  listaEmpresa = [];
+  tipoData;
 
   constructor(
     private empServ: EmpresasService,
@@ -87,13 +87,13 @@ export class GrupalesComponent implements OnInit {
       programa_cmr: ['', [Validators.required]],
       plan_cmr_sap: ['', [Validators.required]],
     });*/
-    localStorage.setItem('countsub', "0")
+    localStorage.setItem('countsub', '0');
   }
 
   listarEmpresas() {
-    this.empServ.listarEmpresas("4").subscribe(response => {
-      this.listaEmpresas = response["data"];
-      console.log(this.listaEmpresas)
+    this.empServ.listarEmpresas('4').subscribe((response) => {
+      this.listaEmpresas = response['data'];
+      console.log(this.listaEmpresas);
       /*this.listaEmpresas.forEach(element => {
         this.empServ.listarSubrogados(element.id_empresa).subscribe(
           resp => {
@@ -112,15 +112,15 @@ export class GrupalesComponent implements OnInit {
       this.dtTrigger.next();
     });
 
-    console.log(this.listaEmpresa)
+    console.log(this.listaEmpresa);
   }
 
   listarEmpSubrog() {
-    var cantidad = localStorage.getItem('countsub')
+    var cantidad = localStorage.getItem('countsub');
     for (let i = 0; i < Number(cantidad); i++) {
-      this.listaSubrog.push(localStorage.getItem('subrogada' + i))
+      this.listaSubrog.push(localStorage.getItem('subrogada' + i));
     }
-    console.log(this.listaSubrog)
+    console.log(this.listaSubrog);
   }
 
   ngOnDestroy(): void {
@@ -128,51 +128,55 @@ export class GrupalesComponent implements OnInit {
   }
 
   abrirModal() {
-    this.canalSelected = "4"
-    this.ruc_empresa = ""
-    this.nom_empresa = ""
-    this.bp_sap = ""
-    this.codEmprOn = ""
-    this.bpSapRec = ""
-    this.bancaSeguro = ""
-    this.nConvenioRec = ""
-    this.bpSapCliente = ""
-    this.emprSubrogada = ""
-    this.rucSubrogada = ""
-    this.bpSubrogada = ""
-    this.listaSubrog = []
-    this.mostrar = false
-    this.telemarketing = false
-    this.bancayseguros = false
-    this.grupales = false
+    this.canalSelected = '4';
+    this.ruc_empresa = '';
+    this.nom_empresa = '';
+    this.bp_sap = '';
+    this.codEmprOn = '';
+    this.bpSapRec = '';
+    this.bancaSeguro = '';
+    this.nConvenioRec = '';
+    this.bpSapCliente = '';
+    this.emprSubrogada = '';
+    this.rucSubrogada = '';
+    this.bpSubrogada = '';
+    this.listaSubrog = [];
+    this.mostrar = false;
+    this.telemarketing = false;
+    this.bancayseguros = false;
+    this.grupales = false;
 
-    $("#contentModalVendedor").modal("show");
+    $('#contentModalVendedor').modal('show');
   }
 
   AbrirModalSubrogado(data, id_empresa) {
-    this.tipoData =  data
-    this.id_empresa = id_empresa
-    $("#contentModalSubrogada").modal("show")
-    console.log(data)
-    this.emprSubrogada = ""
-    this.rucSubrogada = ""
-    this.bpSubrogada = ""
-
+    this.tipoData = data;
+    this.id_empresa = id_empresa;
+    $('#contentModalSubrogada').modal('show');
+    console.log(data);
+    this.emprSubrogada = '';
+    this.rucSubrogada = '';
+    this.bpSubrogada = '';
   }
 
   btnAgregarSubrogado() {
-
-    $("#msjReponnseModalsubrogada").html('');
-    if(this.emprSubrogada == ""){
-      $("#msjReponnseModalsubrogada").html('<div class="alert alert-danger">Todos los campos son requeridos</div>');
+    $('#msjReponnseModalsubrogada').html('');
+    if (this.emprSubrogada == '') {
+      $('#msjReponnseModalsubrogada').html(
+        '<div class="alert alert-danger">Todos los campos son requeridos</div>'
+      );
       return false;
     }
-    if(this.rucSubrogada == ""){
-      $("#msjReponnseModalsubrogada").html('<div class="alert alert-danger">Todos los campos son requeridos</div>');
+    if (this.rucSubrogada == '') {
+      $('#msjReponnseModalsubrogada').html(
+        '<div class="alert alert-danger">Todos los campos son requeridos</div>'
+      );
       return false;
     }
-    if(this.bpSubrogada == ""){
-      $("#msjReponnseModalsubrogada").html('<div class="alert alert-danger">Todos los campos son requeridos</div>');
+    if (this.bpSubrogada == '') {
+      $('#msjReponnseModalsubrogada').html(
+        '<div class="alert alert-danger">Todos los campos son requeridos</div>'
+      );
       return false;
     }
 
@@ -180,44 +184,45 @@ export class GrupalesComponent implements OnInit {
       var listaSub = {
         emprSubrogada: this.emprSubrogada,
         rucSubrogada: this.rucSubrogada,
-        bpSubrogada: this.bpSubrogada
-      }
-      this.showTable = true
-      this.listaSubrog.push(listaSub)
-      this.listaSubrogAntes = this.listaSubrog
-      console.log(this.listaSubrog)
-      $("#contentModalSubrogada").modal("hide")
+        bpSubrogada: this.bpSubrogada,
+      };
+      this.showTable = true;
+      this.listaSubrog.push(listaSub);
+      this.listaSubrogAntes = this.listaSubrog;
+      console.log(this.listaSubrog);
+      $('#contentModalSubrogada').modal('hide');
     }
 
     if (this.tipoData == 2) {
-      console.log("aqui")
-      this.listaEmpresas.forEach(element => {
+      console.log('aqui');
+      this.listaEmpresas.forEach((element) => {
         if (element.id_empresa == this.id_empresa) {
-          console.log(this.id_empresa)
-          this.empServ.agregarSubrogado(
-            this.id_empresa, 
-            this.emprSubrogada,
-            this.rucSubrogada, 
-            element.empresa,
-            element.ruc,
-            this.bpSubrogada
-            ).subscribe(response => {
-              console.log(response)
+          console.log(this.id_empresa);
+          this.empServ
+            .agregarSubrogado(
+              this.id_empresa,
+              this.emprSubrogada,
+              this.rucSubrogada,
+              element.empresa,
+              element.ruc,
+              this.bpSubrogada
+            )
+            .subscribe((response) => {
+              console.log(response);
               if (response['success'] == true) {
                 Swal.fire({
                   icon: 'success',
                   title: 'Proceso completado',
                   text: 'Registro exitoso',
                 });
-                $("#contentModalSubrogada").modal("hide")
+                $('#contentModalSubrogada').modal('hide');
                 this.dtTrigger.unsubscribe();
                 //this.listarEmpresas();
-                document.location.reload()
+                document.location.reload();
               }
-            })
+            });
         }
-      })
-
+      });
     }
     /*var count = "0"
     var cantidad = localStorage.getItem('countsub')
@@ -233,288 +238,288 @@ export class GrupalesComponent implements OnInit {
         localStorage.setItem('countsub', cantidadNew)
         $("#dataG").load(" #dataG");
     }*/
-
-
   }
 
   quitarEmpresaSubr(value) {
-    console.log(value)
+    console.log(value);
     this.listaSubrogAntes.forEach((element, index) => {
       if (index == value) {
-        this.listaSubrog.splice(element, 1)
+        this.listaSubrog.splice(element, 1);
         if (this.listaSubrog.length == 0) {
-          this.showTable = false
+          this.showTable = false;
         }
       }
-    })
-    console.log(this.listaSubrog)
+    });
+    console.log(this.listaSubrog);
   }
 
-
   btnRegistrar() {
-    var request
+    var request;
     this.errorRucTmk = false;
-    $(".errorborderdata").removeClass("form-error");
+    $('.errorborderdata').removeClass('form-error');
 
-    if (this.ruc_empresa == "") {
+    if (this.ruc_empresa == '') {
       this.errorRucTmk = true;
-      $(".errorborderdata").addClass("form-error");
+      $('.errorborderdata').addClass('form-error');
       return false;
     }
-    console.log(request)
+    console.log(request);
+    console.log(this.listaSubrog);
+
+    let subrogadas = this.listaSubrog.map((el) => {
+      return {
+        razon_social_subrogado: this.nom_empresa,
+        ruc_subrogado: this.rucEmpresa,
+        subrogador: el.emprSubrogada,
+
+        ruc_subrogador: el.rucSubrogada,
+        bp_sap_subrogador: el.bpSubrogada,
+      };
+    });
+
     request = {
-      action: "crear",
+      action: 'crear',
       ruc_empresa: this.ruc_empresa,
       nom_empresa: this.nom_empresa,
       canal: 4,
       bp_sap_cliente: this.bpSapCliente,
-      subrogadas: [
-        {
-          subrogador: this.emprSubrogada,
-          ruc_subrogador: this.rucSubrogada,
-          razon_social_subrogado: this.nom_empresa,
-          ruc_subrogado: this.rucEmpresa,
-          bp_sap_subrogador: this.bpSubrogada
-        },
-      ]
+      subrogadas: subrogadas,
+    };
 
-    }
-
-    console.log(request)
-    this.empServ.crearEmpresas(request).subscribe(response => {
-
+    console.log(request);
+    this.empServ.crearEmpresas(request).subscribe((response) => {
       if (response['success'] == true) {
         Swal.fire({
           icon: 'success',
           title: 'Proceso completado',
           text: 'Registro exitoso',
         });
-        $("#contentModalVendedor").modal("hide");
+        $('#contentModalVendedor').modal('hide');
 
         this.dtTrigger.unsubscribe();
         //this.listarEmpresas();
-        document.location.reload()
+        document.location.reload();
       } else {
         Swal.fire({
           icon: 'info',
           title: 'Hubo un error',
           text: response['message'],
         });
-        $("#contentModalVendedor").modal("hide");
+        $('#contentModalVendedor').modal('hide');
       }
     });
   }
 
   abrirModalActualizar(id_empresa) {
+    $('#contentModalActualizar').modal('show');
+    this.canalSelected = '4';
+    this.ruc_empresa = '';
+    this.nom_empresa = '';
+    this.bp_sap = '';
+    this.codEmprOn = '';
+    this.bpSapRec = '';
+    this.bancaSeguro = '';
+    this.nConvenioRec = '';
+    this.bpSapCliente = '';
+    this.emprSubrogada = '';
+    this.rucSubrogada = '';
+    this.bpSubrogada = '';
+    this.listaSubrog2 = [];
 
-    $("#contentModalActualizar").modal("show");
-    this.canalSelected = "4"
-    this.ruc_empresa = ""
-    this.nom_empresa = ""
-    this.bp_sap = ""
-    this.codEmprOn = ""
-    this.bpSapRec = ""
-    this.bancaSeguro = ""
-    this.nConvenioRec = ""
-    this.bpSapCliente = ""
-    this.emprSubrogada = ""
-    this.rucSubrogada = ""
-    this.bpSubrogada = ""
-    this.listaSubrog2 = []
-
-    this.listaEmpresas.forEach(element => {
+    this.listaEmpresas.forEach((element) => {
       if (element.id_empresa == id_empresa) {
-        this.id_empresa = element.id_empresa
-        this.canalSelected = element.id_canal
-        this.ruc_empresa = element.ruc
-        this.nom_empresa = element.empresa
+        this.id_empresa = element.id_empresa;
+        this.canalSelected = element.id_canal;
+        this.ruc_empresa = element.ruc;
+        this.nom_empresa = element.empresa;
         this.telemarketing = false;
         this.bancayseguros = false;
         this.grupales = true;
-        this.bpSapCliente = element.bp_sap_cliente
-        this.bpSapX = this.bpSapCliente
-        this.updateSubrogado = true
-        this.empServ.listarSubrogados(this.id_empresa).subscribe(
-          response => {
-            console.log(response)
-            if (response['success'] == true) {
-              this.showTableEdit = true
-              this.listaSubrogados = response["data"]
-              console.log(this.listaSubrogados)
-              this.listaSubrogados.forEach(element => {
-                var listaSub = {
+        this.bpSapCliente = element.bp_sap_cliente;
+        this.bpSapX = this.bpSapCliente;
+        this.updateSubrogado = true;
+        this.empServ.listarSubrogados(this.id_empresa).subscribe((response) => {
+          console.log(response);
+          if (response['success'] == true) {
+            this.showTableEdit = true;
+            this.listaSubrogados = response['data'];
+            console.log(this.listaSubrogados);
+            this.listaSubrogados.forEach((element) => {
+              var listaSub = {
                 razon_social_subrogado: element.razon_social_subrogado,
                 ruc_subrogador: element.ruc_subrogador,
                 bp_sap_subrogador: element.bp_sap_subrogador,
                 estado: element.estado,
                 id_empresa_subrogada: element.id_empresa_subrogada,
-                subrogador: element.subrogador
-              }
-              this.listaSubrog2.push(listaSub)
-              })
-              
-              
-              return false
-            }
-          })
-        console.log(this.listaSubrog2)
+                subrogador: element.subrogador,
+              };
+              this.listaSubrog2.push(listaSub);
+            });
+
+            return false;
+          }
+        });
+        console.log(this.listaSubrog2);
       }
-    })
+    });
   }
 
   btnActualizar() {
     var request = {
-      action: "actualizar",
+      action: 'actualizar',
       ruc_empresa: this.ruc_empresa.toString(),
       nom_empresa: this.nom_empresa,
       id_empresa: this.id_empresa.toString(),
       canal: parseInt(this.canalSelected),
-      tipo_trama: "7,8",
-      bp_sap_cliente: this.bpSapCliente.toString()
-    }
-    console.log(request)
-    this.empServ.actualizarEmpresas(request).subscribe(response => {
-      console.log(response);
-      if (response['success'] == true) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Proceso completado',
-          text: 'Empresa actualizada correctamente',
-        });
+      tipo_trama: '7,8',
+      bp_sap_cliente: this.bpSapCliente.toString(),
+    };
+    console.log(request);
+    this.empServ.actualizarEmpresas(request).subscribe(
+      (response) => {
+        console.log(response);
+        if (response['success'] == true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Proceso completado',
+            text: 'Empresa actualizada correctamente',
+          });
 
-        $("#contentModalActualizar").modal("hide");
+          $('#contentModalActualizar').modal('hide');
 
-        this.dtTrigger.unsubscribe();
-        this.listarEmpresas();
-        document.location.reload()
-      } else {
-        Swal.fire({
-          icon: 'info',
-          title: 'Hubo un error',
-          text: response['message'],
-        });
-        $("#contentModalActualizar").modal("hide");
+          this.dtTrigger.unsubscribe();
+          this.listarEmpresas();
+          document.location.reload();
+        } else {
+          Swal.fire({
+            icon: 'info',
+            title: 'Hubo un error',
+            text: response['message'],
+          });
+          $('#contentModalActualizar').modal('hide');
+        }
+      },
+      (error) => {
+        console.log(error);
       }
-    }, error => {
-      console.log(error)
-    });
+    );
   }
 
   abrirModalActualizarSub(index) {
-    $("#contentModalUpdateSubrogada").modal("show");
-    console.log(index)
-    console.log(this.listaSubrogados)
-    this.empServ.listarSubrogados(this.id_empresa).subscribe(
-      response => {
-        console.log(response)
-        if (response['success'] == true) {
-          console.log(response["data"])
-          this.showTableEdit = true
-          this.listaSubrogados = response["data"]
-          this.listaSubrogados.forEach((element, value) => {
-            if (index == value) {
-              this.emprSubrogadaUpdate = element.subrogador
-              this.rucSubrogadaUpdate = element.ruc_subrogador
-              this.bpSubrogadaUpdate = element.bp_sap_subrogador
-              this.id_empresa_sub = element.id_empresa_subrogada
-            }
-          })
-        }
-      })
-
+    $('#contentModalUpdateSubrogada').modal('show');
+    console.log(index);
+    console.log(this.listaSubrogados);
+    this.empServ.listarSubrogados(this.id_empresa).subscribe((response) => {
+      console.log(response);
+      if (response['success'] == true) {
+        console.log(response['data']);
+        this.showTableEdit = true;
+        this.listaSubrogados = response['data'];
+        this.listaSubrogados.forEach((element, value) => {
+          if (index == value) {
+            this.emprSubrogadaUpdate = element.subrogador;
+            this.rucSubrogadaUpdate = element.ruc_subrogador;
+            this.bpSubrogadaUpdate = element.bp_sap_subrogador;
+            this.id_empresa_sub = element.id_empresa_subrogada;
+          }
+        });
+      }
+    });
   }
 
   btnActualizarSubrogado() {
     var request = {
-      action: "actualizarSub",
+      action: 'actualizarSub',
       id_subrogada: this.id_empresa_sub,
       id_empresa: this.id_empresa,
       subrogador: this.emprSubrogadaUpdate,
       ruc_subrogador: this.rucSubrogadaUpdate,
       razon_social_subrogado: this.nom_empresa,
       ruc_subrogado: this.ruc_empresa,
-      bp_sap_subrogador: this.bpSubrogadaUpdate
-    }
+      bp_sap_subrogador: this.bpSubrogadaUpdate,
+    };
     console.log(request);
     for (let index = 0; index < this.listaSubrog2.length; index++) {
-      if(this.listaSubrog2[index]["id_empresa_subrogada"] == this.id_empresa_sub){
-        this.listaSubrog2[index]["bp_sap_subrogador"] =  this.bpSubrogadaUpdate
+      if (
+        this.listaSubrog2[index]['id_empresa_subrogada'] == this.id_empresa_sub
+      ) {
+        this.listaSubrog2[index]['bp_sap_subrogador'] = this.bpSubrogadaUpdate;
       }
     }
-    this.empServ.actualizarSubrogados(request).subscribe(
-      response => {
-        console.log(response)
-        if (response['success'] == true) {
-          console.log(request)
-          Swal.fire({
-            icon: 'success',
-            title: 'Proceso completado',
-            text: 'Empresa subrogada actualizada correctamente',
-          });
+    this.empServ.actualizarSubrogados(request).subscribe((response) => {
+      console.log(response);
+      if (response['success'] == true) {
+        console.log(request);
+        Swal.fire({
+          icon: 'success',
+          title: 'Proceso completado',
+          text: 'Empresa subrogada actualizada correctamente',
+        });
 
-          $("#contentModalUpdateSubrogada").modal("hide");
+        $('#contentModalUpdateSubrogada').modal('hide');
 
-          this.dtTrigger.unsubscribe();
-          this.listarEmpresas();
-        } else {
-          $("#contentModalUpdateSubrogada").modal("hide");
-          Swal.fire({
-            icon: 'info',
-            title: 'Hubo un error',
-            text: response['message'],
-          });
-        }
-      })
+        this.dtTrigger.unsubscribe();
+        this.listarEmpresas();
+      } else {
+        $('#contentModalUpdateSubrogada').modal('hide');
+        Swal.fire({
+          icon: 'info',
+          title: 'Hubo un error',
+          text: response['message'],
+        });
+      }
+    });
   }
 
   abrirModalDesactivar(id_empresa) {
-    console.log(id_empresa)
+    console.log(id_empresa);
     Swal.fire({
       title: '¿Quiere desactivar la empresa?',
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: `Guardar`,
     }).then((result) => {
-
       if (result.isConfirmed) {
-        this.empServ.cambiarEstadoEmpresas(id_empresa, 0).subscribe(response => {
-          if (response['success']) {
-            Swal.fire('Estado actualizado', '', 'success')
-            console.log(response)
-            this.dtTrigger.unsubscribe();
-            //this.listarEmpresas();
-            document.location.reload()
-          }
-        });
+        this.empServ
+          .cambiarEstadoEmpresas(id_empresa, 0)
+          .subscribe((response) => {
+            if (response['success']) {
+              Swal.fire('Estado actualizado', '', 'success');
+              console.log(response);
+              this.dtTrigger.unsubscribe();
+              //this.listarEmpresas();
+              document.location.reload();
+            }
+          });
       }
-    })
+    });
   }
 
   abrirModalActivar(id_empresa) {
-    console.log(id_empresa)
+    console.log(id_empresa);
     Swal.fire({
       title: '¿Quiere activar la empresa?',
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: `Guardar`,
     }).then((result) => {
-
       if (result.isConfirmed) {
-        this.empServ.cambiarEstadoEmpresas(id_empresa, 1).subscribe(response => {
-          if (response['success']) {
-            Swal.fire('Estado actualizado', '', 'success')
-            console.log(response)
-            this.dtTrigger.unsubscribe();
-            //this.listarEmpresas();
-            document.location.reload()
-          }
-        });
+        this.empServ
+          .cambiarEstadoEmpresas(id_empresa, 1)
+          .subscribe((response) => {
+            if (response['success']) {
+              Swal.fire('Estado actualizado', '', 'success');
+              console.log(response);
+              this.dtTrigger.unsubscribe();
+              //this.listarEmpresas();
+              document.location.reload();
+            }
+          });
       }
-    })
+    });
   }
 
   abrirModalDesactivarSub(subrogada) {
-
     Swal.fire({
       title: '¿Quieres desactivar la empresa?',
       icon: 'info',
@@ -522,26 +527,27 @@ export class GrupalesComponent implements OnInit {
       confirmButtonText: `Guardar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.empServ.cambiarEstadoEmpresaSub(subrogada, 0).subscribe(response => {
-          console.log(response)
-          Swal.fire('Estado actualizado', '', 'success')
-          //this.dtTrigger.unsubscribe();
-          //this.listarEmpresas();
-          //document.location.reload()
+        this.empServ
+          .cambiarEstadoEmpresaSub(subrogada, 0)
+          .subscribe((response) => {
+            console.log(response);
+            Swal.fire('Estado actualizado', '', 'success');
+            //this.dtTrigger.unsubscribe();
+            //this.listarEmpresas();
+            //document.location.reload()
 
-          for (let index = 0; index < this.listaSubrog2.length; index++) {
-            if(this.listaSubrog2[index]["id_empresa_subrogada"] == subrogada){
-              this.listaSubrog2[index]["estado"] =  "0"
+            for (let index = 0; index < this.listaSubrog2.length; index++) {
+              if (
+                this.listaSubrog2[index]['id_empresa_subrogada'] == subrogada
+              ) {
+                this.listaSubrog2[index]['estado'] = '0';
+              }
             }
-          }
-
-        });
+          });
       }
-    })
-
+    });
   }
   abrirModalActivarSub(subrogada) {
-
     Swal.fire({
       title: '¿Quieres activar la empresa?',
       icon: 'info',
@@ -549,15 +555,16 @@ export class GrupalesComponent implements OnInit {
       confirmButtonText: `Guardar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.empServ.cambiarEstadoEmpresaSub(subrogada, 1).subscribe(response => {
-          console.log(response)
-          Swal.fire('Estado actualizado', '', 'success')
-          //this.dtTrigger.unsubscribe();
-          this.listarEmpresas();
-          document.location.reload()
-        });
+        this.empServ
+          .cambiarEstadoEmpresaSub(subrogada, 1)
+          .subscribe((response) => {
+            console.log(response);
+            Swal.fire('Estado actualizado', '', 'success');
+            //this.dtTrigger.unsubscribe();
+            this.listarEmpresas();
+            document.location.reload();
+          });
       }
-    })
-
+    });
   }
 }

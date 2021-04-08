@@ -220,15 +220,9 @@ export class TelemarketingComponent implements OnInit {
     if ($("#pospc2").is(':checked')) {
       temppospc = true;
     }
-    if(tempregu == true && temppospc == true ){
+ 
       tipo_trama = "19,20"
-    }else if(tempregu){
-      tipo_trama = "20"
-    }else if(temppospc){
-      tipo_trama = "19"
-    }else{
-      return false;
-    }
+
   
     var request = {
       action: "actualizar",
