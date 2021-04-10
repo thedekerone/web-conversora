@@ -38,6 +38,7 @@ export class PlanCampanaComponent implements OnInit {
       cod_empresa: ['', [Validators.required]],
       plan_sap: ['', [Validators.required]],
       campana_sap: [''],
+      programa: ['', [Validators.required]],
     });
     this.updatePYCForm = this.formBuilder.group({
       action: 'actualizar',
@@ -76,7 +77,7 @@ export class PlanCampanaComponent implements OnInit {
       .editarCampanas(procedencia, cod_empresa)
       .subscribe((response) => {
         var listaPlan = response['data'][0];
-
+        console.log(response);
         $('#procedenciaUpdate').val(listaPlan.procedencia);
         $('#codEmpresaUpdate').val(listaPlan.cod_empresa);
         $('#planSapUpdate').val(listaPlan.plan_sap);
@@ -96,6 +97,8 @@ export class PlanCampanaComponent implements OnInit {
     this.plancampanaServ
       .crearCampanas(this.registerPYCForm.value)
       .subscribe((response) => {
+        console.log(response);
+        console.log(this.registerPYCForm.value);
         if (response['success'] == true) {
           document.location.reload();
           Swal.fire({

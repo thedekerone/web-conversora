@@ -3,18 +3,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatatableService } from 'src/app/services/utils/datatable.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subject } from 'rxjs';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { UsersService } from 'src/app/services/users.service';
-import { formatDate } from "@angular/common";
+import { formatDate } from '@angular/common';
 declare var $: any;
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-
   registerUserForm: FormGroup;
   updateUserForm: FormGroup;
   updatePermisosForm: FormGroup;
@@ -30,13 +29,18 @@ export class UsersComponent implements OnInit {
   roles = [];
   tipodocumentos = [];
   empresaaunas = [];
-  nacimiento = "";
-  date = "";
+  nacimiento = '';
+  date = '';
   errorNacimiento = false;
-  valorDoc: string
-  id_usuario: string
+  valorDoc: string;
+  id_usuario: string;
 
-  constructor(public authSer: AuthService, private userServ: UsersService, private utilsDt: DatatableService, private formBuilder: FormBuilder) {
+  constructor(
+    public authSer: AuthService,
+    private userServ: UsersService,
+    private utilsDt: DatatableService,
+    private formBuilder: FormBuilder
+  ) {
     this.listaUsers = [];
     this.listaProfile = [];
     this.dtTrigger = new Subject();
@@ -45,181 +49,180 @@ export class UsersComponent implements OnInit {
     this.listaCanals = [];
     this.roles = [
       { id: 1, name: 'Negocio' },
-      { id: 2, name: 'Externo' }
+      { id: 2, name: 'Externo' },
     ];
     this.tipodocumentos = [
       { id: 0, name: 'DNI' },
       { id: 1, name: 'RUC' },
       { id: 2, name: 'CE' },
-      { id: 3, name: 'PASAPORTE' }
+      { id: 3, name: 'PASAPORTE' },
     ];
-    this.empresaaunas = [
-      { id: 0, name: 'Auna' },
-    ];
+    this.empresaaunas = [{ id: 0, name: 'Auna' }];
     $('#toggle-one').bootstrapToggle();
 
-    this.date = formatDate(new Date(), "yyyy-MM-dd", "en");
+    this.date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
   }
 
-
   onChangeTipoUsuario(data) {
-    console.log(data)
+    console.log(data);
     this.formDisplay = true;
-    if (data == "1") {
+    if (data == '1') {
       this.showCanalInfo = false;
-
     }
-    if (data == "2") {
+    if (data == '2') {
       this.showCanalInfo = true;
-      this.userServ.listarEmpresas().subscribe(response => {
-        this.listaCompanies = response["data"];
+      this.userServ.listarEmpresas().subscribe((response) => {
+        this.listaCompanies = response['data'].filter((el) => el.estado == 1);
+        console.log(response['data']);
+        console.log(this.listaCompanies);
         //this.dtTrigger.next();
       });
 
-      this.userServ.listarCanales().subscribe(response => {
-        this.listaCanals = response["data"];
+      this.userServ.listarCanales().subscribe((response) => {
+        this.listaCanals = response['data'];
+
         //this.dtTrigger.next();
       });
     }
   }
 
   onChangeEmpresa($event) {
-
-    this.userServ.listarEmpresa("demo").subscribe(response => {
-      var result = response["data"]["Response"]["DatosEmpresa"][0]
-      $("#razonSocialAdd").val(result["DatosGenerales"].RazonSocial);
-      $("#rucAdd").val(result["DatosGenerales"].RazonSocial);
-      $("#grupovendedorAdd").val(result["DatosGenerales"].GrupoVendedor);
+    this.userServ.listarEmpresa('demo').subscribe((response) => {
+      var result = response['data']['Response']['DatosEmpresa'][0];
+      $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
+      $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
+      $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
       //this.dtTrigger.next();
-      this.registerUserForm.controls.tipo_documento.setValue(result["DatosGenerales"].RazonSocial);
-      this.registerUserForm.controls.documento.setValue(result["DatosGenerales"].RazonSocial);
+      this.registerUserForm.controls.tipo_documento.setValue(
+        result['DatosGenerales'].RazonSocial
+      );
+      this.registerUserForm.controls.documento.setValue(
+        result['DatosGenerales'].RazonSocial
+      );
     });
   }
 
   onChangeEmpresaActualizar($event) {
-
-    this.userServ.listarEmpresa("demo").subscribe(response => {
-      var result = response["data"]["Response"]["DatosEmpresa"][0]
-      $("#razonSocialAdd").val(result["DatosGenerales"].RazonSocial);
-      $("#rucAdd").val(result["DatosGenerales"].RazonSocial);
-      $("#grupovendedorAdd").val(result["DatosGenerales"].GrupoVendedor);
+    this.userServ.listarEmpresa('demo').subscribe((response) => {
+      var result = response['data']['Response']['DatosEmpresa'][0];
+      $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
+      $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
+      $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
       //this.dtTrigger.next();
     });
   }
 
   onChangeTipoDocumento(data) {
-    $('#documentoAdds').val("");
-    this.valorDoc = data
-    if (data == "0") {
-      $('#documentoAdds').attr("maxlength", "8");
-      $('#documentoAdds').attr("pattern", "[0-9]{8}");
+    $('#documentoAdds').val('');
+    this.valorDoc = data;
+    if (data == '0') {
+      $('#documentoAdds').attr('maxlength', '8');
+      $('#documentoAdds').attr('pattern', '[0-9]{8}');
       //$('#documentoAdds').attr("onkeyup", "descriptionCaracter(this,8);return event.charCode >= 48 && event.charCode <= 57");
       //$('#documentoAdds').attr("onkeypress", "descriptionCaracter(this,8);return event.charCode >= 48 && event.charCode <= 57");
     }
-    if (data == "1") {
+    if (data == '1') {
       $('#documentoAdds').attr('type', 'text');
-      $('#documentoAdds').attr("maxlength", "11");
-      $('#documentoAdds').attr("pattern", "[0-9]{11}");
+      $('#documentoAdds').attr('maxlength', '11');
+      $('#documentoAdds').attr('pattern', '[0-9]{11}');
       //$('#documentoAdds').attr("onkeyup", "descriptionCaracter(this,11)");
       //$('#documentoAdds').attr("onkeypress", "descriptionCaracter(this,11)");
     }
-    if (data == "2") {
+    if (data == '2') {
       $('#documentoAdds').attr('type', 'text');
-      $('#documentoAdds').attr("maxlength", "12");
-      $('#documentoAdds').attr("pattern", "[0-9]{12}");
+      $('#documentoAdds').attr('maxlength', '12');
+      $('#documentoAdds').attr('pattern', '[0-9]{12}');
       //$('#documentoAdds').attr("onkeyup", "descriptionCaracter(this,12)");
       //$('#documentoAdds').attr("onkeypress", "descriptionCaracter(this,12)");
     }
-    if (data == "3") {
+    if (data == '3') {
       $('#documentoAdds').attr('type', 'text');
-      $('#documentoAdds').attr("maxlength", "12");
-      $('#documentoAdds').attr("pattern", "[0-9]{12}");
+      $('#documentoAdds').attr('maxlength', '12');
+      $('#documentoAdds').attr('pattern', '[0-9]{12}');
       //$('#documentoAdds').attr("onkeyup", "descriptionCaracter(this,12)");
       //$('#documentoAdds').attr("onkeypress", "descriptionCaracter(this,12)");
     }
   }
 
   keyPressNumDoc(event) {
-    if (this.valorDoc == "0" || this.valorDoc == "1") {
+    if (this.valorDoc == '0' || this.valorDoc == '1') {
       if (event.charCode >= 48 && event.charCode <= 57) {
         return true;
       }
-    }
-    else if (this.valorDoc == "2" || this.valorDoc == "3") {
+    } else if (this.valorDoc == '2' || this.valorDoc == '3') {
       if (event.charCode >= 20 && event.charCode <= 122) {
         return true;
       }
     }
     return false;
-
   }
 
   onChangeTipoDocumentoActualizar(data) {
-    $('#documentoUpdate').val("");
+    $('#documentoUpdate').val('');
 
-    if (data == "0") {
-      $('#documentoUpdate').attr("mask", "00000000");
-      $('#documentoUpdate').attr("pattern", "[0-9]{8}");
+    if (data == '0') {
+      $('#documentoUpdate').attr('mask', '00000000');
+      $('#documentoUpdate').attr('pattern', '[0-9]{8}');
       //$('#documentoUpdate').attr("onkeyup", "descriptionCaracter(this,8);return event.charCode >= 48 && event.charCode <= 57");
       //$('#documentoUpdate').attr("onkeypress", "descriptionCaracter(this,8);return event.charCode >= 48 && event.charCode <= 57");
     }
-    if (data == "1") {
+    if (data == '1') {
       $('#documentoUpdate').attr('type', 'text');
-      $('#documentoUpdate').attr("maxlength", "11");
-      $('#documentoUpdate').attr("pattern", "[0-9]{11}");
+      $('#documentoUpdate').attr('maxlength', '11');
+      $('#documentoUpdate').attr('pattern', '[0-9]{11}');
       //$('#documentoUpdate').attr("onkeyup", "descriptionCaracter(this,11)");
       //$('#documentoUpdate').attr("onkeypress", "descriptionCaracter(this,11)");
     }
-    if (data == "2") {
+    if (data == '2') {
       $('#documentoUpdate').attr('type', 'text');
-      $('#documentoUpdate').attr("maxlength", "12");
-      $('#documentoUpdate').attr("pattern", "[0-9]{12}");
+      $('#documentoUpdate').attr('maxlength', '12');
+      $('#documentoUpdate').attr('pattern', '[0-9]{12}');
       //$('#documentoUpdate').attr("onkeyup", "descriptionCaracter(this,12)");
       //$('#documentoUpdate').attr("onkeypress", "descriptionCaracter(this,12)");
     }
-    if (data == "3") {
+    if (data == '3') {
       $('#documentoUpdate').attr('type', 'text');
-      $('#documentoUpdate').attr("maxlength", "12");
-      $('#documentoUpdate').attr("pattern", "[0-9]{12}");
+      $('#documentoUpdate').attr('maxlength', '12');
+      $('#documentoUpdate').attr('pattern', '[0-9]{12}');
       //$('#documentoUpdate').attr("onkeyup", "descriptionCaracter(this,12)");
       //$('#documentoUpdate').attr("onkeypress", "descriptionCaracter(this,12)");
     }
-
   }
 
   descriptionCaracter(self, long) {
     let length = self.value.length;
-    $(self).parent().siblings('sub').text(length + '/' + long);
+    $(self)
+      .parent()
+      .siblings('sub')
+      .text(length + '/' + long);
   }
 
   onChangeTipoUsuarioActualizar(data) {
-    console.log(data)
+    console.log(data);
     this.formDisplayUpdate = true;
-    if (data == "1") {
+    if (data == '1') {
       this.showCanalInfo = false;
-      $('#selectType option[value=' + data + ']').attr("selected", true);
+      $('#selectType option[value=' + data + ']').attr('selected', true);
     }
-    if (data == "2") {
+    if (data == '2') {
       this.showCanalInfo = true;
-      $("#selectType option[value='2']").attr("selected", true);
-
+      $("#selectType option[value='2']").attr('selected', true);
     }
   }
 
   handleOnChangeNacimiento() {
-    if (this.nacimiento != "") {
-      $("#nacimientoCreate").removeClass("placeholder");
+    if (this.nacimiento != '') {
+      $('#nacimientoCreate').removeClass('placeholder');
     } else {
-      $("#nacimientoCreate").addClass("placeholder");
+      $('#nacimientoCreate').addClass('placeholder');
     }
   }
 
   ngOnInit(): void {
-
     this.listarUsuarios();
 
     this.registerUserForm = this.formBuilder.group({
-      action: "crear",
+      action: 'crear',
       id_rol: ['', [Validators.required]],
       id_canal: [''],
       id_empresa: ['', [Validators.required]],
@@ -231,11 +234,10 @@ export class UsersComponent implements OnInit {
       fecha_nacimiento: ['', [Validators.required]],
       correo: ['', [Validators.required]],
       clave: ['', [Validators.required]],
-
     });
 
     this.updateUserForm = this.formBuilder.group({
-      action: "actualizar",
+      action: 'actualizar',
       id_usuario: [''],
       id_rol: [''],
       id_canal: [''],
@@ -247,14 +249,12 @@ export class UsersComponent implements OnInit {
       apellido_materno: ['', [Validators.required]],
       fecha_nacimiento: ['', [Validators.required]],
       correo: ['', [Validators.required]],
-
     });
-
   }
 
   listarUsuarios() {
-    this.userServ.listarProductos().subscribe(response => {
-      this.listaUsers = response["data"];
+    this.userServ.listarProductos().subscribe((response) => {
+      this.listaUsers = response['data'];
       this.dtTrigger.next();
     });
   }
@@ -266,78 +266,104 @@ export class UsersComponent implements OnInit {
   abrirModal(iduser) {
     this.registerUserForm.controls.id_empresa.setValue(0);
 
-    $("#contentModalVendedor").modal("show");
-    $("#rucAdd").val("");
-    $("#documentoAdds").val("");
-    $("#razonSocialAdd").val("");
-    $("#grupovendedorAdd").val("");
-    $("#apellidoPatAdd").val("");
-    $("#apellidoMatAdd").val("");
-    $("#nombreAdd").val("");
-    $("#fechaAdd").val("");
-    $("#emailAdd").val("");
-    $("#emailAdd").val("");
-    $("#claveAdd").val("");
+    $('#contentModalVendedor').modal('show');
+    $('#rucAdd').val('');
+    $('#documentoAdds').val('');
+    $('#razonSocialAdd').val('');
+    $('#grupovendedorAdd').val('');
+    $('#apellidoPatAdd').val('');
+    $('#apellidoMatAdd').val('');
+    $('#nombreAdd').val('');
+    $('#fechaAdd').val('');
+    $('#emailAdd').val('');
+    $('#emailAdd').val('');
+    $('#claveAdd').val('');
   }
 
   async abrirModalActualizar(user_id) {
-    await $("#contentModalActualizar").modal("show");
-    this.userServ.listarPerfil(user_id).subscribe(response => {
+    await $('#contentModalActualizar').modal('show');
+    this.userServ.listarPerfil(user_id).subscribe((response) => {
       //this.listaProfile = response["data"][0];
-      var listProfile = response["data"][0]
-      var id_rol = response["data"][0].id_rol
+      var listProfile = response['data'][0];
+      var id_rol = response['data'][0].id_rol;
 
-      $("#nombreUpdate").val(listProfile.nombre);
-      $("#apepaternoUpdate").val(listProfile.apellido_paterno);
-      $("#apematernoUpdate").val(listProfile.apellido_materno);
-      $("#fechaUpdate").val(listProfile.fecha_nacimiento);
-      $("#correoUpdate").val(listProfile.correo);
-      $("#selectTypeUpdate option[value=" + id_rol + "]").attr("selected", true);
+      $('#nombreUpdate').val(listProfile.nombre);
+      $('#apepaternoUpdate').val(listProfile.apellido_paterno);
+      $('#apematernoUpdate').val(listProfile.apellido_materno);
+      $('#fechaUpdate').val(listProfile.fecha_nacimiento);
+      $('#correoUpdate').val(listProfile.correo);
+      $('#selectTypeUpdate option[value=' + id_rol + ']').attr(
+        'selected',
+        true
+      );
 
       this.updateUserForm.controls.id_usuario.setValue(user_id);
       this.updateUserForm.controls.nombre.setValue(listProfile.nombre);
-      this.updateUserForm.controls.apellido_paterno.setValue(listProfile.apellido_paterno);
-      this.updateUserForm.controls.apellido_materno.setValue(listProfile.apellido_materno);
-      this.updateUserForm.controls.fecha_nacimiento.setValue(listProfile.fecha_nacimiento);
+      this.updateUserForm.controls.apellido_paterno.setValue(
+        listProfile.apellido_paterno
+      );
+      this.updateUserForm.controls.apellido_materno.setValue(
+        listProfile.apellido_materno
+      );
+      this.updateUserForm.controls.fecha_nacimiento.setValue(
+        listProfile.fecha_nacimiento
+      );
       this.updateUserForm.controls.correo.setValue(listProfile.correo);
       this.updateUserForm.controls.id_rol.setValue(id_rol);
 
       this.formDisplayUpdate = true;
-      if (id_rol == "1") {
+      if (id_rol == '1') {
         this.showCanalInfo = false;
         //  this.updateUserForm.controls.empresa.setValue(listProfile.empresa);
 
-
         // $("#empresaAunaUpdate option[value="+listProfile.empresa+"]").attr("selected", true);
-        $("#tipoDocumentoUpdate option[value=" + listProfile.tipo_documento + "]").attr("selected", true);
-        $("#documentoUpdate").val(listProfile.documento);
-        this.updateUserForm.controls.tipo_documento.setValue(listProfile.tipo_documento);
+        $(
+          '#tipoDocumentoUpdate option[value=' +
+            listProfile.tipo_documento +
+            ']'
+        ).attr('selected', true);
+        $('#documentoUpdate').val(listProfile.documento);
+        this.updateUserForm.controls.tipo_documento.setValue(
+          listProfile.tipo_documento
+        );
         this.updateUserForm.controls.documento.setValue(listProfile.documento);
-        this.updateUserForm.controls.id_empresa.setValue("Auna");
+        this.updateUserForm.controls.id_empresa.setValue('Auna');
       }
-      if (id_rol == "2") {
+      if (id_rol == '2') {
         this.showCanalInfo = true;
 
-        this.userServ.listarEmpresas().subscribe(response => {
-          this.listaCompanies = response["data"];
+        this.userServ.listarEmpresas().subscribe((response) => {
+          this.listaCompanies = response['data'];
           //this.dtTrigger.next();
-          $("#empresaUpdate option[value=" + listProfile.id_empresa + "]").attr("selected", true);
-          this.updateUserForm.controls.id_empresa.setValue(listProfile.id_empresa);
+          $('#empresaUpdate option[value=' + listProfile.id_empresa + ']').attr(
+            'selected',
+            true
+          );
+          this.updateUserForm.controls.id_empresa.setValue(
+            listProfile.id_empresa
+          );
           this.updateUserForm.controls.documento.setValue(listProfile.ruc);
 
-          this.userServ.listarEmpresa("demo").subscribe(response => {
-            var result = response["data"]["Response"]["DatosEmpresa"][0]
-            $("#razonSocialUpdate").val(result["DatosGenerales"].RazonSocial);
-            $("#rucUpdate").val(result["DatosGenerales"].RazonSocial);
-            $("#grupovendedorUpdate").val(result["DatosGenerales"].GrupoVendedor);
-            this.updateUserForm.controls.tipo_documento.setValue(result["DatosGenerales"].RazonSocial);
-          })
+          this.userServ.listarEmpresa('demo').subscribe((response) => {
+            var result = response['data']['Response']['DatosEmpresa'][0];
+            $('#razonSocialUpdate').val(result['DatosGenerales'].RazonSocial);
+            $('#rucUpdate').val(result['DatosGenerales'].RazonSocial);
+            $('#grupovendedorUpdate').val(
+              result['DatosGenerales'].GrupoVendedor
+            );
+            this.updateUserForm.controls.tipo_documento.setValue(
+              result['DatosGenerales'].RazonSocial
+            );
+          });
         });
 
-        this.userServ.listarCanales().subscribe(response => {
-          this.listaCanals = response["data"];
+        this.userServ.listarCanales().subscribe((response) => {
+          this.listaCanals = response['data'];
           //this.dtTrigger.next();
-          $("#canalUpdate option[value=" + listProfile.id_canal + "]").attr("selected", true);
+          $('#canalUpdate option[value=' + listProfile.id_canal + ']').attr(
+            'selected',
+            true
+          );
           this.updateUserForm.controls.id_canal.setValue(listProfile.id_canal);
         });
       }
@@ -347,15 +373,14 @@ export class UsersComponent implements OnInit {
   }
 
   btnRegistrar() {
-
-    this.errorNacimiento = false
-    $("#fechaAdd").removeClass("form-error");
+    this.errorNacimiento = false;
+    $('#fechaAdd').removeClass('form-error');
 
     var today = new Date();
     var año = today.getFullYear();
-    if (parseInt(this.nacimiento.split("-")[0]) > año) {
+    if (parseInt(this.nacimiento.split('-')[0]) > año) {
       this.errorNacimiento = true;
-      $("#fechaAdd").addClass("form-error");
+      $('#fechaAdd').addClass('form-error');
       return false;
     }
 
@@ -366,130 +391,144 @@ export class UsersComponent implements OnInit {
       this.registerUserForm.value.tipo_documento = 1;
     }
 
-    this.userServ.crearUsuario(this.registerUserForm.value).subscribe(response => {
-      if (response['success'] == true) {
-        console.log(response)
-        this.id_usuario = response['retorno']
+    this.userServ
+      .crearUsuario(this.registerUserForm.value)
+      .subscribe((response) => {
+        if (response['success'] == true) {
+          console.log(response);
+          this.id_usuario = response['retorno'];
 
-        $("#contentModalVendedor").modal("hide");
-        this.abrirModalPermisos()
+          $('#contentModalVendedor').modal('hide');
+          this.abrirModalPermisos();
 
-        document.location.reload();
-        // this.dtTrigger.unsubscribe();
-        // this.listarUsuarios();
-      } else {
-        Swal.fire({
-          icon: 'info',
-          title: 'Hubo un error',
-          text: response['message'],
-        });
+          document.location.reload();
+          // this.dtTrigger.unsubscribe();
+          // this.listarUsuarios();
+        } else {
+          Swal.fire({
+            icon: 'info',
+            title: 'Hubo un error',
+            text: response['message'],
+          });
 
-        $("#contentModalVendedor").modal("hide");
-      }
-    });
+          $('#contentModalVendedor').modal('hide');
+        }
+      });
   }
 
   btnActualizar() {
-
     if (this.updateUserForm.value.id_rol == 1) {
       this.updateUserForm.value.id_canal = 0;
     } else {
       this.updateUserForm.controls.tipo_documento.setValue(1);
     }
 
-    this.userServ.actualizarUsuario(this.updateUserForm.value).subscribe(response => {
-      if (response['success'] == true) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Proceso completado',
-          text: 'Usuario actualizado correctamente',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            document.location.reload();
-          }
-        });
+    this.userServ
+      .actualizarUsuario(this.updateUserForm.value)
+      .subscribe((response) => {
+        if (response['success'] == true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Proceso completado',
+            text: 'Usuario actualizado correctamente',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.location.reload();
+            }
+          });
 
-        $("#contentModalActualizar").modal("hide");
+          $('#contentModalActualizar').modal('hide');
 
-        this.dtTrigger.unsubscribe();
-        //this.listarUsuarios();
-      } else {
-        Swal.fire({
-          icon: 'info',
-          title: 'Hubo un error',
-          text: response['message'],
-        });
-        $("#contentModalActualizar").modal("hide");
-      }
-    });
+          this.dtTrigger.unsubscribe();
+          //this.listarUsuarios();
+        } else {
+          Swal.fire({
+            icon: 'info',
+            title: 'Hubo un error',
+            text: response['message'],
+          });
+          $('#contentModalActualizar').modal('hide');
+        }
+      });
   }
 
   abrirModalDesactivar(id_usuario) {
-
     Swal.fire({
       title: '¿Quieres desactivar al usuario?',
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: `Guardar`,
     }).then((result) => {
-
       if (result.isConfirmed) {
-        this.userServ.desactivarUsuario(id_usuario, 0).subscribe(response => {
-          Swal.fire(response['message'], '', 'success')
+        this.userServ.desactivarUsuario(id_usuario, 0).subscribe((response) => {
+          Swal.fire(response['message'], '', 'success');
 
           this.dtTrigger.unsubscribe();
           this.listarUsuarios();
           document.location.reload();
         });
       }
-    })
-
+    });
   }
   abrirModalActivar(id_usuario) {
-
     Swal.fire({
       title: '¿Quieres activar al usuario?',
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: `Guardar`,
     }).then((result) => {
-
       if (result.isConfirmed) {
-        this.userServ.desactivarUsuario(id_usuario, 1).subscribe(response => {
-          Swal.fire(response['message'], '', 'success')
+        this.userServ.desactivarUsuario(id_usuario, 1).subscribe((response) => {
+          Swal.fire(response['message'], '', 'success');
 
           this.dtTrigger.unsubscribe();
           this.listarUsuarios();
           document.location.reload();
         });
       }
-    })
-
+    });
   }
 
   async actualizarPermisos() {
-    var permisoUno = $('#permisoUno').prop('checked') ? '1' : '0'
-    var permisoDos = $('#permisoDos').prop('checked') ? '1' : '0'
-    var permisoTres = $('#permisoTres').prop('checked') ? '1' : '0'
-    var permisoCuatro = $('#permisoCuatro').prop('checked') ? '1' : '0'
-    var permisoCinco = $('#permisoCinco').prop('checked') ? '1' : '0'
-    var permisoSeis = $('#permisoSeis').prop('checked') ? '1' : '0'
-    var permisoSiete = $('#permisoSiete').prop('checked') ? '1' : '0'
-    var permisoOcho = $('#permisoOcho').prop('checked') ? '1' : '0'
-    var permisoNueve = $('#permisoNueve').prop('checked') ? '1' : '0'
+    var permisoUno = $('#permisoUno').prop('checked') ? '1' : '0';
+    var permisoDos = $('#permisoDos').prop('checked') ? '1' : '0';
+    var permisoTres = $('#permisoTres').prop('checked') ? '1' : '0';
+    var permisoCuatro = $('#permisoCuatro').prop('checked') ? '1' : '0';
+    var permisoCinco = $('#permisoCinco').prop('checked') ? '1' : '0';
+    var permisoSeis = $('#permisoSeis').prop('checked') ? '1' : '0';
+    var permisoSiete = $('#permisoSiete').prop('checked') ? '1' : '0';
+    var permisoOcho = $('#permisoOcho').prop('checked') ? '1' : '0';
+    var permisoNueve = $('#permisoNueve').prop('checked') ? '1' : '0';
 
-    await this.userServ.actualizarPermiso(1, this.id_usuario, Number(permisoUno)).subscribe();
-    await this.userServ.actualizarPermiso(2, this.id_usuario, Number(permisoDos)).subscribe();
-    await this.userServ.actualizarPermiso(3, this.id_usuario, Number(permisoTres)).subscribe();
-    await this.userServ.actualizarPermiso(4, this.id_usuario, Number(permisoCuatro)).subscribe();
-    await this.userServ.actualizarPermiso(5, this.id_usuario, Number(permisoCinco)).subscribe();
-    await this.userServ.actualizarPermiso(6, this.id_usuario, Number(permisoSeis)).subscribe();
-    await this.userServ.actualizarPermiso(7, this.id_usuario, Number(permisoSiete)).subscribe();
-    await this.userServ.actualizarPermiso(8, this.id_usuario, Number(permisoOcho)).subscribe();
-    await this.userServ.actualizarPermiso(9, this.id_usuario, Number(permisoNueve)).subscribe();
+    await this.userServ
+      .actualizarPermiso(1, this.id_usuario, Number(permisoUno))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(2, this.id_usuario, Number(permisoDos))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(3, this.id_usuario, Number(permisoTres))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(4, this.id_usuario, Number(permisoCuatro))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(5, this.id_usuario, Number(permisoCinco))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(6, this.id_usuario, Number(permisoSeis))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(7, this.id_usuario, Number(permisoSiete))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(8, this.id_usuario, Number(permisoOcho))
+      .subscribe();
+    await this.userServ
+      .actualizarPermiso(9, this.id_usuario, Number(permisoNueve))
+      .subscribe();
 
-
-    $("#contentModalSettings").modal("hide");
+    $('#contentModalSettings').modal('hide');
 
     Swal.fire({
       icon: 'success',
@@ -500,71 +539,73 @@ export class UsersComponent implements OnInit {
   }
 
   abrirModalPermisosEditar(id_usuario, nombre, pate) {
-    $("#nameUserActive").text(nombre + " " + pate);
-    $("#contentModalSettings").modal("show");
+    $('#nameUserActive').text(nombre + ' ' + pate);
+    $('#contentModalSettings').modal('show');
     $('#permisoUno').data('id', id_usuario);
 
-    this.userServ.listarPerfil(id_usuario).subscribe(response => {
-      console.log(response)
-      var listaPermiso = response["data"][0]['permisos']
-      $("#permisoUno").val(listaPermiso[0].estado);
-      $("#permisoDos").val(listaPermiso[1].estado);
-      $("#permisoTres").val(listaPermiso[2].estado);
-      $("#permisoCuatro").val(listaPermiso[3].estado);
-      $("#permisoCinco").val(listaPermiso[4].estado);
-      $("#permisoSeis").val(listaPermiso[4].estado);
-      $("#permisoSiete").val(listaPermiso[4].estado);
-      $("#permisoOcho").val(listaPermiso[4].estado);
-      $("#permisoNueve").val(listaPermiso[4].estado);
+    this.userServ.listarPerfil(id_usuario).subscribe((response) => {
+      console.log(response);
+      var listaPermiso = response['data'][0]['permisos'];
+      $('#permisoUno').val(listaPermiso[0].estado);
+      $('#permisoDos').val(listaPermiso[1].estado);
+      $('#permisoTres').val(listaPermiso[2].estado);
+      $('#permisoCuatro').val(listaPermiso[3].estado);
+      $('#permisoCinco').val(listaPermiso[4].estado);
+      $('#permisoSeis').val(listaPermiso[4].estado);
+      $('#permisoSiete').val(listaPermiso[4].estado);
+      $('#permisoOcho').val(listaPermiso[4].estado);
+      $('#permisoNueve').val(listaPermiso[4].estado);
 
-      if ($("#permisoUno").val() == 1) $("#permisoUno").bootstrapToggle('on')
-      else $("#permisoUno").bootstrapToggle('off')
+      if ($('#permisoUno').val() == 1) $('#permisoUno').bootstrapToggle('on');
+      else $('#permisoUno').bootstrapToggle('off');
 
-      if ($("#permisoDos").val() == 1) $("#permisoDos").bootstrapToggle('on')
-      else $("#permisoDos").bootstrapToggle('off')
+      if ($('#permisoDos').val() == 1) $('#permisoDos').bootstrapToggle('on');
+      else $('#permisoDos').bootstrapToggle('off');
 
-      if ($("#permisoTres").val() == 1) $("#permisoTres").bootstrapToggle('on')
-      else $("#permisoTres").bootstrapToggle('off')
+      if ($('#permisoTres').val() == 1) $('#permisoTres').bootstrapToggle('on');
+      else $('#permisoTres').bootstrapToggle('off');
 
-      if ($("#permisoCuatro").val() == 1) $("#permisoCuatro").bootstrapToggle('on')
-      else $("#permisoCuatro").bootstrapToggle('off')
+      if ($('#permisoCuatro').val() == 1)
+        $('#permisoCuatro').bootstrapToggle('on');
+      else $('#permisoCuatro').bootstrapToggle('off');
 
-      if ($("#permisoCinco").val() == 1) $("#permisoCinco").bootstrapToggle('on')
-      else $("#permisoCinco").bootstrapToggle('off')
-      
-      if ($("#permisoSeis").val() == 1) $("#permisoSeis").bootstrapToggle('on')
-      else $("#permisoSeis").bootstrapToggle('off')
+      if ($('#permisoCinco').val() == 1)
+        $('#permisoCinco').bootstrapToggle('on');
+      else $('#permisoCinco').bootstrapToggle('off');
 
-      if ($("#permisoSiete").val() == 1) $("#permisoSiete").bootstrapToggle('on')
-      else $("#permisoSiete").bootstrapToggle('off')
+      if ($('#permisoSeis').val() == 1) $('#permisoSeis').bootstrapToggle('on');
+      else $('#permisoSeis').bootstrapToggle('off');
 
-      if ($("#permisoOcho").val() == 1) $("#permisoOcho").bootstrapToggle('on')
-      else $("#permisoOcho").bootstrapToggle('off')
+      if ($('#permisoSiete').val() == 1)
+        $('#permisoSiete').bootstrapToggle('on');
+      else $('#permisoSiete').bootstrapToggle('off');
 
-      if ($("#permisoNueve").val() == 1) $("#permisoNueve").bootstrapToggle('on')
-      else $("#permisoNueve").bootstrapToggle('off')
+      if ($('#permisoOcho').val() == 1) $('#permisoOcho').bootstrapToggle('on');
+      else $('#permisoOcho').bootstrapToggle('off');
+
+      if ($('#permisoNueve').val() == 1)
+        $('#permisoNueve').bootstrapToggle('on');
+      else $('#permisoNueve').bootstrapToggle('off');
     });
   }
-  
+
   abrirModalPermisos() {
+    $('#contentModalSettings').modal('show');
 
-    $("#contentModalSettings").modal("show");
-
-    $("#permisoUno").bootstrapToggle('off')
-    $("#permisoDos").bootstrapToggle('off')
-    $("#permisoTres").bootstrapToggle('off')
-    $("#permisoCuatro").bootstrapToggle('off')
-    $("#permisoCinco").bootstrapToggle('off')
-    $("#permisoSeis").bootstrapToggle('off')
-    $("#permisoSiete").bootstrapToggle('off')
-    $("#permisoOcho").bootstrapToggle('off')
-    $("#permisoNueve").bootstrapToggle('off')
+    $('#permisoUno').bootstrapToggle('off');
+    $('#permisoDos').bootstrapToggle('off');
+    $('#permisoTres').bootstrapToggle('off');
+    $('#permisoCuatro').bootstrapToggle('off');
+    $('#permisoCinco').bootstrapToggle('off');
+    $('#permisoSeis').bootstrapToggle('off');
+    $('#permisoSiete').bootstrapToggle('off');
+    $('#permisoOcho').bootstrapToggle('off');
+    $('#permisoNueve').bootstrapToggle('off');
   }
 
   onChangeTipoCanal(data) {
-    console.log(data)
+    console.log(data);
   }
-
 }
 
 $(document).ready(function () {
@@ -575,17 +616,16 @@ $(document).ready(function () {
     {id: 3, name: 'PASAPORTE'} */
 
     if ($(this).val() == 'DNI') {
-      $('#documentoAdds').attr("maxlength", "8");
-      $('#documentoAdds').attr("pattern", "[0-9]{8}");
+      $('#documentoAdds').attr('maxlength', '8');
+      $('#documentoAdds').attr('pattern', '[0-9]{8}');
       //$('#documentoAdds').attr("onkeyup", "descriptionCaracter(this,8)");
       //$('#documentoAdds').attr("onkeypress", "descriptionCaracter(this,8)");
     }
     if ($(this).val() == 'RUC') {
-      $('#documentoAdds').attr("maxlength", "11");
-      $('#documentoAdds').attr("pattern", "[0-9]{11}");
+      $('#documentoAdds').attr('maxlength', '11');
+      $('#documentoAdds').attr('pattern', '[0-9]{11}');
       //$('#documentoAdds').attr("onkeyup", "descriptionCaracter(this,11)");
       //$('#documentoAdds').attr("onkeypress", "descriptionCaracter(this,11)");
     }
   });
-})
-
+});

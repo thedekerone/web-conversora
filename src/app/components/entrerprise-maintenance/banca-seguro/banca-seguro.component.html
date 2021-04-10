@@ -36,9 +36,9 @@
               <th>Tipo</th>
               <th>RUC</th>
               <th>Razón Social</th>
-              <th>Cod Empresa Oncosys</th>
-              <th>BP SAP Racaudor</th>
-              <th>Nombre banca seguro</th>
+              <th>Código Empresa Oncosys</th>
+              <th>BP SAP Recaudador</th>
+              <th>Nombre Banca Seguro</th>
               <th>Convenio Recaudador</th>
 
               <th>Capitado</th>
@@ -48,7 +48,7 @@
           <tbody *ngIf="listaEmpresas?.length != 0">
             <tr *ngFor="let empresa of listaEmpresas; let i = index">
               <td style="text-align: center">{{ i + 1 }}</td>
-              <td>{{ empresa.estado == 1 ? "Regular" : "CMR" }}</td>
+              <td>{{ empresa.tipo_trama == "2,4,6" ? "CMR" : "Regular" }}</td>
               <td>{{ empresa.ruc }}</td>
               <td>{{ empresa.empresa }}</td>
               <td>{{ empresa.cod_empresa_oncosys }}</td>
@@ -77,7 +77,10 @@
                   <i class="fa fa-close"></i> Desactivar
                 </button>
               </td>
-              <td *ngIf="empresa.estado == 0">
+              <td
+                *ngIf="empresa.estado == 0"
+                style="display: flex; justify-content: center"
+              >
                 <button
                   class="btn btn-primary"
                   (click)="abrirModalActualizar(empresa.ruc)"
@@ -202,7 +205,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="descripcionUpdate">Cod Empresa Oncosys</label>
+            <label for="descripcionUpdate">Código de Empresa Oncosys</label>
             <input
               type="text"
               name="codEmprOn"
@@ -222,7 +225,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="descripcionUpdate">Nombre banca seguro</label>
+            <label for="descripcionUpdate">Nombre Banca Seguro</label>
             <input
               type="text"
               name="bancaSeguro"
@@ -232,7 +235,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="descripcionUpdate">N Convenio recaudador</label>
+            <label for="descripcionUpdate">Número de Convenio Recaudador</label>
             <input
               type="text"
               name="nConvenioRec"
@@ -240,6 +243,34 @@
               class="form-control"
               id="nConvenioRecAdd"
             />
+          </div>
+          <div class="form-group">
+            <label for="isCapitado" class="col-sm-2" style="padding-left: 1px"
+              >Capitalizado</label
+            >
+            <div class="col-sm-10">
+              <div class="radio-inline">
+                <label
+                  ><input
+                    type="radio"
+                    checked
+                    name="capradio"
+                    id="agregarCapitalizado"
+                    value="1"
+                  />Si</label
+                >
+              </div>
+              <div class="radio-inline">
+                <label
+                  ><input
+                    type="radio"
+                    name="capradio"
+                    id="agregarNoCapitalizado"
+                    value="0"
+                  />No</label
+                >
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -362,12 +393,13 @@
           </div>
 
           <div class="form-group">
-            <label for="descripcionUpdate">Cod Empresa Oncosys</label>
+            <label for="descripcionUpdate">Código de Empresa Oncosys</label>
             <input
               type="text"
               name="codEmprOn"
               [(ngModel)]="codEmprOn"
               class="form-control"
+              disabled
               id="CodEmpraOncoAdd"
             />
           </div>
@@ -382,7 +414,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="descripcionUpdate">Nombre banca seguro</label>
+            <label for="descripcionUpdate">Nombre Banca Seguro</label>
             <input
               type="text"
               name="bancaSeguro"
@@ -392,7 +424,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="descripcionUpdate">N Convenio recaudador</label>
+            <label for="descripcionUpdate">Número de Convenio Recaudador</label>
             <input
               type="text"
               name="nConvenioRec"
@@ -401,6 +433,36 @@
               id="nConvenioRecAdd"
             />
           </div>
+
+          <div class="form-group">
+            <label for="isCapitado" class="col-sm-2" style="padding-left: 1px"
+              >Capitalizado</label
+            >
+            <div class="col-sm-10">
+              <div class="radio-inline">
+                <label
+                  ><input
+                    type="radio"
+                    checked
+                    name="capradio"
+                    id="actualizarCapitalizado"
+                    value="1"
+                  />Si</label
+                >
+              </div>
+              <div class="radio-inline">
+                <label
+                  ><input
+                    type="radio"
+                    name="capradio"
+                    id="actualizarNoCapitalizado"
+                    value="0"
+                  />No</label
+                >
+              </div>
+            </div>
+          </div>
+
           <div class="modal-footer">
             <button
               type="button"

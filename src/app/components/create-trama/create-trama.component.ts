@@ -739,6 +739,77 @@ export class CreateTramaComponent implements OnInit {
     this.convenioRolBroker = '';
   }
 
+  handleSecondCall(
+    grupoVendedorSW,
+    unidadVenta,
+    conveniosList,
+    result,
+    index = 0
+  ) {
+    console.log(unidadVenta);
+    this.loadServ
+      .listarEmpresa(
+        this.tipoIdentificacion,
+        '',
+        unidadVenta[index]['CodigoBPUnidadVenta'],
+        this.razonSocial,
+        '00',
+        this.grupo_vendedor,
+        ''
+      )
+      .subscribe((responseDos) => {
+        console.log(responseDos);
+
+        if (!responseDos['data']['Response']['DatosEmpresa']) {
+          this.handleSecondCall(
+            grupoVendedorSW,
+            unidadVenta,
+            conveniosList,
+            result,
+            index + 1
+          );
+          return;
+        }
+        var result2 = responseDos['data']['Response']['DatosEmpresa'][0];
+        var conveniosListTwo = result2['DatosConvenio'];
+        if (!Array.isArray(conveniosListTwo)) {
+          conveniosListTwo = [conveniosListTwo];
+        }
+        console.log(conveniosListTwo);
+        console.log(grupoVendedorSW);
+        console.log(unidadVenta[index]['CodigoBPUnidadVenta']);
+
+        for (let i = 0; i < conveniosListTwo.length; i++) {
+          if (
+            grupoVendedorSW ==
+            conveniosListTwo[i]['DatosCabecera']['GrupoVendedor']
+          ) {
+            console.log('completado');
+
+            this.convenioRolUnidVenta =
+              conveniosListTwo[i]['UnidadVenta'][0].Nombre1 +
+              ' ' +
+              conveniosListTwo[i]['UnidadVenta'][0].Nombre2 +
+              ' ' +
+              result2['DatosGenerales']['RazonSocial'] +
+              ' ' +
+              conveniosListTwo[i]['DatosCabecera']['DescripcionGpoVendedor'];
+
+            if (conveniosList[i]['Broker'] != undefined) {
+              // si tiene Broker
+              this.codBpBroker = result['Convenio']['Broker'][0].CodigoBPBroker;
+              console.log(this.codBpVendedor);
+              console.log(this.codBpBroker);
+            }
+          } else if (i == conveniosListTwo.length - 1) {
+            Swal.fire({
+              text: 'El Grupo no coinciden',
+            });
+          }
+        }
+      });
+  }
+
   onChangeEmpresa(data) {
     console.log(data);
     this.plan = '';
@@ -750,8 +821,9 @@ export class CreateTramaComponent implements OnInit {
 
     this.listaEmpresa.forEach((element) => {
       if (element.id_empresa == data) {
-        this.nroIdentificacion = element.ruc;
-        this.nConvenioRecaudador = element.n_convenio_recaudador;
+        console.log(element);
+        this.nroIdentificacion = '';
+        this.numero_convenio = element.n_convenio_recaudador;
         this.capitalizado = element.capitalizado;
         this.tipoRol = element.bp_sap_recaudador;
         this.codOncosys = element.cod_empresa_oncosys;
@@ -776,14 +848,15 @@ export class CreateTramaComponent implements OnInit {
           this.razonSocial,
           '01',
           this.grupo_vendedor,
-          this.numero_convenio
+          '0070010008'
         )
         .subscribe((response) => {
           console.log('Respuesta de el primer servicio con rol 01 : ');
+          // this.numero_convenio
           console.log(response);
           console.log('----------------------------');
-          var result = response['data']['Response']['DatosEmpresa'];
-          var conveniosList = result['Convenio'];
+          var result = response['data']['Response']['DatosEmpresa'][0];
+          var conveniosList = result['DatosConvenio'];
           if (!Array.isArray(conveniosList)) {
             conveniosList = [conveniosList];
           }
@@ -798,54 +871,21 @@ export class CreateTramaComponent implements OnInit {
             conveniosList[0]['DatosCabecera']['DescripcionGpoVendedor'];
 
           // no tiene Broker, ejecuta vendedor
+          var completed = false;
+          var unidadVenta = conveniosList[0]['UnidadVenta'];
+          var ventaSize = unidadVenta.length;
+
           this.codBpVendedor =
             conveniosList[0]['UnidadVenta'][0]['CodigoBPUnidadVenta'];
-          this.loadServ
-            .listarEmpresa(
-              this.tipoIdentificacion,
-              '',
-              this.codBpVendedor,
-              this.razonSocial,
-              '00',
-              this.grupo_vendedor,
-              this.numero_convenio
-            )
-            .subscribe((responseDos) => {
-              console.log(responseDos);
-              var result2 = responseDos['data']['Response']['DatosEmpresa'];
-              var conveniosListTwo = result2['Convenio'];
-              if (!Array.isArray(conveniosListTwo)) {
-                conveniosListTwo = [conveniosListTwo];
-              }
-              console.log(conveniosListTwo);
-              if (
-                grupoVendedorSW ==
-                conveniosListTwo[0]['DatosCabecera']['GrupoVendedor']
-              ) {
-                this.convenioRolUnidVenta =
-                  conveniosListTwo[0]['UnidadVenta'][0].Nombre1 +
-                  ' ' +
-                  conveniosListTwo[0]['UnidadVenta'][0].Nombre2 +
-                  ' ' +
-                  result2['DatosGenerales']['RazonSocial'] +
-                  ' ' +
-                  conveniosListTwo[0]['DatosCabecera'][
-                    'DescripcionGpoVendedor'
-                  ];
 
-                if (conveniosList[0]['Broker'] != undefined) {
-                  // si tiene Broker
-                  this.codBpBroker =
-                    result['Convenio']['Broker'][0].CodigoBPBroker;
-                  console.log(this.codBpVendedor);
-                  console.log(this.codBpBroker);
-                }
-              } else {
-                Swal.fire({
-                  text: 'El Grupo no coinciden',
-                });
-              }
-            });
+          console.log(unidadVenta);
+
+          this.handleSecondCall(
+            grupoVendedorSW,
+            unidadVenta,
+            conveniosList,
+            result
+          );
 
           /**
           this.convenioRolRecaudador = (result["Convenio"][0]["DatosCabecera"]["NombreConvenio"] + " " + result["DatosGenerales"]["RazonSocial"])

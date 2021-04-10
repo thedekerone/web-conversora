@@ -2,7 +2,7 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   public _END_POINTS = {
@@ -15,8 +15,8 @@ export class ApiService {
     URL_GET_USER_PROFILE: `${environment.baseRoutePath}/api-usuario-conversor`,
     URL_GET_COMPANY: `${environment.baseRouteCompany}/dev-conversor-sapws`,
     URL_GET_TYPE_OF_PAY_BY_COMPANY: `${environment.baseRoutePath}/api-usuario-conversor`,
-    BASE_ROUTE_PATH_PUNTUACION:`${environment.baseRoutePuntuaciones}/dev-conversor-puntuaciones`,
-    BASE_ROUTE_PATH_REPORTES:`${environment.baseRouteReportes}/dev-conversor-reportes`,
+    BASE_ROUTE_PATH_PUNTUACION: `${environment.baseRoutePuntuaciones}/dev-conversor-puntuaciones`,
+    BASE_ROUTE_PATH_REPORTES: `${environment.baseRouteReportes}/dev-conversor-reportes`,
     BASE_ROUTE_PATH_MANT_PROGRAMA: `${environment.baseRoutePathMantPrograma}/dev-conversor-programa`,
     BASE_ROUTE_PATH_MANT_DJS: `${environment.baseRoutePathMantDjs}/dev-conversor-declaracionjs`,
     BASE_ROUTE_PATH_MANT_LPPD: `${environment.baseRoutePathMantLppd}/dev-conversor-lddp`,
@@ -26,7 +26,6 @@ export class ApiService {
     BASE_ROUTE_PATH_MANT_CAMPANAS: `${environment.baseRoutePathMantCampanas}/dev-conversora-plancampana`,
     BASE_ROUTE_PATH_MANT_CONTABLES: `${environment.baseRoutePathMantContables}/dev-conversor-cuentacontables`,
     BASE_ROUTE_PATH_MANT_PROGRAM_GRUPALES: `${environment.baseRoutePathMantProgramGrupales}/dev-api-conversor-cargaarchivo`,
-    BASE_ROUTE_PATH_ESTADO_CARGA_PROCESOS: "https://5tdfrp6542.execute-api.us-east-1.amazonaws.com/dev/api-conversor-trama-dev"
+    BASE_ROUTE_PATH_ESTADO_CARGA_PROCESOS: `${environment.baseRoutePathProcessState}/api-conversor-trama-dev`,
   };
 }
-
