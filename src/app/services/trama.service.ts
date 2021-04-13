@@ -57,6 +57,27 @@ export class TramaService {
       "id_usuario": id_usuario,
       "id_tipo_trama": id_tipo_trama,
       "id_empresa": id_empresa,
+      
+    }
+    console.log(params)
+    return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));
+  }
+  registrarTramaRecaudo(extension, nombre_archivo, file, canal, tipo_trama, empresa_bp,
+    id_trama, id_usuario, id_tipo_trama, id_empresa, ruc) {
+    const params = {
+      "action": "carga_trama",
+      "extension": extension,
+      "nombre_archivo": nombre_archivo,
+      "file": file,
+      "canal": canal,
+      "tipo_trama": tipo_trama,
+      "empresa_bp": empresa_bp,
+      "id_trama": id_trama,
+      "id_usuario": id_usuario,
+      "id_tipo_trama": id_tipo_trama,
+      "id_empresa": id_empresa,
+      "empresa_ruc":ruc
+      
     }
     console.log(params)
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));
@@ -74,27 +95,28 @@ export class TramaService {
     id_usuario, id_tipo_trama, id_empresa,
     emponcosys, capitalizado, cod_bp_vendedor, cod_convenio_bp_vendedor, cod_bp_broker,
     cod_convenio_broker, cod_bp_empresa_recaudador, cod_convenio_recaudador, canal_venta) {
+
     const params = {
       "action": "carga_trama",
       "extension": extension,
       "file": file,
-      "nombre_archivo": nombre_archivo,
-      "canal": canal,
-      "id_canal": id_canal,
-      "tipo_trama": tipo_trama,
-      "empresa_bp": empresa_bp,
-      "id_usuario": id_usuario,
-      "id_tipo_trama": id_tipo_trama,
-      "id_empresa": id_empresa,
-      "emponcosys": emponcosys,
-      "capitalizado": capitalizado,
-      "cod_bp_vendedor": cod_bp_vendedor,
-      "cod_convenio_bp_vendedor": cod_convenio_bp_vendedor,
-      "cod_bp_broker": cod_bp_broker,
-      "cod_convenio_broker": cod_convenio_broker,
-      "cod_bp_empresa_recaudador": cod_bp_empresa_recaudador,
-      "cod_convenio_recaudador": cod_convenio_recaudador,
-      "canal_venta": canal_venta
+      "nombre_archivo": nombre_archivo+"",
+      "canal": canal+"",
+      "id_canal": id_canal+"",
+      "tipo_trama": tipo_trama+"",
+      "empresa_bp": empresa_bp+"",
+      "id_usuario": id_usuario+"",
+      "id_tipo_trama": id_tipo_trama+"",
+      "id_empresa": id_empresa+"",
+      "emponcosys": emponcosys+"",
+      "capitalizado": capitalizado+"",
+      "cod_bp_vendedor": cod_bp_vendedor+"",
+      "cod_convenio_bp_vendedor": cod_convenio_bp_vendedor+"",
+      "cod_bp_broker": cod_bp_broker?cod_bp_broker+"":"vacio",
+      "cod_convenio_broker": cod_convenio_broker?cod_convenio_broker+"":"vacio",
+      "cod_bp_empresa_recaudador": cod_bp_empresa_recaudador+"",
+      "cod_convenio_recaudador": cod_convenio_recaudador+"",
+      "canal_venta": canal_venta+""
     }
     console.log(params)
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));
@@ -108,18 +130,18 @@ export class TramaService {
       "extension": extension,
       "nombre_archivo": nombre_archivo,
       "file": file,
-      "canal": canal,
-      "id_canal": id_canal,
-      "tipo_trama": tipo_trama,
-      "empresa_bp": empresa_bp,
-      "id_usuario": id_usuario,
-      "id_tipo_trama": id_tipo_trama,
-      "id_empresa": id_empresa,
-      "sede_carga": sede_carga,
-      "nombre_empresa": nombre_empresa,
-      "dp_subrogador": dp_subrogador,
-      "ruc_subrogada": ruc_subrogada,
-      "subempresa": subempresa
+      "canal": canal?canal+"":"vacio",
+      "id_canal": id_canal?id_canal+"":"vacio",
+      "tipo_trama": tipo_trama?tipo_trama+"":"vacio",
+      "empresa_bp": empresa_bp?empresa_bp+"":"vacio",
+      "id_usuario": id_usuario?id_usuario+"":"vacio",
+      "id_tipo_trama": id_tipo_trama?id_tipo_trama+"":"vacio",
+      "id_empresa": id_empresa?id_empresa+"":"vacio",
+      "sede_carga": sede_carga?sede_carga+"":"vacio",
+      "nombre_empresa": nombre_empresa?nombre_empresa+"":"vacio",
+      "dp_subrogador": dp_subrogador?dp_subrogador+"":"vacio",
+      "ruc_subrogada": ruc_subrogada?ruc_subrogada+"":"vacio",
+      "subempresa": subempresa?subempresa+"":"vacio"
     }
     console.log(params)
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));
@@ -151,20 +173,20 @@ export class TramaService {
       "convenio_rol_cliente": convenioRolCliente,
       "cod_bp_vendedor": rol_vendedor,
       "cod_convenio_bp_vendedor": cod_convenio_bp_vendedor,
-      "cod_bp_broker": cod_bp_broker?cod_bp_broker:"0",
-      "cod_convenio_broker": cod_convenio_broker?cod_convenio_broker:"0",
+      "cod_bp_broker": cod_bp_broker?cod_bp_broker:"vacio",
+      "cod_convenio_broker": cod_convenio_broker?cod_convenio_broker:"vacio",
       "cod_bp_sede": codigoBPSede+"",
       "canal_venta": canal_venta,
-      "form_plan": form_plan?form_plan:"0",
+      "form_plan": form_plan?form_plan:"vacio",
       "tipo_via": tipo_via,
       "nombre_via": nombre_via,
       "nombre_via2": nombre_via2,
       "nombre_via3": nombre_via3,
       "campo_manual": campo_manual,
-      "form_manzana": form_manzana?form_manzana:"0",
-      "form_lote": form_lote?form_lote:"0",
-      "form_dpt": form_dpt?form_dpt:"0",
-      "form_sector": form_sector?form_sector:"0",
+      "form_manzana": form_manzana?form_manzana:"vacio",
+      "form_lote": form_lote?form_lote:"vacio",
+      "form_dpt": form_dpt?form_dpt:"vacio",
+      "form_sector": form_sector?form_sector:"vacio",
       "form_urbanizacion": form_urbanizacion,
       "form_departamento": form_departamento,
       "form_provincia": form_provincia,
@@ -176,7 +198,7 @@ export class TramaService {
       "nombre_empresa": nombreEmpresa,
       "dp_subrogador": bpSapSubrogador,
       "ruc_subrogada": rucSubrogada,
-      "subempresa": descripcionSede
+      "subempresa": razonSocialSubrogado
     }
     console.log(params)
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));
