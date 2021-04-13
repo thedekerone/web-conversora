@@ -542,7 +542,7 @@ export class UsersComponent implements OnInit {
     $('#nameUserActive').text(nombre + ' ' + pate);
     $('#contentModalSettings').modal('show');
     $('#permisoUno').data('id', id_usuario);
-
+    this.id_usuario=id_usuario
     this.userServ.listarPerfil(id_usuario).subscribe((response) => {
       console.log(response);
       var listaPermiso = response['data'][0]['permisos'];
@@ -551,10 +551,10 @@ export class UsersComponent implements OnInit {
       $('#permisoTres').val(listaPermiso[2].estado);
       $('#permisoCuatro').val(listaPermiso[3].estado);
       $('#permisoCinco').val(listaPermiso[4].estado);
-      $('#permisoSeis').val(listaPermiso[4].estado);
-      $('#permisoSiete').val(listaPermiso[4].estado);
-      $('#permisoOcho').val(listaPermiso[4].estado);
-      $('#permisoNueve').val(listaPermiso[4].estado);
+      $('#permisoSeis').val(listaPermiso[5].estado);
+      $('#permisoSiete').val(listaPermiso[6].estado);
+      $('#permisoOcho').val(listaPermiso[7].estado);
+      $('#permisoNueve').val(listaPermiso[8].estado);
 
       if ($('#permisoUno').val() == 1) $('#permisoUno').bootstrapToggle('on');
       else $('#permisoUno').bootstrapToggle('off');
