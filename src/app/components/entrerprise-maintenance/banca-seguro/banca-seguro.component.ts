@@ -111,7 +111,7 @@ export class BancaSeguroComponent implements OnInit {
       var tipo_trama = '1-3-5';
     }
 
-    if ($('#agregarCapitalizado').is(':checked')) {
+    if ($('#agregarCapitalizado').prop('checked')) {
       var capitalizado = '1';
     } else {
       var capitalizado = '0';
@@ -213,7 +213,7 @@ export class BancaSeguroComponent implements OnInit {
       var tipo_trama = '1,3,5';
       console.log('regular');
     }
-    if ($('#actualizarCapitalizado').is(':checked')) {
+    if ($('#actualizarCapitalizado').prop('checked')) {
       var capitalizado = '1';
     } else {
       var capitalizado = '0';

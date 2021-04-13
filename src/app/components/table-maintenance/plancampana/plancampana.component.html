@@ -1,57 +1,103 @@
 <div class="container-fluid">
-  <h1 class="h3 mb-2 text-gray-800">Mantenimiento Plan y Campaña Banca Seguro</h1>
-  <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
+  <h1 class="h3 mb-2 text-gray-800">
+    Mantenimiento Plan y Campaña Banca Seguro
+  </h1>
+  <p class="mb-4">
+    Puedes usar el buscador de la tabla de resultados para poder filtrar por
+    cualquier columna.
+  </p>
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Plan y Campaña Banca Seguro</h6>
-      <button type="button" (click)="abrirModal(0)" class="btn btn-primary" style="float: right;"><i
-          class="fa fa-plus"></i> Agregar</button>
+      <h6
+        class="m-0 font-weight-bold text-primary"
+        style="float: left; line-height: 40px"
+      >
+        Plan y Campaña Banca Seguro
+      </h6>
+      <button
+        type="button"
+        (click)="abrirModal(0)"
+        class="btn btn-primary"
+        style="float: right"
+      >
+        <i class="fa fa-plus"></i> Agregar
+      </button>
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered" width="100%">
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table table-bordered"
+          width="100%"
+        >
           <thead>
             <tr>
-              <th style="width: 40px;text-align: center;">ID</th>
+              <th style="width: 40px; text-align: center">ID</th>
               <th>Cod Empresa</th>
               <th>Programa</th>
               <th>Procedencia</th>
               <th>Plan Sap</th>
               <th>Campaña Sap</th>
-              <th style="width: 380px;text-align: center;">Acciones</th>
+              <th style="width: 380px; text-align: center">Acciones</th>
             </tr>
           </thead>
           <tbody *ngIf="listaPlanes?.length != 0">
             <tr *ngFor="let plan of listaPlanes; let i = index">
-              <td style="text-align: center">{{i +  1}}</td>
+              <td style="text-align: center">{{ i + 1 }}</td>
               <td>{{ plan.cod_empresa }}</td>
               <td>{{ plan.programa }}</td>
               <td>{{ plan.procedencia }}</td>
               <td>{{ plan.plan_sap }}</td>
               <td>{{ plan.campana_sap }}</td>
               <td *ngIf="plan.estado == 1">
-                <button class="btn btn-primary" (click)="abrirModalActualizar(plan.procedencia,plan.cod_empresa)"><i class="fa fa-edit"></i>
-                  Editar</button>
-                <button class="btn btn-danger" (click)="abrirModalDesactivar(plan.procedencia,plan.cod_empresa)"><i class="fa fa-close"></i>
-                  Desactivar</button>
+                <button
+                  class="btn btn-primary"
+                  (click)="
+                    abrirModalActualizar(plan.procedencia, plan.cod_empresa)
+                  "
+                >
+                  <i class="fa fa-edit"></i> Editar
+                </button>
+                <button
+                  class="btn btn-danger"
+                  (click)="
+                    abrirModalDesactivar(plan.procedencia, plan.cod_empresa)
+                  "
+                >
+                  <i class="fa fa-close"></i> Desactivar
+                </button>
               </td>
               <td *ngIf="plan.estado == 0">
-                <button class="btn btn-primary" (click)="abrirModalActualizar(plan.procedencia,plan.cod_empresa)"><i class="fa fa-edit"></i>
-                  Editar</button>
-                <button class="btn btn-success" (click)="abrirModalActivar(plan.procedencia,plan.cod_empresa)"><i class="fa fa-check"></i>
-                  Activar</button>
+                <button
+                  class="btn btn-primary"
+                  (click)="
+                    abrirModalActualizar(plan.procedencia, plan.cod_empresa)
+                  "
+                >
+                  <i class="fa fa-edit"></i> Editar
+                </button>
+                <button
+                  class="btn btn-success"
+                  (click)="
+                    abrirModalActivar(plan.procedencia, plan.cod_empresa)
+                  "
+                >
+                  <i class="fa fa-check"></i> Activar
+                </button>
               </td>
             </tr>
           </tbody>
           <tbody *ngIf="listaPlanes?.length == 0">
             <tr>
               <td colspan="8" class="no-data-available">
-                <div class="alert alert-info">
-                  Buscando resultados...
-                </div>
+                <div class="alert alert-info">Buscando resultados...</div>
               </td>
             </tr>
-          <tbody>
+          </tbody>
+
+          <tbody></tbody>
         </table>
       </div>
     </div>
@@ -59,13 +105,26 @@
 </div>
 
 <!-- Add -->
-<div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog"
-  aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="contentModalVendedor"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalVendedorLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo Plan y Campaña SAP</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Agregar nuevo Plan y Campaña SAP
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -75,88 +134,162 @@
           <div class="alert alert-info">
             Se ingresa un nuevo Plan y Campaña para SAP.
           </div>
-            <div class="form-group">
-              <label for="descripcionUpdate">Cod Empresa</label>
-              <input type="text" formControlName="cod_empresa" class="form-control" id="codEmpresaAdd"
-                >
-            </div>
-            <div class="form-group">
-              <label for="descripcionUpdate">Programa</label>
-              <input type="text" formControlName="programa" class="form-control" id="procedenciaAdd"
-                >
-            </div>
-            <div class="form-group">
-              <label for="descripcionUpdate">Procedencia</label>
-              <input type="text" formControlName="procedencia" class="form-control" id="procedenciaAdd"
-                >
-            </div>
-            <div class="form-group">
-              <label for="descripcionUpdate">Plan Sap</label>
-              <input type="text" formControlName="plan_sap" class="form-control" id="planSapAdd"
-                >
-            </div>
-            <div class="form-group">
-              <label for="descripcionUpdate">Campaña Sap</label>
-              <input type="text" formControlName="campana_sap" class="form-control" id="campanaSapAdd"
-                >
-            </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Cod Empresa</label>
+            <input
+              type="text"
+              formControlName="cod_empresa"
+              class="form-control"
+              id="codEmpresaAdd"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Programa</label>
+            <input
+              type="text"
+              formControlName="programa"
+              class="form-control"
+              id="procedenciaAdd"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Procedencia</label>
+            <input
+              type="text"
+              formControlName="procedencia"
+              class="form-control"
+              id="procedenciaAdd"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Plan Sap</label>
+            <input
+              type="text"
+              formControlName="plan_sap"
+              class="form-control"
+              id="planSapAdd"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Campaña Sap</label>
+            <input
+              type="text"
+              formControlName="campana_sap"
+              class="form-control"
+              id="campanaSapAdd"
+            />
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button id="btnUserRegister" type="button" class="btn btn-primary" (click)="btnRegistrar()" [disabled]='registerPYCForm.invalid'>Agregar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          id="btnUserRegister"
+          type="button"
+          class="btn btn-primary"
+          (click)="btnRegistrar()"
+          [disabled]="registerPYCForm.invalid"
+        >
+          Agregar
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-
 <!-- Update -->
-<div class="modal fade" id="contentModalActualizar" tabindex="-1" role="dialog"
-  aria-labelledby="contentModalActualizarLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="contentModalActualizar"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalActualizarLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Actualizar Plan y Campaña SAP</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Actualizar Plan y Campaña SAP
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div id="msjReponnseModal"></div>
-        <form  [formGroup]="updatePYCForm">
+        <form [formGroup]="updatePYCForm">
           <div class="form-group">
             <label for="descripcionUpdate">Cod Empresa</label>
-            <input type="text" formControlName="cod_empresa" class="form-control" id="codEmpresaUpdate"
-              >
+            <input
+              disabled
+              type="text"
+              formControlName="cod_empresa"
+              class="form-control"
+              id="codEmpresaUpdate"
+            />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Programa</label>
-            <input type="text" formControlName="programa" class="form-control" id="procedenciaUpdate"
-              >
+            <input
+              disabled
+              type="text"
+              formControlName="programa"
+              class="form-control"
+              id="procedenciaUpdate"
+            />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Procedencia</label>
-            <input type="text" formControlName="procedencia" class="form-control" id="procedenciaUpdate"
-              >
+            <input
+              disabled
+              type="text"
+              formControlName="procedencia"
+              class="form-control"
+              id="procedenciaUpdate"
+            />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Plan Sap</label>
-            <input type="text" formControlName="plan_sap" class="form-control" id="planSapUpdate"
-              >
+            <input
+              type="text"
+              formControlName="plan_sap"
+              class="form-control"
+              id="planSapUpdate"
+            />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Campaña Sap</label>
-            <input type="text" formControlName="campana_sap" class="form-control" id="campanaSapUpdate"
-              >
+            <input
+              type="text"
+              formControlName="campana_sap"
+              class="form-control"
+              id="campanaSapUpdate"
+            />
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button id="btnActtionDataInfo" type="button" class="btn btn-primary"  (click)="btnActualizar()" [disabled]='updatePYCForm.invalid'>Actualizar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          id="btnActtionDataInfo"
+          type="button"
+          class="btn btn-primary"
+          (click)="btnActualizar()"
+        >
+          <!-- [disabled]="updatePYCForm.invalid" -->
+          Actualizar
+        </button>
       </div>
     </div>
   </div>
 </div>
-

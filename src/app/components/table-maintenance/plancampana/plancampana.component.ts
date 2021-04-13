@@ -125,6 +125,7 @@ export class PlanCampanaComponent implements OnInit {
     this.plancampanaServ
       .actualizarCampanas(this.updatePYCForm.value)
       .subscribe((response) => {
+        console.log(response)
         if (response['success'] == true) {
           Swal.fire({
             icon: 'success',

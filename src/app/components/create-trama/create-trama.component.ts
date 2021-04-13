@@ -23,10 +23,7 @@ export class CreateTramaComponent implements OnInit {
   listaEmpresa = [];
   listaEmpresaSub = [];
   listaTipoPago = [];
-  /* listaInfo = [
-     "Alta POS PC",
-     "Alta Regular",
-   ] */
+
   listaCanales = [];
   permisos = [];
   convenioRolCliente = '';
@@ -144,6 +141,109 @@ export class CreateTramaComponent implements OnInit {
         });
       });*/
       });
+  }
+
+  resetVariables(){
+  this.proceso = false;
+  this.telemarketing = false;
+  this.bancayseguros = false;
+  this.grupales = false;
+  this.generica = false;
+  this.titleData = 'Verifica los datos antes de cargar la trama';
+  this.listaInfo = [];
+  this.listaEmpresa = [];
+  this.listaEmpresaSub = [];
+  this.listaTipoPago = [];
+
+  // this.listaCanales = [];
+  // this.permisos = [];
+  this.convenioRolCliente = '';
+  this.plan = '';
+  this.sede = '';
+  this.codigoBpUnidVenta = '';
+  this.tipoCanal = '0';
+  this.tiposelected = '0';
+  this.empresaselected = '0';
+  this.tiposelected2 = '0';
+  this.empresaselected2 = '0';
+  this.tiposelected3 = '0';
+  this.empresaselected3 = '0';
+  this.tiposelected4 = '0';
+  this.empresaselected4 = '0';
+  this.empresaSubselected = '0';
+  this.empresaSub = false;
+  this.errorTipo = false;
+  this.errorEmpresa = false;
+  this.errorTrama = false;
+  this.errorTipo2 = false;
+  this.errorEmpresa2 = false;
+  this.errorTrama2 = false;
+  this.errorTipo3 = false;
+  this.errorEmpresa3 = false;
+  this.errorTrama3 = false;
+  this.errorTipo4 = false;
+  this.errorEmpresa4 = false;
+  this.errorTrama4 = false;
+  this.errorEmpresa5 = false;
+  this.convenioRolRecaudador = '';
+  this.nConvenioRecaudador = '';
+  this.capitalizado = '';
+  this.tipoRol = '';
+  this.codigoBroker = '';
+  this.tipoRol2 = '';
+  this.convenioRolUnidVenta = '';
+  this.convenioRolBroker = '';
+  this.mostrarConvenios = false;
+  this.tipoempresaselected = '0';
+  this.mostrarArchivo = false;
+  this.archivoPago = '';
+  this.horaTransc = '';
+  this.minutosTransc = '';
+  this.extension = '';
+  this.nombre_archivo = '';
+  this.file = '';
+  this.tipoIdentificacion = '';
+  this.nroIdentificacion = '';
+  this.codigoEmpresa = '';
+  this.razonSocial = '';
+  this.rol = '';
+  this.grupo_vendedor = '';
+  this.numero_convenio = '';
+  this.archivo;
+  this.hide = false;
+  this.showConvenio = true;
+  this.codBpVendedor = '';
+  this.codBpBroker = '';
+  this.codBpConvBroker = '';
+  this.codEmpRecaud = '';
+  this.canalVenta = '';
+  this.nombreEmpresa = '';
+  this.formaPlan = '';
+  this.tipoVia = '';
+  this.codOncosys = '';
+  this.nombreVia = '';
+  this.form_manzana = '';
+  this.lote = '';
+  this.dpt = '';
+  this.departamento = '';
+  this.urbanizacion = '';
+  this.provincia = '';
+  this.distrito = '';
+  this.referencia = '';
+  this.archivoDePagoExpirado=null;
+  this.finalizarProceso=null;
+  this.codigoBPSede=null;
+  this.codBpRolCliente=null;
+  this.tipoempresa="";
+  this.rucSubrogada=null;
+  this.razonSocialSubrogado=null;
+  this.bpSapSubrogador=null;
+  this.descripcionSede=null;
+  this.id_empresa=null;
+  this.bp_empresa=null;
+  this.codConvenioBpVendedor=null;
+  this.bp_sap_cliente=null;
+  this.brokerList=null;
   }
 
   alertError() {
@@ -312,9 +412,9 @@ export class CreateTramaComponent implements OnInit {
           this.extension,
           this.nombre_archivo,
           this.archivo,
-          nombreCanal,
           nombreTrama,
-          this.codOncosys,
+          nombreCanal,
+          this.bp_empresa,
           this.tipoCanal,
           id_usuario,
           this.tiposelected,
@@ -328,6 +428,7 @@ export class CreateTramaComponent implements OnInit {
             data: any;
             file: string;
           }) => {
+            console.log(response)
             const intervaloRevisar = setInterval(() => {
               console.log('ejecutado');
 
@@ -347,6 +448,8 @@ export class CreateTramaComponent implements OnInit {
                         title: 'Proceso completado',
                         text: 'El archivo se cargó exitosamente',
                       });
+    this.resetVariables()
+
                     } else {
                       Swal.fire({
                         icon: 'error',
@@ -387,8 +490,13 @@ export class CreateTramaComponent implements OnInit {
       }
       // var nombreTrama = $('#tipoCanalByS option:selected').text();
       console.log(this.tiposelected);
-
       if (this.tiposelected == '1' || this.tiposelected == '2') {
+        Swal.fire({
+          title: 'Cargando trama',
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         this.tramaSer
           .registrarTramaByS(
             this.extension,
@@ -414,19 +522,59 @@ export class CreateTramaComponent implements OnInit {
           .subscribe((response) => {
             console.log(response);
             if (response['success']) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Proceso completado',
-                text: 'El archivo se cargó exitosamente',
-              });
+             
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
               this.grupales = false;
               this.generica = false;
+
+
+
+
+              
+              const intervaloRevisar = setInterval(() => {
+                console.log('ejecutado');
+  
+                this.tramaSer
+                  .revisarEstadoProceso(response["code"])
+                  .subscribe((res) => {
+                    console.log(res);
+                    if (res['data'][0]['estado'] != 0) {
+                      clearInterval(intervaloRevisar);
+                      this.finalizarProceso = true;
+                      Swal.close();
+  
+                      console.log(response);
+                      if (response['success']) {
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Proceso completado',
+                          text: 'El archivo se cargó exitosamente',
+                        });
+      this.resetVariables()
+  
+                      } else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error al cargar la trama',
+                          text: response['message'],
+                        });
+                      }
+                    }
+                  });
+              }, 5000);
+
             }
           });
       } else {
+
+        Swal.fire({
+          title: 'Cargando trama',
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         this.tramaSer
         .registrarTramaRecaudo(
           this.extension,
@@ -445,16 +593,44 @@ export class CreateTramaComponent implements OnInit {
             console.log("das asdasdasd asd adasd asd asd  asd");
             console.log(response);
             if (response['success']) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Proceso completado',
-                text: 'El archivo se cargó exitosamente',
-              });
+         
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
               this.grupales = false;
               this.generica = false;
+              const intervaloRevisar = setInterval(() => {
+                console.log('ejecutado');
+  
+                this.tramaSer
+                  .revisarEstadoProceso(response["code"])
+                  .subscribe((res) => {
+                    console.log(res);
+                    if (res['data'][0]['estado'] != 0) {
+                      clearInterval(intervaloRevisar);
+                      this.finalizarProceso = true;
+                      Swal.close();
+  
+                      console.log(response);
+                      if (response['success']) {
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Proceso completado',
+                          text: 'El archivo se cargó exitosamente',
+                        });
+      this.resetVariables()
+  
+                      } else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error al cargar la trama',
+                          text: response['message'],
+                        });
+                      }
+                    }
+                  });
+              }, 5000);
+
             }
           });
       }
@@ -490,6 +666,14 @@ export class CreateTramaComponent implements OnInit {
       console.log(nombreTrama);
 
       if (this.tiposelected == '8') {
+
+        Swal.fire({
+          title: 'Cargando trama',
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.tramaSer
           .registrarTramaGrup1(
             this.extension,
@@ -511,16 +695,44 @@ export class CreateTramaComponent implements OnInit {
           .subscribe((response) => {
             console.log(response);
             if (response['success']) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Proceso completado',
-                text: 'El archivo se cargó exitosamente',
-              });
+             
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
               this.grupales = false;
               this.generica = false;
+              const intervaloRevisar = setInterval(() => {
+                console.log('ejecutado');
+  
+                this.tramaSer
+                  .revisarEstadoProceso(response["code"])
+                  .subscribe((res) => {
+                    console.log(res);
+                    if (res['data'][0]['estado'] != 0) {
+                      clearInterval(intervaloRevisar);
+                      this.finalizarProceso = true;
+                      Swal.close();
+  
+                      console.log(response);
+                      if (response['success']) {
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Proceso completado',
+                          text: 'El archivo se cargó exitosamente',
+                        });
+      this.resetVariables()
+  
+                      } else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error al cargar la trama',
+                          text: response['message'],
+                        });
+                      }
+                    }
+                  });
+              }, 5000);
+
             }
           });
       } else {
@@ -546,7 +758,12 @@ export class CreateTramaComponent implements OnInit {
 
           return
         }
-
+        Swal.fire({
+          title: 'Cargando trama',
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         this.tramaSer
           .registrarTramaGrup2(
             this.extension,
@@ -597,16 +814,44 @@ export class CreateTramaComponent implements OnInit {
           .subscribe((response) => {
             console.log(response);
             if (response['success']) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Proceso completado',
-                text: 'El archivo se cargó exitosamente',
-              });
+          
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
               this.grupales = false;
               this.generica = false;
+              const intervaloRevisar = setInterval(() => {
+                console.log('ejecutado');
+  
+                this.tramaSer
+                  .revisarEstadoProceso(response["code"])
+                  .subscribe((res) => {
+                    console.log(res);
+                    if (res['data'][0]['estado'] != 0) {
+                      clearInterval(intervaloRevisar);
+                      this.finalizarProceso = true;
+                      Swal.close();
+  
+                      console.log(response);
+                      if (response['success']) {
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Proceso completado',
+                          text: 'El archivo se cargó exitosamente',
+                        });
+      this.resetVariables()
+  
+                      } else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error al cargar la trama',
+                          text: response['message'],
+                        });
+                      }
+                    }
+                  });
+              }, 5000);
+
             }
           });
       }
@@ -635,6 +880,12 @@ export class CreateTramaComponent implements OnInit {
         this.errorTrama3 = true;
         return false;
       }
+      Swal.fire({
+        title: 'Cargando trama',
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
       this.tramaSer
         .registrarTramaByS(
@@ -661,11 +912,40 @@ export class CreateTramaComponent implements OnInit {
         .subscribe((response) => {
           console.log(response);
           if (response['success']) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Proceso completado',
-              text: 'El archivo se cargó exitosamente',
-            });
+            
+            
+            const intervaloRevisar = setInterval(() => {
+              console.log('ejecutado');
+
+              this.tramaSer
+                .revisarEstadoProceso(response["code"])
+                .subscribe((res) => {
+                  console.log(res);
+                  if (res['data'][0]['estado'] != 0) {
+                    clearInterval(intervaloRevisar);
+                    this.finalizarProceso = true;
+                    Swal.close();
+
+                    console.log(response);
+                    if (response['success']) {
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'Proceso completado',
+                        text: 'El archivo se cargó exitosamente',
+                      });
+    this.resetVariables()
+
+                    } else {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Error al cargar la trama',
+                        text: response['message'],
+                      });
+                    }
+                  }
+                });
+            }, 5000);
+
           }
         });
     }
@@ -768,7 +1048,7 @@ export class CreateTramaComponent implements OnInit {
     }
 
     this.loadServ.listarEmpresaTipoArchivo(data).subscribe((response) => {
-      this.listaEmpresa = response['data'];
+      this.listaEmpresa = response['data'].filter(el=>el.estado==1);;
       console.log(this.listaEmpresa);
     });
 
@@ -898,7 +1178,7 @@ export class CreateTramaComponent implements OnInit {
             .subscribe((response) => {
               console.log("response");
               console.log(response);
-              this.listaEmpresaSub = response['data'];
+              this.listaEmpresaSub = response['data'].filter(el=>el.estado==1);;
 
               console.log(this.listaEmpresaSub)
 
@@ -1230,6 +1510,9 @@ export class CreateTramaComponent implements OnInit {
   onChangeTipoEmpresa(value) {
     var tipo = '';
     this.listaEmpresa = [];
+
+    console.log(this.listaEmpresa)
+
     if (value == 1) {
       tipo = 'Independientes';
       this.tipoempresa= 'Empresa independiente'
@@ -1243,7 +1526,7 @@ export class CreateTramaComponent implements OnInit {
       .listarTipoEmpresa(this.tiposelected, tipo)
       .subscribe((response) => {
         console.log(response);
-        this.listaEmpresa = response['data'];
+        this.listaEmpresa = response['data'].filter(el=>el.estado==1);
       });
   }
 
