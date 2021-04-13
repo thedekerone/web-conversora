@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LoadService } from 'src/app/services/load.service';
 import { TramaService } from 'src/app/services/trama.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 
 @Component({
   selector: 'app-create-trama',
@@ -103,6 +104,18 @@ export class CreateTramaComponent implements OnInit {
   referencia = '';
   archivoDePagoExpirado: any;
   finalizarProceso: any;
+  codigoBPSede: any;
+  codBpRolCliente: any;
+  tipoempresa: string;
+  rucSubrogada: any;
+  razonSocialSubrogado: any;
+  bpSapSubrogador: any;
+  descripcionSede: any;
+  id_empresa: any;
+  bp_empresa: any;
+  codConvenioBpVendedor: any;
+  bp_sap_cliente: any;
+  brokerList: any;
 
   constructor(
     public loadServ: LoadService,
@@ -225,8 +238,9 @@ export class CreateTramaComponent implements OnInit {
     var usuario = JSON.parse(localStorage.getItem('zxc21dsrty5uyj11j1'));
     console.log(usuario);
     var id_usuario = usuario['id_usuario'];
-    var id_empresa = usuario['id_empresa'];
-
+    var id_empresa = this.id_empresa
+    console.log(this.listaInfo)
+    console.log(this.tiposelected);
     var nombreCanal = this.listaInfo.find(
       (el) => el.id_tipo_trama == this.tiposelected
     ).tipo_trama;
@@ -234,14 +248,16 @@ export class CreateTramaComponent implements OnInit {
       this.listaInfo.find((el) => el.id_tipo_trama == this.tiposelected)
     );
     console.log(nombreCanal);
-    console.log(this.tiposelected);
     console.log(this.listaInfo);
     console.log(this.horaTransc);
 
+    var nombreTrama = this.listaCanales.find(
+      (el) => el.id_canal == this.tipoCanal
+    ).canal;
+
+    console.log(nombreCanal)
     if (data == '1') {
-      let nombreTrama = this.listaCanales.find(
-        (el) => el.id_canal == this.tipoCanal
-      ).canal;
+
       console.log(nombreTrama);
       $('.errorborderdata').removeClass('form-error');
       $('.errorborderdata2').removeClass('form-error');
@@ -296,13 +312,14 @@ export class CreateTramaComponent implements OnInit {
           this.extension,
           this.nombre_archivo,
           this.archivo,
-          nombreTrama,
           nombreCanal,
-          this.empresaselected,
+          nombreTrama,
+          this.codOncosys,
           this.tipoCanal,
           id_usuario,
           this.tiposelected,
-          id_empresa
+          id_empresa,
+          
         )
         .subscribe(
           (response: {
@@ -352,7 +369,7 @@ export class CreateTramaComponent implements OnInit {
       this.errorEmpresa2 = false;
       this.errorTrama2 = false;
 
-      if (this.tiposelected2 == '0') {
+      if (this.tiposelected == '0') {
         this.errorTipo2 = true;
         $('.errorborderdata3').addClass('form-error');
         return false;
@@ -368,26 +385,26 @@ export class CreateTramaComponent implements OnInit {
         this.errorTrama2 = true;
         return false;
       }
-      var nombreTrama = $('#tipoCanalByS option:selected').text();
-      console.log(this.tiposelected2);
+      // var nombreTrama = $('#tipoCanalByS option:selected').text();
+      console.log(this.tiposelected);
 
-      if (this.tiposelected2 == '1' || this.tiposelected2 == '2') {
+      if (this.tiposelected == '1' || this.tiposelected == '2') {
         this.tramaSer
           .registrarTramaByS(
             this.extension,
             this.archivo,
             this.nombre_archivo,
-            nombreCanal,
-            this.tipoCanal,
             nombreTrama,
+            this.tipoCanal,
+            nombreCanal,
             this.codigoEmpresa,
             id_usuario,
-            this.tiposelected2,
+            this.tiposelected,
             id_empresa,
             this.codOncosys,
             this.capitalizado,
             this.codBpVendedor,
-            this.codBpVendedor,
+            this.codConvenioBpVendedor,
             this.codBpBroker,
             this.codBpConvBroker,
             this.tipoRol,
@@ -411,19 +428,21 @@ export class CreateTramaComponent implements OnInit {
           });
       } else {
         this.tramaSer
-          .registrarTramaTmk(
-            this.extension,
-            this.nombre_archivo,
-            this.archivo,
-            nombreCanal,
-            nombreTrama,
-            this.empresaselected,
-            this.tipoCanal,
-            id_usuario,
-            this.tiposelected2,
-            id_empresa
-          )
+        .registrarTramaRecaudo(
+          this.extension,
+          this.nombre_archivo,
+          this.archivo,
+          nombreTrama,
+          nombreCanal,
+          this.codOncosys,
+          this.tipoCanal,
+          id_usuario,
+          this.tiposelected,
+          id_empresa,
+          this.nroIdentificacion
+        )
           .subscribe((response) => {
+            console.log("das asdasdasd asd adasd asd asd  asd");
             console.log(response);
             if (response['success']) {
               Swal.fire({
@@ -451,7 +470,7 @@ export class CreateTramaComponent implements OnInit {
       this.errorTrama3 = false;
       this.errorEmpresa5 = false;
 
-      if (this.tiposelected3 == '0') {
+      if (this.tiposelected == '0') {
         this.errorTipo3 = true;
         $('.errorborderdata5').addClass('form-error');
         return false;
@@ -467,27 +486,27 @@ export class CreateTramaComponent implements OnInit {
         this.errorTrama3 = true;
         return false;
       }
-      var nombreTrama = $('#tipoCanalGrup option:selected').text();
+      // var nombreTrama = $('#tipoCanalGrup option:selected').text();
       console.log(nombreTrama);
 
-      if (this.tiposelected3 == '8') {
+      if (this.tiposelected == '8') {
         this.tramaSer
           .registrarTramaGrup1(
             this.extension,
             this.nombre_archivo,
             this.archivo,
-            nombreCanal,
-            this.tipoCanal,
             nombreTrama,
-            this.empresaselected,
+            this.tipoCanal,
+            nombreCanal,
+            this.bp_sap_cliente,
             id_usuario,
-            this.tiposelected3,
+            this.tiposelected,
             id_empresa,
-            this.sede,
+            this.descripcionSede,
             this.nombreEmpresa,
-            'dp_subrogador',
-            'ruc_subrogada',
-            'subempresa'
+            this.bpSapSubrogador,
+            this.rucSubrogada,
+            this.razonSocialSubrogado
           )
           .subscribe((response) => {
             console.log(response);
@@ -505,41 +524,75 @@ export class CreateTramaComponent implements OnInit {
             }
           });
       } else {
+
+
+        if(!this.convenioRolRecaudador){
+
+          Swal.fire({
+            icon: 'error',
+            title: 'No se puede cargar la trama',
+            text: 'Falta convenio',
+          });
+
+          return
+        }
+        if(!this.convenioRolUnidVenta){
+
+          Swal.fire({
+            icon: 'error',
+            title: 'No se puede cargar la trama',
+            text: 'Falta convenio',
+          });
+
+          return
+        }
+
         this.tramaSer
           .registrarTramaGrup2(
             this.extension,
             this.nombre_archivo,
             this.archivo,
-            nombreCanal,
-            this.tipoCanal,
             nombreTrama,
-            this.codigoEmpresa,
-            this.tiposelected3,
+            this.tipoCanal,
+            nombreCanal,
+            this.bp_sap_cliente,
+            this.tiposelected,
             id_usuario,
-            this.tiposelected3,
+            this.tiposelected,
             id_empresa,
-            this.convenioRolUnidVenta,
             this.codBpVendedor,
+            this.codConvenioBpVendedor,
             this.codBpBroker,
             this.codBpConvBroker,
             this.canalVenta,
             this.formaPlan,
             this.tipoVia,
             this.nombreVia,
-            '0',
-            '0',
-            '0',
+            'vacio',
+            'vacio',
+            'vacio',
             this.form_manzana,
             this.lote,
             this.dpt,
-            '0',
-            '0',
+            'vacio',
+            'vacio',
             this.departamento,
             this.provincia,
             this.distrito,
-            '0',
-            '0',
-            '0'
+            'vacio',
+            'vacio',
+            'vacio',
+            this.numero_convenio,
+            this.nroIdentificacion,
+            this.numero_convenio,
+            this.codigoBPSede,
+            this.codBpRolCliente,
+            this.tipoempresa,
+            this.rucSubrogada,
+            this.nombreEmpresa,
+            this.razonSocialSubrogado,
+            this.bpSapSubrogador,
+            this.descripcionSede
           )
           .subscribe((response) => {
             console.log(response);
@@ -747,6 +800,7 @@ export class CreateTramaComponent implements OnInit {
     index = 0
   ) {
     console.log(unidadVenta);
+    // unidadVenta[index]['CodigoBPUnidadVenta'],
     this.loadServ
       .listarEmpresa(
         this.tipoIdentificacion,
@@ -754,7 +808,7 @@ export class CreateTramaComponent implements OnInit {
         unidadVenta[index]['CodigoBPUnidadVenta'],
         this.razonSocial,
         '00',
-        this.grupo_vendedor,
+        '',
         ''
       )
       .subscribe((responseDos) => {
@@ -786,21 +840,19 @@ export class CreateTramaComponent implements OnInit {
           ) {
             console.log('completado');
 
-            this.convenioRolUnidVenta =
-              conveniosListTwo[i]['UnidadVenta'][0].Nombre1 +
-              ' ' +
-              conveniosListTwo[i]['UnidadVenta'][0].Nombre2 +
-              ' ' +
-              result2['DatosGenerales']['RazonSocial'] +
-              ' ' +
-              conveniosListTwo[i]['DatosCabecera']['DescripcionGpoVendedor'];
+            this.convenioRolUnidVenta =conveniosListTwo[0]["DatosCabecera"]["Convenio"] + " " + result2["DatosGenerales"]["RazonSocial"] + " " + conveniosListTwo[0]["DatosCabecera"]["DescripcionGpoVendedor"]
+            
+            this.codBpVendedor =
+            conveniosList[0]['UnidadVenta'][index]['CodigoBPUnidadVenta'];
+            this.codConvenioBpVendedor = conveniosListTwo[0]["DatosCabecera"]["Convenio"]
+            this.handleThirdCall(this.brokerList)
 
-            if (conveniosList[i]['Broker'] != undefined) {
-              // si tiene Broker
-              this.codBpBroker = result['Convenio']['Broker'][0].CodigoBPBroker;
-              console.log(this.codBpVendedor);
-              console.log(this.codBpBroker);
-            }
+            // if (conveniosList[i]['Broker'] != undefined) {
+            //   // si tiene Broker
+            //   this.codBpBroker = result['Convenio']['Broker'][0].CodigoBPBroker;
+            //   console.log(this.codBpVendedor);
+            //   console.log(this.codBpBroker);
+            // }
           } else if (i == conveniosListTwo.length - 1) {
             Swal.fire({
               text: 'El Grupo no coinciden',
@@ -821,23 +873,43 @@ export class CreateTramaComponent implements OnInit {
 
     this.listaEmpresa.forEach((element) => {
       if (element.id_empresa == data) {
+        console.log("this.tipoempresaselected");
         console.log(element);
+        console.log(this.tipoempresaselected);
         this.nroIdentificacion = '';
         this.numero_convenio = element.n_convenio_recaudador;
         this.capitalizado = element.capitalizado;
+        this.nroIdentificacion = element.ruc
         this.tipoRol = element.bp_sap_recaudador;
+        this.codBpRolCliente = element.bp_sap_cliente
+        this.nombreEmpresa = element.empresa
         this.codOncosys = element.cod_empresa_oncosys;
+        this.id_empresa=element.id_empresa
+        this.bp_empresa=element.bp_sap
+        this.bp_sap_cliente = element.bp_sap_cliente
+        this.nConvenioRecaudador = element.n_convenio_recaudador
+        this.codOncosys =element.cod_empresa_oncosys
+
+
+        console.log("xddd")
         if (this.tipoempresaselected == '2') {
           this.emprSer
             .listarSubrogados(element.id_empresa)
             .subscribe((response) => {
+              console.log("response");
               console.log(response);
               this.listaEmpresaSub = response['data'];
-            });
+
+              console.log(this.listaEmpresaSub)
+
+
+            },(err)=>console.log("err:" + err));
         }
       }
     });
 
+    console.log("dasasd")
+    if(this.empresaSub) return
     // Banca y seguros
     if (this.bancayseguros) {
       this.loadServ
@@ -848,11 +920,13 @@ export class CreateTramaComponent implements OnInit {
           this.razonSocial,
           '01',
           this.grupo_vendedor,
-          '0070010008'
+          this.numero_convenio
         )
         .subscribe((response) => {
           console.log('Respuesta de el primer servicio con rol 01 : ');
           // this.numero_convenio
+          // '0070010008'
+
           console.log(response);
           console.log('----------------------------');
           var result = response['data']['Response']['DatosEmpresa'][0];
@@ -860,6 +934,13 @@ export class CreateTramaComponent implements OnInit {
           if (!Array.isArray(conveniosList)) {
             conveniosList = [conveniosList];
           }
+          this.canalVenta = result["DatosConvenio"][0]["DatosCabecera"]["GrupoVendedor"]
+          this.codigoEmpresa = result["DatosGenerales"]["CodigoEmpresa"]
+          this.brokerList = result["DatosConvenio"][0]["Broker"]
+
+
+          this.grupo_vendedor = result['DatosConvenio'][0]["DatosCabecera"]["GrupoVendedor"]
+
           var grupoVendedorSW =
             conveniosList[0]['DatosCabecera']['GrupoVendedor'];
           console.log(grupoVendedorSW);
@@ -875,8 +956,7 @@ export class CreateTramaComponent implements OnInit {
           var unidadVenta = conveniosList[0]['UnidadVenta'];
           var ventaSize = unidadVenta.length;
 
-          this.codBpVendedor =
-            conveniosList[0]['UnidadVenta'][0]['CodigoBPUnidadVenta'];
+          
 
           console.log(unidadVenta);
 
@@ -914,81 +994,237 @@ export class CreateTramaComponent implements OnInit {
         };
     } else {
       //Otros...
+      this.consultasGrupales()
+    }
+  }
+
+  handleThirdCall(brokerList,index=0){
+    this.loadServ
+      .listarEmpresa(
+        "",
+        '',
+        brokerList[index]["CodigoBPBroker"],
+        this.razonSocial,
+        '03',
+        '',
+        ''
+      ).subscribe(response=>{
+        console.log(response)
+        if(!response["data"]["Response"]["DatosEmpresa"]){
+          this.handleThirdCall(brokerList,1)
+        }else{
+          var result3=response["data"]["Response"]["DatosEmpresa"][0]
+
+
+          
+          this.codBpBroker= brokerList[index]["CodigoBPBroker"]
+          // this.codConvenioBpVendedor= brokerList[index]["CodigoBPBroker"]
+          this.codBpConvBroker = result3["DatosConvenio"][0]["DatosCabecera"]["Convenio"]
+          this.convenioRolBroker = result3["DatosConvenio"][0]["DatosCabecera"]["Convenio"] + " " + result3["DatosGenerales"]["RazonSocial"]+ " "+ result3["DatosConvenio"][0]["DatosCabecera"]["DescripcionGpoVendedor"]
+        }
+      })
+  }
+
+  consultasGrupales(){
+
+    if(this.empresaSub){
+      this.listaEmpresaSub.forEach(el=>{
+        if(el.id_empresa==this.empresaSubselected){
+          console.log("subrogador")
+          console.log(el)
+          // this.nroIdentificacion = el.ruc_subrogado
+          this.codBpRolCliente = el.bp_sap_subrogador
+          this.rucSubrogada = el.ruc_subrogado
+          this.razonSocialSubrogado = el.razon_social_subrogado
+          this.bpSapSubrogador = el.bp_sap_subrogador
+          
+        }
+      })
+    }
+
+    console.log("start grupales")
+      console.log(this.tipoIdentificacion,
+        this.nroIdentificacion,
+        this.codigoEmpresa,
+        this.razonSocial,
+        this.rol,
+        this.grupo_vendedor,
+        this.numero_convenio)
       this.loadServ
         .listarEmpresa(
           this.tipoIdentificacion,
-          this.nroIdentificacion,
-          this.codigoEmpresa,
+          this.rucSubrogada || this.nroIdentificacion,
+          "",
           this.razonSocial,
-          this.rol,
+          "02",
           this.grupo_vendedor,
-          this.numero_convenio
+          ""
         )
         .subscribe((response) => {
           console.log(response);
-          var result = response['data']['Response']['DatosEmpresa'];
+          var result = response['data']['Response']['DatosEmpresa'][0];
 
+          console.log(response['data']['Response']['DatosEmpresa'][0])
+
+          
+
+          // this.convenioRolCliente =
+          //   result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'] +
+          //   ' ' +
+          //   result['DatosGenerales']['RazonSocial'] + " " + result['DatosConvenio'][0]['DatosCabecera']["DescripcionGpoVendedor"];
+
+
+          // Segunda Llamada
+
+
+          this.codigoEmpresa = result["DatosConvenio"][0]["UnidadVenta"][0]["CodigoBPUnidadVenta"]
+
+
+
+            
+            // copia---------------------------------------------------------------
+
+            console.log("3")
           this.convenioRolRecaudador =
-            result['Convenio'][0]['DatosCabecera']['NombreConvenio'] +
+            result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'] +
             ' ' +
-            result['DatosGenerales']['RazonSocial'];
-          this.convenioRolUnidVenta =
-            result['Convenio'][0]['UnidadVenta'][0].Nombre1 +
-            ' ' +
-            result['Convenio'][0]['UnidadVenta'][0].Nombre2 +
-            ' ' +
-            result['DatosGenerales']['RazonSocial'] +
-            ' ' +
-            result['Convenio'][0]['DatosCabecera']['DescripcionGpoVendedor'];
-          this.convenioRolBroker =
-            result['Convenio'][0]['Broker'][0].Nombre1 +
-            ' ' +
-            result['Convenio'][0]['UnidadVenta'][0].Nombre2 +
-            ' ' +
-            result['Convenio'][0]['Broker'][0].RazonSocial +
-            ' ' +
-            result['Convenio'][0]['Broker'][0].DescripcionTipoIdentificacion;
-          this.convenioRolCliente = result['Convenio'][0]['Broker'][0].Nombre1;
+            result['DatosGenerales']['RazonSocial'] + " " + result['DatosConvenio'][0]['DatosCabecera']["DescripcionGpoVendedor"];
+
+
+
+            console.log("2")
+          // this.convenioRolUnidVenta =
+          //   result['DatosConvenio'][0]['UnidadVenta'][0].Nombre1 +
+          //   ' ' +
+          //   result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2 +
+          //   ' ' +
+          //   result['DatosGenerales']['RazonSocial'] +
+          //   ' ' +
+          //   result['DatosConvenio'][0]['DatosCabecera']['DescripcionGpoVendedor'];
+
+            console.log("1")
+
+            if( result['DatosConvenio'][0]['Broker']){
+
+              this.convenioRolBroker =
+                result['DatosConvenio'][0]['Broker'][0].Nombre1 +
+                ' ' +
+                result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2 +
+                ' ' +
+                result['DatosConvenio'][0]['Broker'][0].RazonSocial +
+                ' ' +
+                result['DatosConvenio'][0]['Broker'][0].DescripcionTipoIdentificacion;
+            }
+
+          console.log("dsadsadsasdadsasd")
+          console.log("dsadsadsasdadsasd")
+          
+          this.convenioRolCliente = result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'];
+
+          
+          this.numero_convenio = result['DatosConvenio'][0]['DatosCabecera']['Convenio'];
+          console.log(this.numero_convenio)
+          
+          // --------------------SEDE-------------------
+          this.codigoBPSede  = result['DatosConvenio'][0]['Sede'][0].CodigoBPSede
+            this.descripcionSede = result['DatosConvenio'][0]['Sede'][0].DescripcionSede
+
           this.sede =
-            result['Convenio'][0]['Sede'][0].CodigoBPSede +
-            ' ' +
-            result['Convenio'][0]['Sede'][0].RazonSocial;
-          this.codBpVendedor = result['Convenio'][0]['UnidadVenta'][0][
+          result['DatosConvenio'][0]['Sede'][0].CodigoBPSede +
+          ' ' +
+          result['DatosConvenio'][0]['Sede'][0].RazonSocial;
+          
+          // --------------------SEDE-------------------
+          
+          console.log("dsadsadsasdadsasd")
+          
+          this.codBpVendedor = result['DatosConvenio'][0]['UnidadVenta'][0][
             'CodigoBPUnidadVenta'
           ].toString();
-          this.codBpBroker = result['Convenio'][0][
-            'Broker'
-          ][0].CodigoBPBroker.toString();
-          this.codBpConvBroker = result['Convenio'][0][
-            'Broker'
-          ][0].CodigoConvenioVigente.toString();
-          this.codEmpRecaud = result['Convenio'][0]['DatosCabecera'][
+          
+          if( result['DatosConvenio'][0]['Broker']){
+            
+            this.codBpBroker = result['DatosConvenio'][0][
+              'Broker'
+            ][0].CodigoBPBroker.toString();
+            this.codBpConvBroker = result['DatosConvenio'][0][
+              'Broker'
+            ][0].CodigoConvenioVigente.toString();
+            this.nombreEmpresa = result['DatosConvenio'][0]['Broker'][0].RazonSocial;
+          }
+          
+          console.log("dsadsadsasdadsasd")
+          this.codEmpRecaud = result['DatosConvenio'][0]['DatosCabecera'][
             'Convenio'
           ].toString();
+          
+          console.log("dsadsadsasdadsasd")
+          
           this.canalVenta =
-            result['Convenio'][0]['DatosCabecera']['CanalDistribucion'];
-          this.sede = result['Convenio'][0]['Sede'][0]['DescripcionSede'];
-          this.nombreEmpresa = result['Convenio'][0]['Broker'][0].RazonSocial;
+          result['DatosConvenio'][0]['DatosCabecera']['GrupoVendedor'];
+          
+          this.sede = result['DatosConvenio'][0]['Sede'][0]['DescripcionSede'];
+          
           this.formaPlan =
-            result['Convenio'][0]['DatosCabecera']['FormaPagoRecaudo'];
+          result['DatosConvenio'][0]['DatosCabecera']['FormaPagoRecaudo'];
+          
           this.tipoVia = result['DatosGenerales']['TipoVia'];
-          this.codigoEmpresa = result['DatosGenerales'][
-            'CodigoEmpresa'
-          ].toString();
+          console.log("dsadsadsasdadsasd")
+          
+      
+          
           this.nombreVia = result['DatosGenerales']['NombreVia'];
           this.form_manzana = result['DatosGenerales']['Manzana'];
-          this.lote = result['DatosGenerales']['Lote'].toString();
-          this.dpt = result['DatosGenerales']['IntDptoTdaStd'].toString();
+          // this.lote = result['DatosGenerales']['Lote'].toString();
+          // this.dpt = result['DatosGenerales']['IntDptoTdaStd'].toString();
           this.departamento = result['DatosGenerales'][
-            'DescripcionDepartamento'
+            'Departamento'
           ].toString();
-          this.provincia = result['DatosGenerales']['DescipcionProvincia'];
-          this.distrito = result['DatosGenerales']['DescripcionDistrito'];
+          
+          console.log("dsadsadsasdadsasd")
+          this.provincia = result['DatosGenerales']['Provincia'];
+          this.distrito = result['DatosGenerales']['Distrito'];
+
+
+          this.loadServ
+          .listarEmpresa(
+            "",
+            "",
+            this.codigoEmpresa,
+            this.razonSocial,
+            '00',
+            this.grupo_vendedor,
+            ""
+          ).subscribe(res=>{
+            console.log(res)
+
+            const result2= res["data"]["Response"]["DatosEmpresa"][0]
+
+          // this.convenioRolUnidVenta =result2["DatosConvenio"][0]["DatosCabecera"]["Convenio"]
+            console.log(result2["DatosConvenio"][0]["DatosCabecera"]["NombreConvenio"])
+            this.convenioRolUnidVenta = result2["DatosConvenio"][0]["DatosCabecera"]["NombreConvenio"]
+            this.codConvenioBpVendedor = result2["DatosConvenio"][0]["DatosCabecera"]["Convenio"]
+            this.loadServ
+            .listarEmpresa(
+              this.tipoIdentificacion,
+              "",
+              "",
+              this.razonSocial,
+              '03',
+              "",
+              ""
+            ).subscribe(res2=>{
+              console.log(res2)
+  
+            })
+          })
+
+          
+
         }),
         (error) => {
           console.error(error);
         };
-    }
   }
 
   onChangeTipoEmpresa(value) {
@@ -996,13 +1232,15 @@ export class CreateTramaComponent implements OnInit {
     this.listaEmpresa = [];
     if (value == 1) {
       tipo = 'Independientes';
+      this.tipoempresa= 'Empresa independiente'
       this.empresaSub = false;
     } else {
       tipo = 'Subrogadas';
+      this.tipoempresa= 'Empresa subrogada'
       this.empresaSub = true;
     }
     this.loadServ
-      .listarTipoEmpresa(this.tiposelected3, tipo)
+      .listarTipoEmpresa(this.tiposelected, tipo)
       .subscribe((response) => {
         console.log(response);
         this.listaEmpresa = response['data'];

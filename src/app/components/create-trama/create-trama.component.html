@@ -172,8 +172,8 @@
             <div class="col-sm-10">
               <select
                 id="tipoCanalByS"
-                [(ngModel)]="tiposelected2"
-                name="tiposelected2"
+                [(ngModel)]="tiposelected"
+                name="tiposelected"
                 (change)="onChangeTipoArchivo($event.target.value)"
                 class="form-control errorborderdata3"
               >
@@ -321,8 +321,8 @@
             <div class="col-sm-10">
               <select
                 id="tipoCanalGrup"
-                [(ngModel)]="tiposelected3"
-                name="tiposelected3"
+                [(ngModel)]="tiposelected"
+                name="tiposelected"
                 class="form-control errorborderdata5"
                 (change)="onChangeTipoArchivo($event.target.value)"
               >
@@ -391,6 +391,7 @@
               <select
                 [(ngModel)]="empresaSubselected"
                 name="empresaSubselected"
+                (change)="consultasGrupales()"
                 class="form-control errorborderdata6"
               >
                 <option value="0" selected>
@@ -400,7 +401,7 @@
                   *ngFor="let data of listaEmpresaSub"
                   [value]="data.id_empresa"
                 >
-                  {{ data.subrogador }}
+                  {{ data.razon_social_subrogado }}
                 </option>
               </select>
               <span *ngIf="errorEmpresa3" class="colorError"
