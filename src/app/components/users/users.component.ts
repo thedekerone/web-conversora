@@ -34,6 +34,7 @@ export class UsersComponent implements OnInit {
   errorNacimiento = false;
   valorDoc: string;
   id_usuario: string;
+  listaPermiso=[];
 
   constructor(
     public authSer: AuthService,
@@ -59,6 +60,7 @@ export class UsersComponent implements OnInit {
     ];
     this.empresaaunas = [{ id: 0, name: 'Auna' }];
     $('#toggle-one').bootstrapToggle();
+    // $('.toggleGeneral').bootstrapToggle();
 
     this.date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
   }
@@ -490,43 +492,14 @@ export class UsersComponent implements OnInit {
   }
 
   async actualizarPermisos() {
-    var permisoUno = $('#permisoUno').prop('checked') ? '1' : '0';
-    var permisoDos = $('#permisoDos').prop('checked') ? '1' : '0';
-    var permisoTres = $('#permisoTres').prop('checked') ? '1' : '0';
-    var permisoCuatro = $('#permisoCuatro').prop('checked') ? '1' : '0';
-    var permisoCinco = $('#permisoCinco').prop('checked') ? '1' : '0';
-    var permisoSeis = $('#permisoSeis').prop('checked') ? '1' : '0';
-    var permisoSiete = $('#permisoSiete').prop('checked') ? '1' : '0';
-    var permisoOcho = $('#permisoOcho').prop('checked') ? '1' : '0';
-    var permisoNueve = $('#permisoNueve').prop('checked') ? '1' : '0';
+    
+    for(let permiso of this.listaPermiso){
+      this.userServ
+      .actualizarPermiso(permiso.id_operacion, this.id_usuario, Number(permiso.estado))
+      .subscribe();
+    }
 
-    await this.userServ
-      .actualizarPermiso(1, this.id_usuario, Number(permisoUno))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(2, this.id_usuario, Number(permisoDos))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(3, this.id_usuario, Number(permisoTres))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(4, this.id_usuario, Number(permisoCuatro))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(5, this.id_usuario, Number(permisoCinco))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(6, this.id_usuario, Number(permisoSeis))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(7, this.id_usuario, Number(permisoSiete))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(8, this.id_usuario, Number(permisoOcho))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(9, this.id_usuario, Number(permisoNueve))
-      .subscribe();
+
 
     $('#contentModalSettings').modal('hide');
 
@@ -535,72 +508,45 @@ export class UsersComponent implements OnInit {
       title: 'Proceso completado',
       text: 'Acción realizada exitosamente',
     });
-    document.location.reload();
+    // document.location.reload();
   }
 
   abrirModalPermisosEditar(id_usuario, nombre, pate) {
-    $('#nameUserActive').text(nombre + ' ' + pate);
-    $('#contentModalSettings').modal('show');
-    $('#permisoUno').data('id', id_usuario);
+    Swal.showLoading()
     this.id_usuario=id_usuario
     this.userServ.listarPerfil(id_usuario).subscribe((response) => {
       console.log(response);
       var listaPermiso = response['data'][0]['permisos'];
-      $('#permisoUno').val(listaPermiso[0].estado);
-      $('#permisoDos').val(listaPermiso[1].estado);
-      $('#permisoTres').val(listaPermiso[2].estado);
-      $('#permisoCuatro').val(listaPermiso[3].estado);
-      $('#permisoCinco').val(listaPermiso[4].estado);
-      $('#permisoSeis').val(listaPermiso[5].estado);
-      $('#permisoSiete').val(listaPermiso[6].estado);
-      $('#permisoOcho').val(listaPermiso[7].estado);
-      $('#permisoNueve').val(listaPermiso[8].estado);
+      this.listaPermiso = listaPermiso
+      Swal.close()
+      $('#nameUserActive').text(nombre + ' ' + pate);
+      $('#contentModalSettings').modal('show');
+      $('#permisoUno').data('id', id_usuario);
 
-      if ($('#permisoUno').val() == 1) $('#permisoUno').bootstrapToggle('on');
-      else $('#permisoUno').bootstrapToggle('off');
 
-      if ($('#permisoDos').val() == 1) $('#permisoDos').bootstrapToggle('on');
-      else $('#permisoDos').bootstrapToggle('off');
 
-      if ($('#permisoTres').val() == 1) $('#permisoTres').bootstrapToggle('on');
-      else $('#permisoTres').bootstrapToggle('off');
+      console.log($(`#permiso1`))
 
-      if ($('#permisoCuatro').val() == 1)
-        $('#permisoCuatro').bootstrapToggle('on');
-      else $('#permisoCuatro').bootstrapToggle('off');
 
-      if ($('#permisoCinco').val() == 1)
-        $('#permisoCinco').bootstrapToggle('on');
-      else $('#permisoCinco').bootstrapToggle('off');
+      console.log($('#permiso1').val())
 
-      if ($('#permisoSeis').val() == 1) $('#permisoSeis').bootstrapToggle('on');
-      else $('#permisoSeis').bootstrapToggle('off');
 
-      if ($('#permisoSiete').val() == 1)
-        $('#permisoSiete').bootstrapToggle('on');
-      else $('#permisoSiete').bootstrapToggle('off');
-
-      if ($('#permisoOcho').val() == 1) $('#permisoOcho').bootstrapToggle('on');
-      else $('#permisoOcho').bootstrapToggle('off');
-
-      if ($('#permisoNueve').val() == 1)
-        $('#permisoNueve').bootstrapToggle('on');
-      else $('#permisoNueve').bootstrapToggle('off');
     });
+  }
+
+  togglePermiso(id){
+    console.log(id)
+    this.listaPermiso = this.listaPermiso.map(el=>{
+      if(el.id_operacion==id){
+        el.estado = !el.estado
+      }
+      return el
+    })
   }
 
   abrirModalPermisos() {
     $('#contentModalSettings').modal('show');
 
-    $('#permisoUno').bootstrapToggle('off');
-    $('#permisoDos').bootstrapToggle('off');
-    $('#permisoTres').bootstrapToggle('off');
-    $('#permisoCuatro').bootstrapToggle('off');
-    $('#permisoCinco').bootstrapToggle('off');
-    $('#permisoSeis').bootstrapToggle('off');
-    $('#permisoSiete').bootstrapToggle('off');
-    $('#permisoOcho').bootstrapToggle('off');
-    $('#permisoNueve').bootstrapToggle('off');
   }
 
   onChangeTipoCanal(data) {
