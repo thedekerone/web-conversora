@@ -352,7 +352,9 @@
               >
                 <option value="0" selected>Seleccione la Empresa</option>
                 <option value="1">Empresa independiente</option>
-                <option value="2">Empresa subrogadas</option>
+                <option *ngIf="mostrarSubrogada" value="2">
+                  Empresa subrogadas
+                </option>
               </select>
               <span *ngIf="errorEmpresa5" class="colorError"
                 >Seleccione una empresa</span

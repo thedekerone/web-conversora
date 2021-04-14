@@ -39,6 +39,7 @@ export class TelemarketingComponent implements OnInit {
   mostrarRadioTmk = false;
   mostrarRadioBS = false;
   tipo_trama = '';
+  mostrarTelemarketing=false;
 
   constructor(
     private empServ: EmpresasService,
@@ -51,6 +52,8 @@ export class TelemarketingComponent implements OnInit {
     this.dtTrigger = new Subject();
     this.dtOptions = this.utilsDt.optionsDataTable();
   }
+
+  
 
   ngOnInit(): void {
     this.listarEmpresas();

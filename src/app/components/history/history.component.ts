@@ -7,6 +7,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ExcelService } from 'src/app/services/excel.service';
 import * as FileSaver from 'file-saver';
 
+declare var require: any
+const FileSaver = require('file-saver');
+
 declare var $: any;
 
 @Component({
@@ -53,6 +56,28 @@ export class HistoryComponent implements OnInit {
     });
   }
 
+  getBlob(url){
+    
+fetch("https://afiliacion-procesadoras.s3.amazonaws.com/conversora/sc-D200903ALTA2.txt", {
+  'mode': 'cors',
+  'headers': {
+      'Access-Control-Allow-Origin': '*',
+  }
+}).then((res) => {
+  console.log(res)
+  console.log(res.body)
+  return res.blob()}).then((blob) => {
+  console.log(blob);
+})
+  }
+
+  downloadPdf(url,name) {
+    console.log(url)
+    console.log(name)
+
+    FileSaver.saveAs(url, name );
+  }
+  
   download(url) {
     this.excelService.down(url).subscribe(resp => {
       console.log(resp)

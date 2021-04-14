@@ -24,6 +24,7 @@
     border: 1px solid rgb(175, 175, 175);
     overflow: hidden;
     cursor: pointer;
+    
 }
 
 .toggle-container.active{
@@ -37,12 +38,12 @@
     transition: .5s;
     left: 0;
     height: 100%;
-    width: 200%;
+    width: 140px;
 }
 
 
 .toggle-option__on, .toggle-option__off{
-    width: 100%;
+    width: 70px;
     text-align: center;
     height: 100%;
 
@@ -55,7 +56,8 @@
 }
 
 .toggle-option__off{
-    color: rgb(48, 47, 47);
+    background-color: #d52a1a;
+
 }
 
 .toggle-option__on{

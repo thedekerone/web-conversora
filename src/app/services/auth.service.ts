@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,10 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   public credenciales;
+  listaPermiso=[];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userServ: UsersService) { }
+  
 
   consultarLogin(email, password) {
     const params = {
@@ -30,7 +33,16 @@ export class AuthService {
     }
   }
 
+  actualizarUsuario(){
+    this.userServ.listarPerfil(this.getIdusuario()).subscribe((response) => {
+      console.log(response);
+      this.listaPermiso = response['data'][0]['permisos'];
+ 
+    })
+  }
+
   obtenerUsuario(){
+
     this.credenciales =  JSON.parse(localStorage.getItem('zxc21dsrty5uyj11j1'));
   }
 
@@ -109,6 +121,8 @@ export class AuthService {
     return permitido;
   }
 
+  
+
   mostrarBancaSeguros(){
     this.obtenerUsuario();
     var permisos =  this.credenciales['permisos'];
@@ -165,6 +179,62 @@ export class AuthService {
     }
     return permitido;
   }
+
+
+  mostrarSubrogada(){
+    this.obtenerUsuario();
+    var permisos =  this.credenciales['permisos'];
+    var permitido = false;
+    for (let index = 0; index < permisos.length; index++) {
+      if(permisos[index]["id_operacion"] == "7"){
+        if(permisos[index]["estado"] == "1"){
+          permitido = true;
+        }
+      }      
+    }
+    return permitido;
+  }
+
+  mostrarMantenimientoGrupales(){
+    this.obtenerUsuario();
+    var permisos =  this.credenciales['permisos'];
+    var permitido = false;
+    for (let index = 0; index < permisos.length; index++) {
+      if(permisos[index]["id_operacion"] == "8"){
+        if(permisos[index]["estado"] == "1"){
+          permitido = true;
+        }
+      }      
+    }
+    return permitido;
+  }
+  mostrarMantenimientoTelemarketing(){
+    this.obtenerUsuario();
+    var permisos =  this.credenciales['permisos'];
+    var permitido = false;
+    for (let index = 0; index < permisos.length; index++) {
+      if(permisos[index]["id_operacion"] == "9"){
+        if(permisos[index]["estado"] == "1"){
+          permitido = true;
+        }
+      }      
+    }
+    return permitido;
+  }
+  mostrarMantenimientoBancaSeguros(){
+    this.obtenerUsuario();
+    var permisos =  this.credenciales['permisos'];
+    var permitido = false;
+    for (let index = 0; index < permisos.length; index++) {
+      if(permisos[index]["id_operacion"] == "10"){
+        if(permisos[index]["estado"] == "1"){
+          permitido = true;
+        }
+      }      
+    }
+    return permitido;
+  }
+
 
   usuarioRol(){
     this.obtenerUsuario();

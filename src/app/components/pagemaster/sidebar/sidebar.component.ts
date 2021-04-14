@@ -20,6 +20,8 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("this.authSer.mostrarEquivalencia()")
+    console.log(this.authSer.mostrarEquivalencia())
   }
  
  

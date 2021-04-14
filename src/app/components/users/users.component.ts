@@ -35,6 +35,7 @@ export class UsersComponent implements OnInit {
   valorDoc: string;
   id_usuario: string;
   listaPermiso=[];
+  id_rol: any;
 
   constructor(
     public authSer: AuthService,
@@ -286,9 +287,10 @@ export class UsersComponent implements OnInit {
     await $('#contentModalActualizar').modal('show');
     this.userServ.listarPerfil(user_id).subscribe((response) => {
       //this.listaProfile = response["data"][0];
+      console.log(response)
       var listProfile = response['data'][0];
       var id_rol = response['data'][0].id_rol;
-
+      this.id_rol = id_rol
       $('#nombreUpdate').val(listProfile.nombre);
       $('#apepaternoUpdate').val(listProfile.apellido_paterno);
       $('#apematernoUpdate').val(listProfile.apellido_materno);
@@ -392,18 +394,19 @@ export class UsersComponent implements OnInit {
     } else {
       this.registerUserForm.value.tipo_documento = 1;
     }
-
+    console.log(this.registerUserForm)
     this.userServ
       .crearUsuario(this.registerUserForm.value)
       .subscribe((response) => {
         if (response['success'] == true) {
           console.log(response);
           this.id_usuario = response['retorno'];
-
+          this.id_rol = this.registerUserForm.value.id_rol
           $('#contentModalVendedor').modal('hide');
-          this.abrirModalPermisos();
 
-          document.location.reload();
+          this.abrirModalPermisosEditar(response["retorno"], this.registerUserForm.value.nombre,this.registerUserForm.value.apellido_paterno);
+
+          // document.location.reload();
           // this.dtTrigger.unsubscribe();
           // this.listarUsuarios();
         } else {
@@ -507,17 +510,35 @@ export class UsersComponent implements OnInit {
       icon: 'success',
       title: 'Proceso completado',
       text: 'Acción realizada exitosamente',
+      didClose:()=>{
+            document.location.reload();
+
+      }
     });
+    // this.listarUsuarios()
     // document.location.reload();
   }
 
-  abrirModalPermisosEditar(id_usuario, nombre, pate) {
+  abrirModalPermisosEditar(id_usuario, nombre="", pate="") {
     Swal.showLoading()
     this.id_usuario=id_usuario
     this.userServ.listarPerfil(id_usuario).subscribe((response) => {
       console.log(response);
       var listaPermiso = response['data'][0]['permisos'];
+      this.id_rol = response['data'][0]['id_rol'];
+      if(this.id_rol == 2){
+        console.log("asd")
+        this.listaPermiso = listaPermiso.filter(el=>{
+          return el.id_operacion = 2 || el.id_operacion == 3 || el.id_operacion == 7 || el.id_operacion == 1
+        })
+      }else{
       this.listaPermiso = listaPermiso
+
+      }
+
+      console.log(this.id_rol)
+      console.log(this.listaPermiso)
+
       Swal.close()
       $('#nameUserActive').text(nombre + ' ' + pate);
       $('#contentModalSettings').modal('show');
@@ -546,7 +567,16 @@ export class UsersComponent implements OnInit {
 
   abrirModalPermisos() {
     $('#contentModalSettings').modal('show');
+    Swal.showLoading()
+    this.userServ.listarPerfil(1).subscribe((response) => {
+      console.log(response);
+      var listaPermiso = response['data'][0]['permisos'];
+      this.listaPermiso = listaPermiso
+      Swal.close()
 
+
+
+    });
   }
 
   onChangeTipoCanal(data) {

@@ -113,6 +113,10 @@ export class CreateTramaComponent implements OnInit {
   codConvenioBpVendedor: any;
   bp_sap_cliente: any;
   brokerList: any;
+  mostrarTelemarketing=false;
+  mostrarBancaSeguros: boolean;
+  mostrarGrupales: boolean;
+  mostrarSubrogada: boolean;
 
   constructor(
     public loadServ: LoadService,
@@ -123,10 +127,41 @@ export class CreateTramaComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.mostrarTelemarketing = this.authSer.mostrarTelemarketing()
+    this.mostrarGrupales = this.authSer.mostrarGrupales()
+    this.mostrarBancaSeguros = this.authSer.mostrarBancaSeguros()
+    this.mostrarSubrogada = this.authSer.mostrarSubrogada()
+
+
     this.loadServ
       .listarCanales(this.authSer.getIdusuario())
       .subscribe((response) => {
-        this.listaCanales = response['data'];
+        console.log(response)
+        this.listaCanales = response['data'].filter(el=>{
+          console.log(el)
+          // console.log(this.mostrarTelemarketing)
+          if(this.authSer.getIDRol()==="3") return true
+          if(el.id_canal==2 && this.mostrarTelemarketing){
+            console.log("fdas")
+            return true
+          }
+          if(el.id_canal==3 && this.mostrarBancaSeguros){
+            return true
+          }
+          if(el.id_canal==4 && this.mostrarGrupales){
+            return true
+          }
+          return false
+        })
+
+        console.log("-------------------------------------------")
+        console.log(this.authSer.getIDRol())
+        
+        if(this.authSer.getIDRol()==="2"){
+          console.log("--------------------------entro-----------------")
+          this.listaCanales=this.listaCanales.filter(el=>this.authSer.getIDCanal()==el.id_canal)
+        }
+
         console.log(this.listaCanales);
         this.permisos = JSON.parse(localStorage.getItem('zxc21dsrty5uyj11j1'));
 

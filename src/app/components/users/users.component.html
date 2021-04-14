@@ -354,7 +354,7 @@
                 placeholder="Ingrese un correo electrónico para el usuario"
               />
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="descripcionUpdate">Contraseña</label>
               <input
                 type="password"
@@ -363,7 +363,7 @@
                 id="claveAdd"
                 placeholder="Ingrese una contraseña para el usuario"
               />
-            </div>
+            </div> -->
           </div>
         </form>
       </div>
@@ -453,6 +453,7 @@
               <div class="col-md-6" *ngIf="!showCanalInfo; else showOtherCanal">
                 <label for="grupovendedoresSelcted">Empresa</label>
                 <select
+                  disabled
                   class="form-control"
                   formControlName="id_empresa"
                   id="empresaAunaUpdate"
@@ -605,6 +606,7 @@
             <div class="form-group">
               <label for="descripcionUpdate">Correo electrónico</label>
               <input
+                disabled
                 type="email"
                 class="form-control"
                 formControlName="correo"
@@ -671,7 +673,7 @@
               (click)="togglePermiso(permiso.id_operacion)"
             >
               <div
-                [ngClass]="{ active: permiso.estado }"
+                [ngClass]="{ active: permiso.estado == 0 }"
                 class="toggle-container"
               >
                 <div class="toggle-option__on">on</div>
