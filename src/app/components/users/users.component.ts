@@ -596,7 +596,7 @@ export class UsersComponent implements OnInit {
       if(this.id_rol == 2){
         console.log("asd")
         this.listaPermiso = listaPermiso.filter(el=>{
-          return el.id_operacion = 2 || el.id_operacion == 3 || el.id_operacion == 7 || el.id_operacion == 1
+          return el.id_operacion == 2 || el.id_operacion == 3 || el.id_operacion == 7 || el.id_operacion == 1
         })
       }else{
       this.listaPermiso = listaPermiso
