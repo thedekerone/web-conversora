@@ -33,10 +33,10 @@
           <thead>
             <tr>
               <th style="width: 40px; text-align: center">ID</th>
-              <th>RUC</th>
-              <th>Razón Social</th>
-              <th>BP SAP Cliente</th>
-              <th>Subrogado</th>
+              <th style="text-align: center">RUC</th>
+              <th style="width: 120px; text-align: center">Razón Social</th>
+              <th style="text-align: center">BP SAP Cliente</th>
+              <th style="text-align: center">Subrogado</th>
               <th style="width: 380px; text-align: center">Acciones</th>
             </tr>
           </thead>
@@ -46,17 +46,19 @@
               <td>{{ empresa.ruc }}</td>
               <td>{{ empresa.empresa }}</td>
               <td>{{ empresa.bp_sap_cliente }}</td>
-              <td>
+              <td style="text-align: center">
                 <button
                   *ngIf="empresa.subEstado == 1"
                   class="btn btn-primary"
+                  style="margin: 0 auto"
                   (click)="AbrirModalSubrogado(2, empresa.id_empresa)"
                 >
                   <i class="fa fa-plus-circle"></i> Subrogado
                 </button>
                 <button
                   *ngIf="empresa.subEstado == 0"
-                  class="btn btn-danger"
+                  class="btn"
+                  style="background-color: rgb(236, 236, 12); margin: 0 auto"
                   (click)="AbrirModalSubrogado(2, empresa.id_empresa)"
                 >
                   <i class="fa fa-plus-circle"></i> Subrogado

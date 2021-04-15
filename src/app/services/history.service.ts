@@ -30,4 +30,10 @@ export class HistoryService {
     }
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_HISTORY, params).pipe(map(res => res));
   }
+
+
+  downloadFile(): any {
+		return this.http.get('https://afiliacion-procesadoras.s3.amazonaws.com/conversora/sc-D200903ALTA2.txt', {responseType: 'blob'});
+  }
+
 }

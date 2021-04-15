@@ -37,6 +37,7 @@ export class LoadService {
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH, params).pipe(map(res => res));
   }
 
+
   listarEmpresa(tipoIdentificacion, nroIdentificacion, codigoEmpresa, razonSocial, rol, grupo_vendedor, numero_convenio) {
     const params = {
       "action": "datosEmpresa",

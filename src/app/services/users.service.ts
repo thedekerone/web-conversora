@@ -33,6 +33,15 @@ export class UsersService {
     return this.http.post<Object>(this.apiService._END_POINTS.URL_GET_COMPANY, params).pipe(map(res => res));
   }
 
+  listarEmpresaCanal(id_canal) {
+    const params = {
+      "action": "listar",
+      "idCanal": id_canal
+  }
+    console.log(params);
+    return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_EMP, params).pipe(map(res => res));
+  }
+
   crearUsuario(data) {
 
     console.log("dataRegister",data)

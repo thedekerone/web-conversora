@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { UsersService } from 'src/app/services/users.service';
 import { formatDate } from '@angular/common';
+import { LoadService } from 'src/app/services/load.service';
 declare var $: any;
 
 @Component({
@@ -34,10 +35,15 @@ export class UsersComponent implements OnInit {
   errorNacimiento = false;
   valorDoc: string;
   id_usuario: string;
+  listaPermiso=[];
+  id_rol: any;
+  nuevaEmpresa: any;
+  nuevoCanal: any;
 
   constructor(
     public authSer: AuthService,
     private userServ: UsersService,
+    public loadServ: LoadService,
     private utilsDt: DatatableService,
     private formBuilder: FormBuilder
   ) {
@@ -59,6 +65,7 @@ export class UsersComponent implements OnInit {
     ];
     this.empresaaunas = [{ id: 0, name: 'Auna' }];
     $('#toggle-one').bootstrapToggle();
+    // $('.toggleGeneral').bootstrapToggle();
 
     this.date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
   }
@@ -71,12 +78,11 @@ export class UsersComponent implements OnInit {
     }
     if (data == '2') {
       this.showCanalInfo = true;
-      this.userServ.listarEmpresas().subscribe((response) => {
-        this.listaCompanies = response['data'].filter((el) => el.estado == 1);
-        console.log(response['data']);
-        console.log(this.listaCompanies);
-        //this.dtTrigger.next();
-      });
+      // this.userServ.listarEmpresas().subscribe((response) => {
+      //   console.log(response['data']);
+      //   console.log(this.listaCompanies);
+      //   //this.dtTrigger.next();
+      // });
 
       this.userServ.listarCanales().subscribe((response) => {
         this.listaCanals = response['data'];
@@ -87,27 +93,91 @@ export class UsersComponent implements OnInit {
   }
 
   onChangeEmpresa($event) {
-    this.userServ.listarEmpresa('demo').subscribe((response) => {
+    console.log($event.target.value)
+    console.log(this.nuevaEmpresa)
+    var empresa =this.listaCompanies.find(el=>el.id_empresa==this.nuevaEmpresa)
+    var ruc = empresa.ruc
+    var razonSocial = empresa.empresa
+
+    $('#rucAdd').val(ruc);
+    $('#razonSocialAdd').val(razonSocial);
+    if(this.nuevoCanal==3){
+
+      this.loadServ.listarEmpresa(
+          "",
+            ruc,
+            "",
+            "",
+            '01',
+            "",
+            ""
+  
+      ).subscribe((response) => {
+        console.log(response)
+        var result = response['data']['Response']['DatosEmpresa'][0];
+        $('#grupovendedorAdd').val(result['DatosConvenio'][0]["DatosCabecera"].DescripcionGpoVendedor);
+        //this.dtTrigger.next();
+        this.registerUserForm.controls.tipo_documento.setValue(
+          ruc
+        );
+        this.registerUserForm.controls.documento.setValue(
+          razonSocial
+        );
+      });
+    }else if(this.nuevoCanal==2){
+      this.loadServ.listarEmpresa(
+        "",
+          ruc,
+          "",
+          "",
+          '00',
+          "",
+          ""
+
+    ).subscribe((response) => {
+      console.log(response)
       var result = response['data']['Response']['DatosEmpresa'][0];
-      $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
+      $('#grupovendedorAdd').val(result['DatosConvenio'][0]["DatosCabecera"].DescripcionGpoVendedor);
       //this.dtTrigger.next();
       this.registerUserForm.controls.tipo_documento.setValue(
-        result['DatosGenerales'].RazonSocial
+        ruc
       );
       this.registerUserForm.controls.documento.setValue(
-        result['DatosGenerales'].RazonSocial
+        razonSocial
       );
     });
+    } else if(this.nuevoCanal==4){
+      this.loadServ.listarEmpresa(
+        "",
+          ruc,
+          "",
+          "",
+          '02',
+          "",
+          ""
+
+    ).subscribe((response) => {
+      console.log(response)
+      var result = response['data']['Response']['DatosEmpresa'][0];
+      $('#grupovendedorAdd').val(result['DatosConvenio'][0]["DatosCabecera"].DescripcionGpoVendedor);
+      //this.dtTrigger.next();
+      this.registerUserForm.controls.tipo_documento.setValue(
+        ruc
+      );
+      this.registerUserForm.controls.documento.setValue(
+        razonSocial
+      );
+    });
+    }
   }
+ 
 
   onChangeEmpresaActualizar($event) {
     this.userServ.listarEmpresa('demo').subscribe((response) => {
       var result = response['data']['Response']['DatosEmpresa'][0];
-      $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
+      // $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
+      // $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
+      // $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
       //this.dtTrigger.next();
     });
   }
@@ -284,9 +354,10 @@ export class UsersComponent implements OnInit {
     await $('#contentModalActualizar').modal('show');
     this.userServ.listarPerfil(user_id).subscribe((response) => {
       //this.listaProfile = response["data"][0];
+      console.log(response)
       var listProfile = response['data'][0];
       var id_rol = response['data'][0].id_rol;
-
+      this.id_rol = id_rol
       $('#nombreUpdate').val(listProfile.nombre);
       $('#apepaternoUpdate').val(listProfile.apellido_paterno);
       $('#apematernoUpdate').val(listProfile.apellido_materno);
@@ -390,18 +461,19 @@ export class UsersComponent implements OnInit {
     } else {
       this.registerUserForm.value.tipo_documento = 1;
     }
-
+    console.log(this.registerUserForm)
     this.userServ
       .crearUsuario(this.registerUserForm.value)
       .subscribe((response) => {
         if (response['success'] == true) {
           console.log(response);
           this.id_usuario = response['retorno'];
-
+          this.id_rol = this.registerUserForm.value.id_rol
           $('#contentModalVendedor').modal('hide');
-          this.abrirModalPermisos();
 
-          document.location.reload();
+          this.abrirModalPermisosEditar(response["retorno"], this.registerUserForm.value.nombre,this.registerUserForm.value.apellido_paterno);
+
+          // document.location.reload();
           // this.dtTrigger.unsubscribe();
           // this.listarUsuarios();
         } else {
@@ -490,43 +562,14 @@ export class UsersComponent implements OnInit {
   }
 
   async actualizarPermisos() {
-    var permisoUno = $('#permisoUno').prop('checked') ? '1' : '0';
-    var permisoDos = $('#permisoDos').prop('checked') ? '1' : '0';
-    var permisoTres = $('#permisoTres').prop('checked') ? '1' : '0';
-    var permisoCuatro = $('#permisoCuatro').prop('checked') ? '1' : '0';
-    var permisoCinco = $('#permisoCinco').prop('checked') ? '1' : '0';
-    var permisoSeis = $('#permisoSeis').prop('checked') ? '1' : '0';
-    var permisoSiete = $('#permisoSiete').prop('checked') ? '1' : '0';
-    var permisoOcho = $('#permisoOcho').prop('checked') ? '1' : '0';
-    var permisoNueve = $('#permisoNueve').prop('checked') ? '1' : '0';
+    
+    for(let permiso of this.listaPermiso){
+      this.userServ
+      .actualizarPermiso(permiso.id_operacion, this.id_usuario, Number(permiso.estado))
+      .subscribe();
+    }
 
-    await this.userServ
-      .actualizarPermiso(1, this.id_usuario, Number(permisoUno))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(2, this.id_usuario, Number(permisoDos))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(3, this.id_usuario, Number(permisoTres))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(4, this.id_usuario, Number(permisoCuatro))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(5, this.id_usuario, Number(permisoCinco))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(6, this.id_usuario, Number(permisoSeis))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(7, this.id_usuario, Number(permisoSiete))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(8, this.id_usuario, Number(permisoOcho))
-      .subscribe();
-    await this.userServ
-      .actualizarPermiso(9, this.id_usuario, Number(permisoNueve))
-      .subscribe();
+
 
     $('#contentModalSettings').modal('hide');
 
@@ -534,77 +577,104 @@ export class UsersComponent implements OnInit {
       icon: 'success',
       title: 'Proceso completado',
       text: 'Acción realizada exitosamente',
+      didClose:()=>{
+            document.location.reload();
+
+      }
     });
-    document.location.reload();
+    // this.listarUsuarios()
+    // document.location.reload();
   }
 
-  abrirModalPermisosEditar(id_usuario, nombre, pate) {
-    $('#nameUserActive').text(nombre + ' ' + pate);
-    $('#contentModalSettings').modal('show');
-    $('#permisoUno').data('id', id_usuario);
+  abrirModalPermisosEditar(id_usuario, nombre="", pate="") {
+    Swal.showLoading()
     this.id_usuario=id_usuario
     this.userServ.listarPerfil(id_usuario).subscribe((response) => {
       console.log(response);
       var listaPermiso = response['data'][0]['permisos'];
-      $('#permisoUno').val(listaPermiso[0].estado);
-      $('#permisoDos').val(listaPermiso[1].estado);
-      $('#permisoTres').val(listaPermiso[2].estado);
-      $('#permisoCuatro').val(listaPermiso[3].estado);
-      $('#permisoCinco').val(listaPermiso[4].estado);
-      $('#permisoSeis').val(listaPermiso[5].estado);
-      $('#permisoSiete').val(listaPermiso[6].estado);
-      $('#permisoOcho').val(listaPermiso[7].estado);
-      $('#permisoNueve').val(listaPermiso[8].estado);
+      this.id_rol = response['data'][0]['id_rol'];
+      if(this.id_rol == 2){
+        console.log("asd")
+        this.listaPermiso = listaPermiso.filter(el=>{
+          return el.id_operacion = 2 || el.id_operacion == 3 || el.id_operacion == 7 || el.id_operacion == 1
+        })
+      }else{
+      this.listaPermiso = listaPermiso
 
-      if ($('#permisoUno').val() == 1) $('#permisoUno').bootstrapToggle('on');
-      else $('#permisoUno').bootstrapToggle('off');
+      }
 
-      if ($('#permisoDos').val() == 1) $('#permisoDos').bootstrapToggle('on');
-      else $('#permisoDos').bootstrapToggle('off');
+      console.log(this.id_rol)
+      console.log(this.listaPermiso)
 
-      if ($('#permisoTres').val() == 1) $('#permisoTres').bootstrapToggle('on');
-      else $('#permisoTres').bootstrapToggle('off');
+      Swal.close()
+      $('#nameUserActive').text(nombre + ' ' + pate);
+      $('#contentModalSettings').modal('show');
+      $('#permisoUno').data('id', id_usuario);
 
-      if ($('#permisoCuatro').val() == 1)
-        $('#permisoCuatro').bootstrapToggle('on');
-      else $('#permisoCuatro').bootstrapToggle('off');
 
-      if ($('#permisoCinco').val() == 1)
-        $('#permisoCinco').bootstrapToggle('on');
-      else $('#permisoCinco').bootstrapToggle('off');
 
-      if ($('#permisoSeis').val() == 1) $('#permisoSeis').bootstrapToggle('on');
-      else $('#permisoSeis').bootstrapToggle('off');
+      console.log($(`#permiso1`))
 
-      if ($('#permisoSiete').val() == 1)
-        $('#permisoSiete').bootstrapToggle('on');
-      else $('#permisoSiete').bootstrapToggle('off');
 
-      if ($('#permisoOcho').val() == 1) $('#permisoOcho').bootstrapToggle('on');
-      else $('#permisoOcho').bootstrapToggle('off');
+      console.log($('#permiso1').val())
 
-      if ($('#permisoNueve').val() == 1)
-        $('#permisoNueve').bootstrapToggle('on');
-      else $('#permisoNueve').bootstrapToggle('off');
+
     });
+  }
+
+  togglePermiso(id){
+    console.log(id)
+    var actual
+    this.listaPermiso = this.listaPermiso.map(el=>{
+      console.log(el)
+      if(el.id_operacion==id){
+        el.estado = !el.estado
+        actual = el
+      }
+      return el
+    })
+
+    if(actual.id_operacion==3 && actual.estado==0){
+      console.log("das")
+      this.listaPermiso = this.listaPermiso.map(el=>{
+        if(el.id_operacion==7){
+          el.estado = 0
+        }
+        return el
+      })
+    }else if(actual.id_operacion==7 && actual.estado ==1){
+      this.listaPermiso = this.listaPermiso.map(el=>{
+        if(el.id_operacion==3){
+          el.estado = 1
+        }
+        return el
+      })
+    }
+
   }
 
   abrirModalPermisos() {
     $('#contentModalSettings').modal('show');
+    Swal.showLoading()
+    this.userServ.listarPerfil(1).subscribe((response) => {
+      console.log(response);
+      var listaPermiso = response['data'][0]['permisos'];
+      this.listaPermiso = listaPermiso
+      Swal.close()
 
-    $('#permisoUno').bootstrapToggle('off');
-    $('#permisoDos').bootstrapToggle('off');
-    $('#permisoTres').bootstrapToggle('off');
-    $('#permisoCuatro').bootstrapToggle('off');
-    $('#permisoCinco').bootstrapToggle('off');
-    $('#permisoSeis').bootstrapToggle('off');
-    $('#permisoSiete').bootstrapToggle('off');
-    $('#permisoOcho').bootstrapToggle('off');
-    $('#permisoNueve').bootstrapToggle('off');
+
+
+    });
   }
 
   onChangeTipoCanal(data) {
-    console.log(data);
+    console.log(this.nuevoCanal)
+    console.log(data);      
+    this.userServ.listarEmpresaCanal(this.nuevoCanal+"").subscribe(res=>{
+      console.log(res)
+        this.listaCompanies = res['data'].filter((el) => el.estado == 1);
+
+    })
   }
 }
 

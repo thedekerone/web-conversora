@@ -113,6 +113,11 @@ export class CreateTramaComponent implements OnInit {
   codConvenioBpVendedor: any;
   bp_sap_cliente: any;
   brokerList: any;
+  mostrarTelemarketing=false;
+  mostrarBancaSeguros: boolean;
+  mostrarGrupales: boolean;
+  mostrarSubrogada: boolean;
+  nombre_convenio: any;
 
   constructor(
     public loadServ: LoadService,
@@ -123,10 +128,42 @@ export class CreateTramaComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.mostrarTelemarketing = this.authSer.mostrarTelemarketing()
+    this.mostrarGrupales = this.authSer.mostrarGrupales()
+    this.mostrarBancaSeguros = this.authSer.mostrarBancaSeguros()
+    this.mostrarSubrogada = this.authSer.mostrarSubrogada()
+    console.log(this.mostrarSubrogada)
+
     this.loadServ
       .listarCanales(this.authSer.getIdusuario())
       .subscribe((response) => {
-        this.listaCanales = response['data'];
+        console.log(response)
+        this.listaCanales = response['data'].filter(el=>{
+          console.log(el)
+          // console.log(this.mostrarTelemarketing)
+          if(this.authSer.getIDRol()==="3") return true
+          if(el.id_canal==2 && this.mostrarTelemarketing){
+            console.log("fdas")
+            return true
+          }
+          if(el.id_canal==3 && this.mostrarBancaSeguros){
+            return true
+          }
+          if(el.id_canal==4 && (this.mostrarGrupales || this.mostrarSubrogada)){
+            console.log("faasdf")
+            return true
+          }
+          return false
+        })
+
+        console.log("-------------------------------------------")
+        console.log(this.authSer.getIDRol())
+        
+        if(this.authSer.getIDRol()==="2"){
+          console.log("--------------------------entro-----------------")
+          this.listaCanales=this.listaCanales.filter(el=>this.authSer.getIDCanal()==el.id_canal)
+        }
+
         console.log(this.listaCanales);
         this.permisos = JSON.parse(localStorage.getItem('zxc21dsrty5uyj11j1'));
 
@@ -141,6 +178,89 @@ export class CreateTramaComponent implements OnInit {
         });
       });*/
       });
+  }
+
+  clearEmpresa(){
+    this.tiposelected2 = '0';
+    this.empresaselected2 = '0';
+    this.tiposelected3 = '0';
+    this.empresaselected3 = '0';
+    this.tiposelected4 = '0';
+    this.empresaselected4 = '0';
+    this.empresaSubselected = '0';
+    this.empresaSub = false;
+    this.errorTipo = false;
+    this.errorEmpresa = false;
+    this.errorTrama = false;
+    this.errorTipo2 = false;
+    this.errorEmpresa2 = false;
+    this.errorTrama2 = false;
+    this.errorTipo3 = false;
+    this.errorEmpresa3 = false;
+    this.errorTrama3 = false;
+    this.errorTipo4 = false;
+    this.errorEmpresa4 = false;
+    this.errorTrama4 = false;
+    this.errorEmpresa5 = false;
+    this.convenioRolRecaudador = '';
+    this.nConvenioRecaudador = '';
+    this.capitalizado = '';
+    this.tipoRol = '';
+    this.codigoBroker = '';
+    this.tipoRol2 = '';
+    this.convenioRolUnidVenta = '';
+    this.convenioRolBroker = '';
+    this.mostrarConvenios = false;
+    // this.tipoempresaselected = '0';
+    this.mostrarArchivo = false;
+    this.archivoPago = '';
+    this.horaTransc = '';
+    this.minutosTransc = '';
+    this.extension = '';
+    this.nombre_archivo = '';
+    this.file = '';
+    this.tipoIdentificacion = '';
+    this.nroIdentificacion = '';
+    this.codigoEmpresa = '';
+    this.razonSocial = '';
+    this.rol = '';
+    this.grupo_vendedor = '';
+    this.numero_convenio = '';
+    this.archivo;
+    this.hide = false;
+    this.showConvenio = true;
+    this.codBpVendedor = '';
+    this.codBpBroker = '';
+    this.codBpConvBroker = '';
+    this.codEmpRecaud = '';
+    this.canalVenta = '';
+    this.nombreEmpresa = '';
+    this.formaPlan = '';
+    this.tipoVia = '';
+    this.codOncosys = '';
+    this.nombreVia = '';
+    this.form_manzana = '';
+    this.lote = '';
+    this.dpt = '';
+    this.departamento = '';
+    this.urbanizacion = '';
+    this.provincia = '';
+    this.distrito = '';
+    this.referencia = '';
+    this.archivoDePagoExpirado=null;
+    this.finalizarProceso=null;
+    this.codigoBPSede=null;
+    this.codBpRolCliente=null;
+    this.tipoempresa="";
+    this.rucSubrogada=null;
+    this.razonSocialSubrogado=null;
+    this.bpSapSubrogador=null;
+    this.descripcionSede=null;
+    this.id_empresa=null;
+    this.bp_empresa=null;
+    this.codConvenioBpVendedor=null;
+    this.bp_sap_cliente=null;
+    this.brokerList=null;
   }
 
   resetVariables(){
@@ -281,11 +401,24 @@ export class CreateTramaComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response['success']) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Proceso completado',
-                text: 'El archivo se cargó exitosamente',
+              console.log(response)
+
+              this.reportSer.duracionTiempoTransc(this.tiposelected).subscribe((response) => {
+                console.log(response['data'][0].horas_transcurridas);
+                var tiempoTranscurrido = response['data'][0].horas_transcurridas;
+                this.horaTransc = tiempoTranscurrido.split(':')[0];
+                this.minutosTransc = tiempoTranscurrido.split(':')[1];
+                this.archivoDePagoExpirado =
+                  Number(tiempoTranscurrido.split(':')[0]) >= 24;
+
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Proceso completado',
+                    text: 'El archivo se cargó exitosamente',
+                  });
               });
+
+              
             }
           });
       };
@@ -690,7 +823,8 @@ export class CreateTramaComponent implements OnInit {
             this.nombreEmpresa,
             this.bpSapSubrogador,
             this.rucSubrogada,
-            this.razonSocialSubrogado
+            this.razonSocialSubrogado,
+            this.nombre_convenio
           )
           .subscribe((response) => {
             console.log(response);
@@ -809,7 +943,8 @@ export class CreateTramaComponent implements OnInit {
             this.nombreEmpresa,
             this.razonSocialSubrogado,
             this.bpSapSubrogador,
-            this.descripcionSede
+            this.descripcionSede,
+            this.nombre_convenio
           )
           .subscribe((response) => {
             console.log(response);
@@ -1181,7 +1316,7 @@ export class CreateTramaComponent implements OnInit {
               this.listaEmpresaSub = response['data'].filter(el=>el.estado==1);;
 
               console.log(this.listaEmpresaSub)
-
+              
 
             },(err)=>console.log("err:" + err));
         }
@@ -1214,10 +1349,11 @@ export class CreateTramaComponent implements OnInit {
           if (!Array.isArray(conveniosList)) {
             conveniosList = [conveniosList];
           }
+
+
           this.canalVenta = result["DatosConvenio"][0]["DatosCabecera"]["GrupoVendedor"]
           this.codigoEmpresa = result["DatosGenerales"]["CodigoEmpresa"]
           this.brokerList = result["DatosConvenio"][0]["Broker"]
-
 
           this.grupo_vendedor = result['DatosConvenio'][0]["DatosCabecera"]["GrupoVendedor"]
 
@@ -1346,6 +1482,7 @@ export class CreateTramaComponent implements OnInit {
 
           console.log(response['data']['Response']['DatosEmpresa'][0])
 
+    this.nombre_convenio = result["DatosConvenio"][0]["DatosCabecera"]["NombreConvenio"]
           
 
           // this.convenioRolCliente =
@@ -1509,8 +1646,10 @@ export class CreateTramaComponent implements OnInit {
 
   onChangeTipoEmpresa(value) {
     var tipo = '';
+    this.clearEmpresa()
     this.listaEmpresa = [];
-
+    this.convenioRolCliente=""
+    this.sede=""
     console.log(this.listaEmpresa)
 
     if (value == 1) {

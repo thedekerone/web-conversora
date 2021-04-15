@@ -206,7 +206,7 @@
                   *ngFor="let data of listaEmpresa"
                   [value]="data.id_empresa"
                 >
-                  {{ data.empresa }}
+                  {{ data.nombre_bca_seguro }}
                 </option>
               </select>
               <span *ngIf="errorEmpresa2" class="colorError"
@@ -351,8 +351,12 @@
                 class="form-control errorborderdata9"
               >
                 <option value="0" selected>Seleccione la Empresa</option>
-                <option value="1">Empresa independiente</option>
-                <option value="2">Empresa subrogadas</option>
+                <option *ngIf="mostrarGrupales" value="1">
+                  Empresa independiente
+                </option>
+                <option *ngIf="mostrarSubrogada" value="2">
+                  Empresa subrogadas
+                </option>
               </select>
               <span *ngIf="errorEmpresa5" class="colorError"
                 >Seleccione una empresa</span
