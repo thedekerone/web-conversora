@@ -351,7 +351,9 @@
                 class="form-control errorborderdata9"
               >
                 <option value="0" selected>Seleccione la Empresa</option>
-                <option value="1">Empresa independiente</option>
+                <option *ngIf="mostrarGrupales" value="1">
+                  Empresa independiente
+                </option>
                 <option *ngIf="mostrarSubrogada" value="2">
                   Empresa subrogadas
                 </option>

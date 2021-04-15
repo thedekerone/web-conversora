@@ -185,6 +185,8 @@ export class BancaSeguroComponent implements OnInit {
         $('#actualizarCapitalizado').val(element.capitalizado==1)
         console.log(element.capitalizado==1)
         console.log(  $('#actualizarCapitalizado').val())
+
+        $('#actualizarCapitalizado').bootstrapToggle(element.capitalizado==1?'on':'off')
         if (tipo_trama.includes('2')) {
           if (tipo_trama.includes('4')) {
             if (tipo_trama.includes('6')) {

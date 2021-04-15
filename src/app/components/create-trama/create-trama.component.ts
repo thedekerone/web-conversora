@@ -132,7 +132,7 @@ export class CreateTramaComponent implements OnInit {
     this.mostrarGrupales = this.authSer.mostrarGrupales()
     this.mostrarBancaSeguros = this.authSer.mostrarBancaSeguros()
     this.mostrarSubrogada = this.authSer.mostrarSubrogada()
-
+    console.log(this.mostrarSubrogada)
 
     this.loadServ
       .listarCanales(this.authSer.getIdusuario())
@@ -149,7 +149,8 @@ export class CreateTramaComponent implements OnInit {
           if(el.id_canal==3 && this.mostrarBancaSeguros){
             return true
           }
-          if(el.id_canal==4 && this.mostrarGrupales){
+          if(el.id_canal==4 && (this.mostrarGrupales || this.mostrarSubrogada)){
+            console.log("faasdf")
             return true
           }
           return false
@@ -177,6 +178,89 @@ export class CreateTramaComponent implements OnInit {
         });
       });*/
       });
+  }
+
+  clearEmpresa(){
+    this.tiposelected2 = '0';
+    this.empresaselected2 = '0';
+    this.tiposelected3 = '0';
+    this.empresaselected3 = '0';
+    this.tiposelected4 = '0';
+    this.empresaselected4 = '0';
+    this.empresaSubselected = '0';
+    this.empresaSub = false;
+    this.errorTipo = false;
+    this.errorEmpresa = false;
+    this.errorTrama = false;
+    this.errorTipo2 = false;
+    this.errorEmpresa2 = false;
+    this.errorTrama2 = false;
+    this.errorTipo3 = false;
+    this.errorEmpresa3 = false;
+    this.errorTrama3 = false;
+    this.errorTipo4 = false;
+    this.errorEmpresa4 = false;
+    this.errorTrama4 = false;
+    this.errorEmpresa5 = false;
+    this.convenioRolRecaudador = '';
+    this.nConvenioRecaudador = '';
+    this.capitalizado = '';
+    this.tipoRol = '';
+    this.codigoBroker = '';
+    this.tipoRol2 = '';
+    this.convenioRolUnidVenta = '';
+    this.convenioRolBroker = '';
+    this.mostrarConvenios = false;
+    // this.tipoempresaselected = '0';
+    this.mostrarArchivo = false;
+    this.archivoPago = '';
+    this.horaTransc = '';
+    this.minutosTransc = '';
+    this.extension = '';
+    this.nombre_archivo = '';
+    this.file = '';
+    this.tipoIdentificacion = '';
+    this.nroIdentificacion = '';
+    this.codigoEmpresa = '';
+    this.razonSocial = '';
+    this.rol = '';
+    this.grupo_vendedor = '';
+    this.numero_convenio = '';
+    this.archivo;
+    this.hide = false;
+    this.showConvenio = true;
+    this.codBpVendedor = '';
+    this.codBpBroker = '';
+    this.codBpConvBroker = '';
+    this.codEmpRecaud = '';
+    this.canalVenta = '';
+    this.nombreEmpresa = '';
+    this.formaPlan = '';
+    this.tipoVia = '';
+    this.codOncosys = '';
+    this.nombreVia = '';
+    this.form_manzana = '';
+    this.lote = '';
+    this.dpt = '';
+    this.departamento = '';
+    this.urbanizacion = '';
+    this.provincia = '';
+    this.distrito = '';
+    this.referencia = '';
+    this.archivoDePagoExpirado=null;
+    this.finalizarProceso=null;
+    this.codigoBPSede=null;
+    this.codBpRolCliente=null;
+    this.tipoempresa="";
+    this.rucSubrogada=null;
+    this.razonSocialSubrogado=null;
+    this.bpSapSubrogador=null;
+    this.descripcionSede=null;
+    this.id_empresa=null;
+    this.bp_empresa=null;
+    this.codConvenioBpVendedor=null;
+    this.bp_sap_cliente=null;
+    this.brokerList=null;
   }
 
   resetVariables(){
@@ -317,11 +401,24 @@ export class CreateTramaComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response['success']) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Proceso completado',
-                text: 'El archivo se cargó exitosamente',
+              console.log(response)
+
+              this.reportSer.duracionTiempoTransc(this.tiposelected).subscribe((response) => {
+                console.log(response['data'][0].horas_transcurridas);
+                var tiempoTranscurrido = response['data'][0].horas_transcurridas;
+                this.horaTransc = tiempoTranscurrido.split(':')[0];
+                this.minutosTransc = tiempoTranscurrido.split(':')[1];
+                this.archivoDePagoExpirado =
+                  Number(tiempoTranscurrido.split(':')[0]) >= 24;
+
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Proceso completado',
+                    text: 'El archivo se cargó exitosamente',
+                  });
               });
+
+              
             }
           });
       };
@@ -1549,8 +1646,10 @@ export class CreateTramaComponent implements OnInit {
 
   onChangeTipoEmpresa(value) {
     var tipo = '';
+    this.clearEmpresa()
     this.listaEmpresa = [];
-
+    this.convenioRolCliente=""
+    this.sede=""
     console.log(this.listaEmpresa)
 
     if (value == 1) {

@@ -624,12 +624,33 @@ export class UsersComponent implements OnInit {
 
   togglePermiso(id){
     console.log(id)
+    var actual
     this.listaPermiso = this.listaPermiso.map(el=>{
+      console.log(el)
       if(el.id_operacion==id){
         el.estado = !el.estado
+        actual = el
       }
       return el
     })
+
+    if(actual.id_operacion==3 && actual.estado==0){
+      console.log("das")
+      this.listaPermiso = this.listaPermiso.map(el=>{
+        if(el.id_operacion==7){
+          el.estado = 0
+        }
+        return el
+      })
+    }else if(actual.id_operacion==7 && actual.estado ==1){
+      this.listaPermiso = this.listaPermiso.map(el=>{
+        if(el.id_operacion==3){
+          el.estado = 1
+        }
+        return el
+      })
+    }
+
   }
 
   abrirModalPermisos() {
