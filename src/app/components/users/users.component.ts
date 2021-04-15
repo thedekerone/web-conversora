@@ -85,7 +85,7 @@ export class UsersComponent implements OnInit {
       // });
 
       this.userServ.listarCanales().subscribe((response) => {
-        this.listaCanals = response['data'];
+        this.listaCanals = response['data'].filter(el=>el.id_canal!=5);
 
         //this.dtTrigger.next();
       });
