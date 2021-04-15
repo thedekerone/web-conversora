@@ -155,7 +155,8 @@ export class BancaSeguroComponent implements OnInit {
     });
   }
 
-  abrirModalActualizar(ruc) {
+  abrirModalActualizar(id_empresa) {
+    console.log(id_empresa)
     $('#contentModalActualizar').modal('show');
     this.ruc_empresa = '';
     this.nom_empresa = '';
@@ -170,7 +171,7 @@ export class BancaSeguroComponent implements OnInit {
 
     this.listaEmpresas.forEach((element) => {
       var tipo_trama;
-      if (element.ruc == ruc) {
+      if (element.id_empresa == id_empresa  ) {
         this.id_empresa = element.id_empresa;
         this.ruc_empresa = element.ruc;
         this.nom_empresa = element.empresa;
@@ -180,7 +181,10 @@ export class BancaSeguroComponent implements OnInit {
         this.bancaSeguro = element.nombre_bca_seguro;
         this.nConvenioRec = element.n_convenio_recaudador;
         tipo_trama = element.tipo_trama;
-
+        console.log(element)
+        $('#actualizarCapitalizado').val(element.capitalizado==1)
+        console.log(element.capitalizado==1)
+        console.log(  $('#actualizarCapitalizado').val())
         if (tipo_trama.includes('2')) {
           if (tipo_trama.includes('4')) {
             if (tipo_trama.includes('6')) {
@@ -221,7 +225,7 @@ export class BancaSeguroComponent implements OnInit {
     var request;
     request = {
       action: 'actualizar',
-      id_empresa: this.id_empresa,
+      id_empresa: this.id_empresa+"",
       ruc_empresa: this.ruc_empresa,
       nom_empresa: this.nom_empresa,
       tipo_trama: tipo_trama,
@@ -234,8 +238,15 @@ export class BancaSeguroComponent implements OnInit {
     };
     console.log('adsda');
     console.log(request);
+    Swal.fire({
+      title: 'Cargando',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     this.empServ.actualizarEmpresas(request).subscribe(
       (response) => {
+        Swal.close()
         console.log('response');
         console.log(response);
         if (response['success'] == true) {
@@ -249,7 +260,7 @@ export class BancaSeguroComponent implements OnInit {
 
           this.dtTrigger.unsubscribe();
           this.listarEmpresas();
-          document.location.reload();
+          // document.location.reload();
         } else {
           Swal.fire({
             icon: 'info',

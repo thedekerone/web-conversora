@@ -180,6 +180,7 @@
                 <select
                   class="form-control"
                   formControlName="id_canal"
+                  [(ngModel)]="nuevoCanal"
                   (change)="onChangeTipoCanal($event.target.value)"
                 >
                   <option value="">Seleccione un canal</option>
@@ -197,9 +198,13 @@
                 *ngIf="!showCanalInfo; else showOtherCanal"
               >
                 <label for="grupovendedoresSelcted">Empresa</label>
-                <select class="form-control" formControlName="id_empresa">
+                <select
+                  (change)="onChangeEmpresa($event)"
+                  class="form-control"
+                  formControlName="id_empresa"
+                >
                   <option value="" selected="selected">
-                    Seleccione una empresa
+                    Seleccione una empresa1
                   </option>
                   <option *ngFor="let empresaauna of empresaaunas">
                     {{ empresaauna.name }}
@@ -212,6 +217,7 @@
                   <select
                     class="form-control"
                     formControlName="id_empresa"
+                    [(ngModel)]="nuevaEmpresa"
                     (change)="onChangeEmpresa($event)"
                     id="type_document"
                   >

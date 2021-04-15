@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { UsersService } from 'src/app/services/users.service';
 import { formatDate } from '@angular/common';
+import { LoadService } from 'src/app/services/load.service';
 declare var $: any;
 
 @Component({
@@ -36,10 +37,13 @@ export class UsersComponent implements OnInit {
   id_usuario: string;
   listaPermiso=[];
   id_rol: any;
+  nuevaEmpresa: any;
+  nuevoCanal: any;
 
   constructor(
     public authSer: AuthService,
     private userServ: UsersService,
+    public loadServ: LoadService,
     private utilsDt: DatatableService,
     private formBuilder: FormBuilder
   ) {
@@ -74,12 +78,11 @@ export class UsersComponent implements OnInit {
     }
     if (data == '2') {
       this.showCanalInfo = true;
-      this.userServ.listarEmpresas().subscribe((response) => {
-        this.listaCompanies = response['data'].filter((el) => el.estado == 1);
-        console.log(response['data']);
-        console.log(this.listaCompanies);
-        //this.dtTrigger.next();
-      });
+      // this.userServ.listarEmpresas().subscribe((response) => {
+      //   console.log(response['data']);
+      //   console.log(this.listaCompanies);
+      //   //this.dtTrigger.next();
+      // });
 
       this.userServ.listarCanales().subscribe((response) => {
         this.listaCanals = response['data'];
@@ -90,27 +93,91 @@ export class UsersComponent implements OnInit {
   }
 
   onChangeEmpresa($event) {
-    this.userServ.listarEmpresa('demo').subscribe((response) => {
+    console.log($event.target.value)
+    console.log(this.nuevaEmpresa)
+    var empresa =this.listaCompanies.find(el=>el.id_empresa==this.nuevaEmpresa)
+    var ruc = empresa.ruc
+    var razonSocial = empresa.empresa
+
+    $('#rucAdd').val(ruc);
+    $('#razonSocialAdd').val(razonSocial);
+    if(this.nuevoCanal==3){
+
+      this.loadServ.listarEmpresa(
+          "",
+            ruc,
+            "",
+            "",
+            '01',
+            "",
+            ""
+  
+      ).subscribe((response) => {
+        console.log(response)
+        var result = response['data']['Response']['DatosEmpresa'][0];
+        $('#grupovendedorAdd').val(result['DatosConvenio'][0]["DatosCabecera"].DescripcionGpoVendedor);
+        //this.dtTrigger.next();
+        this.registerUserForm.controls.tipo_documento.setValue(
+          ruc
+        );
+        this.registerUserForm.controls.documento.setValue(
+          razonSocial
+        );
+      });
+    }else if(this.nuevoCanal==2){
+      this.loadServ.listarEmpresa(
+        "",
+          ruc,
+          "",
+          "",
+          '00',
+          "",
+          ""
+
+    ).subscribe((response) => {
+      console.log(response)
       var result = response['data']['Response']['DatosEmpresa'][0];
-      $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
+      $('#grupovendedorAdd').val(result['DatosConvenio'][0]["DatosCabecera"].DescripcionGpoVendedor);
       //this.dtTrigger.next();
       this.registerUserForm.controls.tipo_documento.setValue(
-        result['DatosGenerales'].RazonSocial
+        ruc
       );
       this.registerUserForm.controls.documento.setValue(
-        result['DatosGenerales'].RazonSocial
+        razonSocial
       );
     });
+    } else if(this.nuevoCanal==4){
+      this.loadServ.listarEmpresa(
+        "",
+          ruc,
+          "",
+          "",
+          '02',
+          "",
+          ""
+
+    ).subscribe((response) => {
+      console.log(response)
+      var result = response['data']['Response']['DatosEmpresa'][0];
+      $('#grupovendedorAdd').val(result['DatosConvenio'][0]["DatosCabecera"].DescripcionGpoVendedor);
+      //this.dtTrigger.next();
+      this.registerUserForm.controls.tipo_documento.setValue(
+        ruc
+      );
+      this.registerUserForm.controls.documento.setValue(
+        razonSocial
+      );
+    });
+    }
   }
+ 
 
   onChangeEmpresaActualizar($event) {
     this.userServ.listarEmpresa('demo').subscribe((response) => {
       var result = response['data']['Response']['DatosEmpresa'][0];
-      $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
-      $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
+      // $('#razonSocialAdd').val(result['DatosGenerales'].RazonSocial);
+      // $('#rucAdd').val(result['DatosGenerales'].RazonSocial);
+      // $('#grupovendedorAdd').val(result['DatosGenerales'].GrupoVendedor);
       //this.dtTrigger.next();
     });
   }
@@ -580,7 +647,13 @@ export class UsersComponent implements OnInit {
   }
 
   onChangeTipoCanal(data) {
-    console.log(data);
+    console.log(this.nuevoCanal)
+    console.log(data);      
+    this.userServ.listarEmpresaCanal(this.nuevoCanal+"").subscribe(res=>{
+      console.log(res)
+        this.listaCompanies = res['data'].filter((el) => el.estado == 1);
+
+    })
   }
 }
 

@@ -56,7 +56,8 @@
                 </button>
                 <button
                   *ngIf="empresa.subEstado == 0"
-                  class="btn btn-danger"
+                  class="btn"
+                  style="background-color: rgb(236, 236, 12)"
                   (click)="AbrirModalSubrogado(2, empresa.id_empresa)"
                 >
                   <i class="fa fa-plus-circle"></i> Subrogado

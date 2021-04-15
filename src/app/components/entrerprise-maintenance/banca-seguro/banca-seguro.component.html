@@ -59,14 +59,14 @@
                 }}
               </td>
               <td>{{ empresa.n_convenio_recaudador }}</td>
-              <td>{{ empresa.capitalizado == 0 ? "no" : "si" }}</td>
+              <td>{{ empresa.capitalizado == "0" ? "no" : "si" }}</td>
               <td
                 style="display: flex; justify-content: center"
                 *ngIf="empresa.estado == 1"
               >
                 <button
                   class="btn btn-primary"
-                  (click)="abrirModalActualizar(empresa.ruc)"
+                  (click)="abrirModalActualizar(empresa.id_empresa)"
                 >
                   <i class="fa fa-edit"></i> Editar
                 </button>
@@ -83,7 +83,7 @@
               >
                 <button
                   class="btn btn-primary"
-                  (click)="abrirModalActualizar(empresa.ruc)"
+                  (click)="abrirModalActualizar(empresa.id_empresa)"
                 >
                   <i class="fa fa-edit"></i> Editar
                 </button>

@@ -124,7 +124,7 @@ export class TramaService {
 
   registrarTramaGrup1(extension, nombre_archivo, file, canal, id_canal, tipo_trama, empresa_bp,
     id_usuario, id_tipo_trama, id_empresa, sede_carga, nombre_empresa,
-    dp_subrogador, ruc_subrogada, subempresa) {
+    dp_subrogador, ruc_subrogada, subempresa, nombre_convenio) {
     const params = {
       "action": "carga_trama",
       "extension": extension,
@@ -141,7 +141,8 @@ export class TramaService {
       "nombre_empresa": nombre_empresa?nombre_empresa+"":"vacio",
       "dp_subrogador": dp_subrogador?dp_subrogador+"":"vacio",
       "ruc_subrogada": ruc_subrogada?ruc_subrogada+"":"vacio",
-      "subempresa": subempresa?subempresa+"":"vacio"
+      "subempresa": subempresa?subempresa+"":"vacio",
+      "programa":nombre_convenio?nombre_convenio+"":"vacio"
     }
     console.log(params)
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));
@@ -152,7 +153,7 @@ export class TramaService {
     cod_convenio_broker, canal_venta, form_plan, tipo_via, nombre_via, nombre_via2, nombre_via3, campo_manual, form_manzana,
     form_lote, form_dpt, form_sector, form_urbanizacion, form_departamento, form_provincia,
     form_distrito, form_referencia, form_telefono, form_celular,convenioRolCliente,nroIdentificacion,numero_convenio,
-     codigoBPSede, codBpRolCliente, tipoempresa,rucSubrogada, nombreEmpresa,razonSocialSubrogado, bpSapSubrogador,descripcionSede) {
+     codigoBPSede, codBpRolCliente, tipoempresa,rucSubrogada, nombreEmpresa,razonSocialSubrogado, bpSapSubrogador,descripcionSede, nombre_convenio) {
     const params = {
       "action": "carga_trama",
       "extension": extension,
@@ -198,7 +199,9 @@ export class TramaService {
       "nombre_empresa": nombreEmpresa,
       "dp_subrogador": bpSapSubrogador,
       "ruc_subrogada": rucSubrogada,
-      "subempresa": razonSocialSubrogado
+      "subempresa": razonSocialSubrogado,
+      "programa":nombre_convenio?nombre_convenio+"":"vacio"
+
     }
     console.log(params)
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH_SAVE, params).pipe(map(res => res));

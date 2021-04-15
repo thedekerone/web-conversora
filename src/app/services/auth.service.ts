@@ -317,7 +317,7 @@ export class AuthService {
         if(element.estado == 1) {
           if(element.id_operacion == 5) {
               rol = true;
-              console.log("sisisis")
+          
           }
         }
       });

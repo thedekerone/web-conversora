@@ -65,6 +65,7 @@ export class ReportComponent implements OnInit {
     this.reportServ.reporteAltaByC().subscribe(response => {
       // this.reporteAltaByC  = response["data"];
       var res = response["data"][0]
+      console.log(Object.keys(res));
       console.log(res);
       this.reporteAltaByC = [
         {
@@ -138,6 +139,7 @@ export class ReportComponent implements OnInit {
       // this.reporteRecaudoByC = response["data"];
       var res = response["data"][0]
       console.log(res);
+      console.log(Object.keys(res));
       this.reporteRecaudoByC = [
         {
           "Tipo canal": res.canal,
@@ -186,9 +188,11 @@ export class ReportComponent implements OnInit {
 
   exportarBajaByC() {
     this.isLoading3 = true
+    console.log("baja banco seguro")
     this.reportServ.reporteBajaByC().subscribe(response => {
       // this.reporteBajaByC = response["data"];
       var res = response["data"][0]
+      console.log(Object.keys(res));
       console.log(res);
       this.reporteBajaByC = [
         {
@@ -232,6 +236,8 @@ export class ReportComponent implements OnInit {
     this.reportServ.reporteGrupales().subscribe(response => {
       // this.reporteGrupales = response["data"];
       var res = response["data"][0]
+      console.log(Object.keys(res));
+
       console.log(res);
       this.reporteGrupales = [
         {
@@ -268,8 +274,16 @@ export class ReportComponent implements OnInit {
           "Estatus": res.estado,
           "Cod. Mensaje": res.cod_mensaje,
           "Descripción del mensaje": res.detalle,
+          "Convenio":res.convenio?res.convenio:"",
+          "Fecha de Proceso": res.fecha_proceso
+
         }
       ]
+      // if(res.fecha_proceso){
+      //   this.reporteGrupales[0]["Fecha de proceso"]
+      // }
+      
+      
       this.excelService.exportToExcel(this.reporteGrupales, 'Grupales');
       this.isLoading4 = false
     });
@@ -280,6 +294,7 @@ export class ReportComponent implements OnInit {
     this.reportServ.reporteTelemarketing().subscribe(response => {
       // this.reporteTelemarketing = response["data"];
       var res = response["data"][0] 
+      console.log(Object.keys(res));
       console.log(res);
       this.reporteTelemarketing = [
         {

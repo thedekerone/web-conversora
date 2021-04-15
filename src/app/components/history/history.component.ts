@@ -37,7 +37,12 @@ export class HistoryComponent implements OnInit {
     this.dtOptions2 = this.utilsDt.optionsDataTable();
   }
 
+
+  
+
   ngOnInit(): void {
+
+    this.historyServ.downloadFile().subscribe(response=>console.log(response))
 
     this.historyServ.listarHistorial().subscribe(response => {
       var listaHist = response["data"]

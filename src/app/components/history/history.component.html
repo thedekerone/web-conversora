@@ -45,10 +45,16 @@
               <td>
                 <a
                   style="cursor: pointer"
-                  href="{{ historial.url_archivo }}"
-                  download="{{ historial.nombre_archivo }}"
+                  [href]="historial.url_archivo"
+                  [download]="historial.nombre_archivo"
+                  target="_blank"
                   >{{ historial.nombre_archivo }}</a
                 >
+                <!-- <a
+                  [download]=""
+                  href="https://afiliacion-procesadoras.s3.amazonaws.com/conversora/sc-D200903ALTA2.txt"
+                  >Download movie</a
+                > -->
               </td>
               <td>{{ historial.fecha_registro.toString().substr(0, 10) }}</td>
               <td>{{ historial.fecha_registro.toString().substr(11, 19) }}</td>

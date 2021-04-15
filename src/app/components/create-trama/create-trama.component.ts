@@ -117,6 +117,7 @@ export class CreateTramaComponent implements OnInit {
   mostrarBancaSeguros: boolean;
   mostrarGrupales: boolean;
   mostrarSubrogada: boolean;
+  nombre_convenio: any;
 
   constructor(
     public loadServ: LoadService,
@@ -725,7 +726,8 @@ export class CreateTramaComponent implements OnInit {
             this.nombreEmpresa,
             this.bpSapSubrogador,
             this.rucSubrogada,
-            this.razonSocialSubrogado
+            this.razonSocialSubrogado,
+            this.nombre_convenio
           )
           .subscribe((response) => {
             console.log(response);
@@ -844,7 +846,8 @@ export class CreateTramaComponent implements OnInit {
             this.nombreEmpresa,
             this.razonSocialSubrogado,
             this.bpSapSubrogador,
-            this.descripcionSede
+            this.descripcionSede,
+            this.nombre_convenio
           )
           .subscribe((response) => {
             console.log(response);
@@ -1216,7 +1219,7 @@ export class CreateTramaComponent implements OnInit {
               this.listaEmpresaSub = response['data'].filter(el=>el.estado==1);;
 
               console.log(this.listaEmpresaSub)
-
+              
 
             },(err)=>console.log("err:" + err));
         }
@@ -1249,10 +1252,11 @@ export class CreateTramaComponent implements OnInit {
           if (!Array.isArray(conveniosList)) {
             conveniosList = [conveniosList];
           }
+
+
           this.canalVenta = result["DatosConvenio"][0]["DatosCabecera"]["GrupoVendedor"]
           this.codigoEmpresa = result["DatosGenerales"]["CodigoEmpresa"]
           this.brokerList = result["DatosConvenio"][0]["Broker"]
-
 
           this.grupo_vendedor = result['DatosConvenio'][0]["DatosCabecera"]["GrupoVendedor"]
 
@@ -1381,6 +1385,7 @@ export class CreateTramaComponent implements OnInit {
 
           console.log(response['data']['Response']['DatosEmpresa'][0])
 
+    this.nombre_convenio = result["DatosConvenio"][0]["DatosCabecera"]["NombreConvenio"]
           
 
           // this.convenioRolCliente =
