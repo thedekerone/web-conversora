@@ -63,7 +63,7 @@ export class UsersService {
     return this.http.post<Object>(this.apiService._END_POINTS.BASE_ROUTE_PATH, params).pipe(map(res => res));
   }
 
-  listarPerfil(userid) {
+    listarPerfil(userid) {
     const params = {
       "action": "perfil",
       "usuario": userid
