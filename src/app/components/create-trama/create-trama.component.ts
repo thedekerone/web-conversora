@@ -383,7 +383,7 @@ export class CreateTramaComponent implements OnInit {
       extension = 'xls';
     if (ext == 'application/vnd.ms-excel') extension = 'xls';
     if (ext == 'text/plain') extension = 'txt';
-    var nombre_archivo = event.target.files[0].name;
+    var nombre_archivo = event.target.files[0].name.split('.')[0];
     const reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
       var contenido = '';

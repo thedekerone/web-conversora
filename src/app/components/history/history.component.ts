@@ -46,6 +46,7 @@ export class HistoryComponent implements OnInit {
 
     this.historyServ.listarHistorial().subscribe(response => {
       var listaHist = response["data"]
+      console.log(listaHist)
       listaHist.forEach(element => {     
         var hora = element.fecha_registro.substring(10, 19)
         for (let index = 0; index < hora.length; index++) {
