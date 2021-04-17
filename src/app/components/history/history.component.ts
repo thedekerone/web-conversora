@@ -110,6 +110,7 @@ fetch("https://afiliacion-procesadoras.s3.amazonaws.com/conversora/sc-D200903ALT
       console.log(this.listaLog)
       //this.dtTrigger2.next();
     });
+    this.p=1
   }
 
   descargarLog(id_carga_trama, nombre_archivo) {
