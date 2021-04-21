@@ -495,7 +495,7 @@ export class UsersComponent implements OnInit {
       this.updateUserForm.value.id_empresa = "1"
     } else {
       this.updateUserForm.controls.tipo_documento.setValue(1);
-      this.registerUserForm.value.documento = "0"
+      this.updateUserForm.value.documento = "0"
     }
     console.log()
     this.userServ
