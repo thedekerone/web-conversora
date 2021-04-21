@@ -202,11 +202,16 @@
                   (change)="onChangeEmpresa($event)"
                   class="form-control"
                   formControlName="id_empresa"
+                  [value]="0"
+                  disabled
                 >
                   <option value="" selected="selected">
                     Seleccione una empresa1
                   </option>
-                  <option *ngFor="let empresaauna of empresaaunas">
+                  <option
+                    [value]="empresaauna.id"
+                    *ngFor="let empresaauna of empresaaunas"
+                  >
                     {{ empresaauna.name }}
                   </option>
                 </select>

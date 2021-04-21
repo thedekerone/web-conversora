@@ -13,7 +13,7 @@ export class HistoryService {
 
   listarHistorial() {
     var params
-    if(this.authSer.getIDRol() == 1){
+    if(this.authSer.getIDRol() == 1 || this.authSer.getIDRol() == 3){
         params = {"action": "historico"}
     }else{
       params = {"action": "historico","usuario": this.authSer.getIdusuario()}

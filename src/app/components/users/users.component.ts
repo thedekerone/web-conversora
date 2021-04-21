@@ -456,10 +456,11 @@ export class UsersComponent implements OnInit {
     }
 
     if (this.registerUserForm.value.id_rol == 1) {
-      this.registerUserForm.value.id_canal = 0;
-      this.registerUserForm.value.id_empresa = 0;
+      this.registerUserForm.value.id_canal = "1";
+      this.registerUserForm.value.id_empresa = "1";
     } else {
       this.registerUserForm.value.tipo_documento = 1;
+      this.registerUserForm.value.documento = "0"
     }
     console.log(this.registerUserForm)
     this.userServ
@@ -490,11 +491,13 @@ export class UsersComponent implements OnInit {
 
   btnActualizar() {
     if (this.updateUserForm.value.id_rol == 1) {
-      this.updateUserForm.value.id_canal = 0;
+      this.updateUserForm.value.id_canal = "1"
+      this.updateUserForm.value.id_empresa = "1"
     } else {
       this.updateUserForm.controls.tipo_documento.setValue(1);
+      this.registerUserForm.value.documento = "0"
     }
-
+    console.log()
     this.userServ
       .actualizarUsuario(this.updateUserForm.value)
       .subscribe((response) => {
