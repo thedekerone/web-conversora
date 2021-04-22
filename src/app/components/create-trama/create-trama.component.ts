@@ -445,7 +445,7 @@ export class CreateTramaComponent implements OnInit {
     if (ext == 'text/plain') {
       this.extension = 'txt';
       this.nombre_archivo = archivo.split('.txt')[0];
-      this.nombre_archivo = archivo.split('.TXT')[0]
+      this.nombre_archivo = this.nombre_archivo.split('.TXT')[0]
     }
     console.log(this.extension);
     console.log(this.nombre_archivo);
