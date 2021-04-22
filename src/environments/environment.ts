@@ -5,12 +5,12 @@
 export const environment = {
   production: false,
   lambda_acceso:
-    'https://d9111ljnt9.execute-api.us-east-1.amazonaws.com/dev/api-acceso-conversor',
+    'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas/qas-api-acceso',
   lambda_usuario:
-    'https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor',
-  baseRoutePath: 'https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev',
+    'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas/qas-api-usuario',
+  baseRoutePath: 'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas',
   baseRoute:
-    'https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor',
+    'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas/qas-api-usuario',
   baseRouteCompany:
     'https://d06hd0murc.execute-api.us-east-1.amazonaws.com/dev',
   baseRoutePuntuaciones:
