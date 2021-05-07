@@ -1,12 +1,16 @@
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
+
 export const environment = {
-  production: true,
+  production: false,
   lambda_acceso:
     'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas/qas-api-acceso',
   lambda_usuario:
     'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas/qas-api-usuario',
-  baseRoutePath: 'https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev',
+  baseRoutePath: 'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas',
   baseRoute:
-    'https://12rz1lnwih.execute-api.us-east-1.amazonaws.com/dev/api-usuario-conversor',
+    'https://o3e12qm1ve.execute-api.us-east-1.amazonaws.com/qas/qas-api-usuario',
   baseRouteCompany:
     'https://d06hd0murc.execute-api.us-east-1.amazonaws.com/dev',
   baseRoutePuntuaciones:
@@ -31,4 +35,14 @@ export const environment = {
     'https://8hzaxtwgda.execute-api.us-east-1.amazonaws.com/dev',
   baseRoutePathMantProgramGrupales:
     'https://tfsppx0y1a.execute-api.us-east-1.amazonaws.com/dev',
+  baseRoutePathProcessState:
+    'https://5tdfrp6542.execute-api.us-east-1.amazonaws.com/dev',
 };
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
