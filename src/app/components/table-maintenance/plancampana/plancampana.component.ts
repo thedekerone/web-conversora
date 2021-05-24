@@ -39,14 +39,28 @@ export class PlanCampanaComponent implements OnInit {
       plan_sap: ['', [Validators.required]],
       campana_sap: [''],
       programa: ['', [Validators.required]],
+      convenio_recaudador: ['', [Validators.required]],
+      convenio_unidad_venta: ['', [Validators.required]],
+      codigo_bp_unidad_venta: ['', [Validators.required]],
+      codigo_bp_recaudador: ['', [Validators.required]],
+      convenio_broker: [''],
+      codigo_bp_broker: [''],
+      gpo_vendedor: ['', [Validators.required]],
     });
     this.updatePYCForm = this.formBuilder.group({
       action: 'actualizar',
-      cod_empresa: ['', [Validators.required]],
-      programa: ['', [Validators.required]],
       procedencia: ['', [Validators.required]],
+      cod_empresa: ['', [Validators.required]],
       plan_sap: ['', [Validators.required]],
       campana_sap: [''],
+      programa: ['', [Validators.required]],
+      convenio_recaudador: ['', [Validators.required]],
+      convenio_unidad_venta: ['', [Validators.required]],
+      codigo_bp_unidad_venta: ['', [Validators.required]],
+      codigo_bp_recaudador: ['', [Validators.required]],
+      convenio_broker: [''],
+      codigo_bp_broker: [''],
+      gpo_vendedor: ['', [Validators.required]],
     });
   }
 
@@ -88,6 +102,27 @@ export class PlanCampanaComponent implements OnInit {
         this.updatePYCForm.controls.procedencia.setValue(listaPlan.procedencia);
         this.updatePYCForm.controls.plan_sap.setValue(listaPlan.plan_sap);
         this.updatePYCForm.controls.campana_sap.setValue(listaPlan.campana_sap);
+        this.updatePYCForm.controls.convenio_recaudador.setValue(
+          listaPlan.convenio_recaudador
+        );
+        this.updatePYCForm.controls.convenio_unidad_venta.setValue(
+          listaPlan.convenio_unidad_venta
+        );
+        this.updatePYCForm.controls.codigo_bp_unidad_venta.setValue(
+          listaPlan.codigo_bp_unidad_venta
+        );
+        this.updatePYCForm.controls.codigo_bp_recaudador.setValue(
+          listaPlan.codigo_bp_recaudador
+        );
+        this.updatePYCForm.controls.convenio_broker.setValue(
+          listaPlan.convenio_broker
+        );
+        this.updatePYCForm.controls.codigo_bp_broker.setValue(
+          listaPlan.codigo_bp_broker
+        );
+        this.updatePYCForm.controls.gpo_vendedor.setValue(
+          listaPlan.gpo_vendedor
+        );
         console.log(this.updatePYCForm.valid);
         console.log(this.updatePYCForm);
       });
@@ -125,7 +160,7 @@ export class PlanCampanaComponent implements OnInit {
     this.plancampanaServ
       .actualizarCampanas(this.updatePYCForm.value)
       .subscribe((response) => {
-        console.log(response)
+        console.log(response);
         if (response['success'] == true) {
           Swal.fire({
             icon: 'success',

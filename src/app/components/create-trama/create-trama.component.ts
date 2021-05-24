@@ -113,7 +113,7 @@ export class CreateTramaComponent implements OnInit {
   codConvenioBpVendedor: any;
   bp_sap_cliente: any;
   brokerList: any;
-  mostrarTelemarketing=false;
+  mostrarTelemarketing = false;
   mostrarBancaSeguros: boolean;
   mostrarGrupales: boolean;
   mostrarSubrogada: boolean;
@@ -128,40 +128,45 @@ export class CreateTramaComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.mostrarTelemarketing = this.authSer.mostrarTelemarketing()
-    this.mostrarGrupales = this.authSer.mostrarGrupales()
-    this.mostrarBancaSeguros = this.authSer.mostrarBancaSeguros()
-    this.mostrarSubrogada = this.authSer.mostrarSubrogada()
-    console.log(this.mostrarSubrogada)
+    this.mostrarTelemarketing = this.authSer.mostrarTelemarketing();
+    this.mostrarGrupales = this.authSer.mostrarGrupales();
+    this.mostrarBancaSeguros = this.authSer.mostrarBancaSeguros();
+    this.mostrarSubrogada = this.authSer.mostrarSubrogada();
+    console.log(this.mostrarSubrogada);
 
     this.loadServ
       .listarCanales(this.authSer.getIdusuario())
       .subscribe((response) => {
-        console.log(response)
-        this.listaCanales = response['data'].filter(el=>{
-          console.log(el)
+        console.log(response);
+        this.listaCanales = response['data'].filter((el) => {
+          console.log(el);
           // console.log(this.mostrarTelemarketing)
-          if(this.authSer.getIDRol()==="3") return true
-          if(el.id_canal==2 && this.mostrarTelemarketing){
-            console.log("fdas")
-            return true
+          if (this.authSer.getIDRol() === '3') return true;
+          if (el.id_canal == 2 && this.mostrarTelemarketing) {
+            console.log('fdas');
+            return true;
           }
-          if(el.id_canal==3 && this.mostrarBancaSeguros){
-            return true
+          if (el.id_canal == 3 && this.mostrarBancaSeguros) {
+            return true;
           }
-          if(el.id_canal==4 && (this.mostrarGrupales || this.mostrarSubrogada)){
-            console.log("faasdf")
-            return true
+          if (
+            el.id_canal == 4 &&
+            (this.mostrarGrupales || this.mostrarSubrogada)
+          ) {
+            console.log('faasdf');
+            return true;
           }
-          return false
-        })
+          return false;
+        });
 
-        console.log("-------------------------------------------")
-        console.log(this.authSer.getIDRol())
-        
-        if(this.authSer.getIDRol()==="2"){
-          console.log("--------------------------entro-----------------")
-          this.listaCanales=this.listaCanales.filter(el=>this.authSer.getIDCanal()==el.id_canal)
+        console.log('-------------------------------------------');
+        console.log(this.authSer.getIDRol());
+
+        if (this.authSer.getIDRol() === '2') {
+          console.log('--------------------------entro-----------------');
+          this.listaCanales = this.listaCanales.filter(
+            (el) => this.authSer.getIDCanal() == el.id_canal
+          );
         }
 
         console.log(this.listaCanales);
@@ -180,7 +185,7 @@ export class CreateTramaComponent implements OnInit {
       });
   }
 
-  clearEmpresa(){
+  clearEmpresa() {
     this.tiposelected2 = '0';
     this.empresaselected2 = '0';
     this.tiposelected3 = '0';
@@ -247,123 +252,123 @@ export class CreateTramaComponent implements OnInit {
     this.provincia = '';
     this.distrito = '';
     this.referencia = '';
-    this.archivoDePagoExpirado=null;
-    this.finalizarProceso=null;
-    this.codigoBPSede=null;
-    this.codBpRolCliente=null;
-    this.tipoempresa="";
-    this.rucSubrogada=null;
-    this.razonSocialSubrogado=null;
-    this.bpSapSubrogador=null;
-    this.descripcionSede=null;
-    this.id_empresa=null;
-    this.bp_empresa=null;
-    this.codConvenioBpVendedor=null;
-    this.bp_sap_cliente=null;
-    this.brokerList=null;
+    this.archivoDePagoExpirado = null;
+    this.finalizarProceso = null;
+    this.codigoBPSede = null;
+    this.codBpRolCliente = null;
+    this.tipoempresa = '';
+    this.rucSubrogada = null;
+    this.razonSocialSubrogado = null;
+    this.bpSapSubrogador = null;
+    this.descripcionSede = null;
+    this.id_empresa = null;
+    this.bp_empresa = null;
+    this.codConvenioBpVendedor = null;
+    this.bp_sap_cliente = null;
+    this.brokerList = null;
   }
 
-  resetVariables(){
-  this.proceso = false;
-  this.telemarketing = false;
-  this.bancayseguros = false;
-  this.grupales = false;
-  this.generica = false;
-  this.titleData = 'Verifica los datos antes de cargar la trama';
-  this.listaInfo = [];
-  this.listaEmpresa = [];
-  this.listaEmpresaSub = [];
-  this.listaTipoPago = [];
+  resetVariables() {
+    this.proceso = false;
+    this.telemarketing = false;
+    this.bancayseguros = false;
+    this.grupales = false;
+    this.generica = false;
+    this.titleData = 'Verifica los datos antes de cargar la trama';
+    this.listaInfo = [];
+    this.listaEmpresa = [];
+    this.listaEmpresaSub = [];
+    this.listaTipoPago = [];
 
-  // this.listaCanales = [];
-  // this.permisos = [];
-  this.convenioRolCliente = '';
-  this.plan = '';
-  this.sede = '';
-  this.codigoBpUnidVenta = '';
-  this.tipoCanal = '0';
-  this.tiposelected = '0';
-  this.empresaselected = '0';
-  this.tiposelected2 = '0';
-  this.empresaselected2 = '0';
-  this.tiposelected3 = '0';
-  this.empresaselected3 = '0';
-  this.tiposelected4 = '0';
-  this.empresaselected4 = '0';
-  this.empresaSubselected = '0';
-  this.empresaSub = false;
-  this.errorTipo = false;
-  this.errorEmpresa = false;
-  this.errorTrama = false;
-  this.errorTipo2 = false;
-  this.errorEmpresa2 = false;
-  this.errorTrama2 = false;
-  this.errorTipo3 = false;
-  this.errorEmpresa3 = false;
-  this.errorTrama3 = false;
-  this.errorTipo4 = false;
-  this.errorEmpresa4 = false;
-  this.errorTrama4 = false;
-  this.errorEmpresa5 = false;
-  this.convenioRolRecaudador = '';
-  this.nConvenioRecaudador = '';
-  this.capitalizado = '';
-  this.tipoRol = '';
-  this.codigoBroker = '';
-  this.tipoRol2 = '';
-  this.convenioRolUnidVenta = '';
-  this.convenioRolBroker = '';
-  this.mostrarConvenios = false;
-  this.tipoempresaselected = '0';
-  this.mostrarArchivo = false;
-  this.archivoPago = '';
-  this.horaTransc = '';
-  this.minutosTransc = '';
-  this.extension = '';
-  this.nombre_archivo = '';
-  this.file = '';
-  this.tipoIdentificacion = '';
-  this.nroIdentificacion = '';
-  this.codigoEmpresa = '';
-  this.razonSocial = '';
-  this.rol = '';
-  this.grupo_vendedor = '';
-  this.numero_convenio = '';
-  this.archivo;
-  this.hide = false;
-  this.showConvenio = true;
-  this.codBpVendedor = '';
-  this.codBpBroker = '';
-  this.codBpConvBroker = '';
-  this.codEmpRecaud = '';
-  this.canalVenta = '';
-  this.nombreEmpresa = '';
-  this.formaPlan = '';
-  this.tipoVia = '';
-  this.codOncosys = '';
-  this.nombreVia = '';
-  this.form_manzana = '';
-  this.lote = '';
-  this.dpt = '';
-  this.departamento = '';
-  this.urbanizacion = '';
-  this.provincia = '';
-  this.distrito = '';
-  this.referencia = '';
-  this.archivoDePagoExpirado=null;
-  this.finalizarProceso=null;
-  this.codigoBPSede=null;
-  this.codBpRolCliente=null;
-  this.tipoempresa="";
-  this.rucSubrogada=null;
-  this.razonSocialSubrogado=null;
-  this.bpSapSubrogador=null;
-  this.descripcionSede=null;
-  this.id_empresa=null;
-  this.bp_empresa=null;
-  this.codConvenioBpVendedor=null;
-  this.bp_sap_cliente=null;
-  this.brokerList=null;
+    // this.listaCanales = [];
+    // this.permisos = [];
+    this.convenioRolCliente = '';
+    this.plan = '';
+    this.sede = '';
+    this.codigoBpUnidVenta = '';
+    this.tipoCanal = '0';
+    this.tiposelected = '0';
+    this.empresaselected = '0';
+    this.tiposelected2 = '0';
+    this.empresaselected2 = '0';
+    this.tiposelected3 = '0';
+    this.empresaselected3 = '0';
+    this.tiposelected4 = '0';
+    this.empresaselected4 = '0';
+    this.empresaSubselected = '0';
+    this.empresaSub = false;
+    this.errorTipo = false;
+    this.errorEmpresa = false;
+    this.errorTrama = false;
+    this.errorTipo2 = false;
+    this.errorEmpresa2 = false;
+    this.errorTrama2 = false;
+    this.errorTipo3 = false;
+    this.errorEmpresa3 = false;
+    this.errorTrama3 = false;
+    this.errorTipo4 = false;
+    this.errorEmpresa4 = false;
+    this.errorTrama4 = false;
+    this.errorEmpresa5 = false;
+    this.convenioRolRecaudador = '';
+    this.nConvenioRecaudador = '';
+    this.capitalizado = '';
+    this.tipoRol = '';
+    this.codigoBroker = '';
+    this.tipoRol2 = '';
+    this.convenioRolUnidVenta = '';
+    this.convenioRolBroker = '';
+    this.mostrarConvenios = false;
+    this.tipoempresaselected = '0';
+    this.mostrarArchivo = false;
+    this.archivoPago = '';
+    this.horaTransc = '';
+    this.minutosTransc = '';
+    this.extension = '';
+    this.nombre_archivo = '';
+    this.file = '';
+    this.tipoIdentificacion = '';
+    this.nroIdentificacion = '';
+    this.codigoEmpresa = '';
+    this.razonSocial = '';
+    this.rol = '';
+    this.grupo_vendedor = '';
+    this.numero_convenio = '';
+    this.archivo;
+    this.hide = false;
+    this.showConvenio = true;
+    this.codBpVendedor = '';
+    this.codBpBroker = '';
+    this.codBpConvBroker = '';
+    this.codEmpRecaud = '';
+    this.canalVenta = '';
+    this.nombreEmpresa = '';
+    this.formaPlan = '';
+    this.tipoVia = '';
+    this.codOncosys = '';
+    this.nombreVia = '';
+    this.form_manzana = '';
+    this.lote = '';
+    this.dpt = '';
+    this.departamento = '';
+    this.urbanizacion = '';
+    this.provincia = '';
+    this.distrito = '';
+    this.referencia = '';
+    this.archivoDePagoExpirado = null;
+    this.finalizarProceso = null;
+    this.codigoBPSede = null;
+    this.codBpRolCliente = null;
+    this.tipoempresa = '';
+    this.rucSubrogada = null;
+    this.razonSocialSubrogado = null;
+    this.bpSapSubrogador = null;
+    this.descripcionSede = null;
+    this.id_empresa = null;
+    this.bp_empresa = null;
+    this.codConvenioBpVendedor = null;
+    this.bp_sap_cliente = null;
+    this.brokerList = null;
   }
 
   alertError() {
@@ -380,7 +385,7 @@ export class CreateTramaComponent implements OnInit {
     if (
       ext == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-      extension = 'xls';
+      extension = 'xlsx';
     if (ext == 'application/vnd.ms-excel') extension = 'xls';
     if (ext == 'text/plain') extension = 'txt';
     var nombre_archivo = event.target.files[0].name.split('.txt')[0];
@@ -402,24 +407,25 @@ export class CreateTramaComponent implements OnInit {
           )
           .subscribe((response) => {
             if (response['success']) {
-              console.log(response)
+              console.log(response);
 
-              this.reportSer.duracionTiempoTransc(this.tiposelected).subscribe((response) => {
-                console.log(response['data'][0].horas_transcurridas);
-                var tiempoTranscurrido = response['data'][0].horas_transcurridas;
-                this.horaTransc = tiempoTranscurrido.split(':')[0];
-                this.minutosTransc = tiempoTranscurrido.split(':')[1];
-                this.archivoDePagoExpirado =
-                  Number(tiempoTranscurrido.split(':')[0]) >= 24;
+              this.reportSer
+                .duracionTiempoTransc(this.tiposelected)
+                .subscribe((response) => {
+                  console.log(response['data'][0].horas_transcurridas);
+                  var tiempoTranscurrido =
+                    response['data'][0].horas_transcurridas;
+                  this.horaTransc = tiempoTranscurrido.split(':')[0];
+                  this.minutosTransc = tiempoTranscurrido.split(':')[1];
+                  this.archivoDePagoExpirado =
+                    Number(tiempoTranscurrido.split(':')[0]) >= 24;
 
                   Swal.fire({
                     icon: 'success',
                     title: 'Proceso completado',
                     text: 'El archivo se cargó exitosamente',
                   });
-              });
-
-              
+                });
             }
           });
       };
@@ -439,13 +445,18 @@ export class CreateTramaComponent implements OnInit {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
       ext == 'application/vnd.ms-excel'
     ) {
+      this.extension = 'xlsx';
+      this.nombre_archivo = archivo.split('.xlsx')[0];
+    }
+    if (ext == 'application/vnd.ms-excel') {
       this.extension = 'xls';
       this.nombre_archivo = archivo.split('.xls')[0];
     }
+
     if (ext == 'text/plain') {
       this.extension = 'txt';
       this.nombre_archivo = archivo.split('.txt')[0];
-      this.nombre_archivo = this.nombre_archivo.split('.TXT')[0]
+      this.nombre_archivo = this.nombre_archivo.split('.TXT')[0];
     }
     console.log(this.extension);
     console.log(this.nombre_archivo);
@@ -473,8 +484,8 @@ export class CreateTramaComponent implements OnInit {
     var usuario = JSON.parse(localStorage.getItem('zxc21dsrty5uyj11j1'));
     console.log(usuario);
     var id_usuario = usuario['id_usuario'];
-    var id_empresa = this.id_empresa
-    console.log(this.listaInfo)
+    var id_empresa = this.id_empresa;
+    console.log(this.listaInfo);
     console.log(this.tiposelected);
     var nombreCanal = this.listaInfo.find(
       (el) => el.id_tipo_trama == this.tiposelected
@@ -490,9 +501,8 @@ export class CreateTramaComponent implements OnInit {
       (el) => el.id_canal == this.tipoCanal
     ).canal;
 
-    console.log(nombreCanal)
+    console.log(nombreCanal);
     if (data == '1') {
-
       console.log(nombreTrama);
       $('.errorborderdata').removeClass('form-error');
       $('.errorborderdata2').removeClass('form-error');
@@ -553,8 +563,7 @@ export class CreateTramaComponent implements OnInit {
           this.tipoCanal,
           id_usuario,
           this.tiposelected,
-          id_empresa,
-          
+          id_empresa
         )
         .subscribe(
           (response: {
@@ -563,7 +572,7 @@ export class CreateTramaComponent implements OnInit {
             data: any;
             file: string;
           }) => {
-            console.log(response)
+            console.log(response);
             const intervaloRevisar = setInterval(() => {
               console.log('ejecutado');
 
@@ -583,8 +592,7 @@ export class CreateTramaComponent implements OnInit {
                         title: 'Proceso completado',
                         text: 'El archivo se cargó exitosamente',
                       });
-    this.resetVariables()
-
+                      this.resetVariables();
                     } else {
                       Swal.fire({
                         icon: 'error',
@@ -657,29 +665,24 @@ export class CreateTramaComponent implements OnInit {
           .subscribe((response) => {
             console.log(response);
             if (response['success']) {
-             
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
               this.grupales = false;
               this.generica = false;
 
-
-
-
-              
               const intervaloRevisar = setInterval(() => {
                 console.log('ejecutado');
-  
+
                 this.tramaSer
-                  .revisarEstadoProceso(response["code"])
+                  .revisarEstadoProceso(response['code'])
                   .subscribe((res) => {
                     console.log(res);
                     if (res['data'][0]['estado'] != 0) {
                       clearInterval(intervaloRevisar);
                       this.finalizarProceso = true;
                       Swal.close();
-  
+
                       console.log(response);
                       if (response['success']) {
                         Swal.fire({
@@ -687,8 +690,7 @@ export class CreateTramaComponent implements OnInit {
                           title: 'Proceso completado',
                           text: 'El archivo se cargó exitosamente',
                         });
-      this.resetVariables()
-  
+                        this.resetVariables();
                       } else {
                         Swal.fire({
                           icon: 'error',
@@ -699,11 +701,9 @@ export class CreateTramaComponent implements OnInit {
                     }
                   });
               }, 5000);
-
             }
           });
       } else {
-
         Swal.fire({
           title: 'Cargando trama',
           didOpen: () => {
@@ -711,24 +711,23 @@ export class CreateTramaComponent implements OnInit {
           },
         });
         this.tramaSer
-        .registrarTramaRecaudo(
-          this.extension,
-          this.nombre_archivo,
-          this.archivo,
-          nombreTrama,
-          nombreCanal,
-          this.codOncosys,
-          this.tipoCanal,
-          id_usuario,
-          this.tiposelected,
-          id_empresa,
-          this.nroIdentificacion
-        )
+          .registrarTramaRecaudo(
+            this.extension,
+            this.nombre_archivo,
+            this.archivo,
+            nombreTrama,
+            nombreCanal,
+            this.codOncosys,
+            this.tipoCanal,
+            id_usuario,
+            this.tiposelected,
+            id_empresa,
+            this.nroIdentificacion
+          )
           .subscribe((response) => {
-            console.log("das asdasdasd asd adasd asd asd  asd");
+            console.log('das asdasdasd asd adasd asd asd  asd');
             console.log(response);
             if (response['success']) {
-         
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
@@ -736,16 +735,16 @@ export class CreateTramaComponent implements OnInit {
               this.generica = false;
               const intervaloRevisar = setInterval(() => {
                 console.log('ejecutado');
-  
+
                 this.tramaSer
-                  .revisarEstadoProceso(response["code"])
+                  .revisarEstadoProceso(response['code'])
                   .subscribe((res) => {
                     console.log(res);
                     if (res['data'][0]['estado'] != 0) {
                       clearInterval(intervaloRevisar);
                       this.finalizarProceso = true;
                       Swal.close();
-  
+
                       console.log(response);
                       if (response['success']) {
                         Swal.fire({
@@ -753,8 +752,7 @@ export class CreateTramaComponent implements OnInit {
                           title: 'Proceso completado',
                           text: 'El archivo se cargó exitosamente',
                         });
-      this.resetVariables()
-  
+                        this.resetVariables();
                       } else {
                         Swal.fire({
                           icon: 'error',
@@ -765,7 +763,6 @@ export class CreateTramaComponent implements OnInit {
                     }
                   });
               }, 5000);
-
             }
           });
       }
@@ -801,7 +798,6 @@ export class CreateTramaComponent implements OnInit {
       console.log(nombreTrama);
 
       if (this.tiposelected == '8') {
-
         Swal.fire({
           title: 'Cargando trama',
           didOpen: () => {
@@ -831,7 +827,6 @@ export class CreateTramaComponent implements OnInit {
           .subscribe((response) => {
             console.log(response);
             if (response['success']) {
-             
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
@@ -839,16 +834,16 @@ export class CreateTramaComponent implements OnInit {
               this.generica = false;
               const intervaloRevisar = setInterval(() => {
                 console.log('ejecutado');
-  
+
                 this.tramaSer
-                  .revisarEstadoProceso(response["code"])
+                  .revisarEstadoProceso(response['code'])
                   .subscribe((res) => {
                     console.log(res);
                     if (res['data'][0]['estado'] != 0) {
                       clearInterval(intervaloRevisar);
                       this.finalizarProceso = true;
                       Swal.close();
-  
+
                       console.log(response);
                       if (response['success']) {
                         Swal.fire({
@@ -856,8 +851,7 @@ export class CreateTramaComponent implements OnInit {
                           title: 'Proceso completado',
                           text: 'El archivo se cargó exitosamente',
                         });
-      this.resetVariables()
-  
+                        this.resetVariables();
                       } else {
                         Swal.fire({
                           icon: 'error',
@@ -868,31 +862,26 @@ export class CreateTramaComponent implements OnInit {
                     }
                   });
               }, 5000);
-
             }
           });
       } else {
-
-
-        if(!this.convenioRolRecaudador){
-
+        if (!this.convenioRolRecaudador) {
           Swal.fire({
             icon: 'error',
             title: 'No se puede cargar la trama',
             text: 'Falta convenio',
           });
 
-          return
+          return;
         }
-        if(!this.convenioRolUnidVenta){
-
+        if (!this.convenioRolUnidVenta) {
           Swal.fire({
             icon: 'error',
             title: 'No se puede cargar la trama',
             text: 'Falta convenio',
           });
 
-          return
+          return;
         }
         Swal.fire({
           title: 'Cargando trama',
@@ -951,7 +940,6 @@ export class CreateTramaComponent implements OnInit {
           .subscribe((response) => {
             console.log(response);
             if (response['success']) {
-          
               this.tipoCanal = '0';
               this.telemarketing = false;
               this.bancayseguros = false;
@@ -959,16 +947,16 @@ export class CreateTramaComponent implements OnInit {
               this.generica = false;
               const intervaloRevisar = setInterval(() => {
                 console.log('ejecutado');
-  
+
                 this.tramaSer
-                  .revisarEstadoProceso(response["code"])
+                  .revisarEstadoProceso(response['code'])
                   .subscribe((res) => {
                     console.log(res);
                     if (res['data'][0]['estado'] != 0) {
                       clearInterval(intervaloRevisar);
                       this.finalizarProceso = true;
                       Swal.close();
-  
+
                       console.log(response);
                       if (response['success']) {
                         Swal.fire({
@@ -976,8 +964,7 @@ export class CreateTramaComponent implements OnInit {
                           title: 'Proceso completado',
                           text: 'El archivo se cargó exitosamente',
                         });
-      this.resetVariables()
-  
+                        this.resetVariables();
                       } else {
                         Swal.fire({
                           icon: 'error',
@@ -988,7 +975,6 @@ export class CreateTramaComponent implements OnInit {
                     }
                   });
               }, 5000);
-
             }
           });
       }
@@ -1049,13 +1035,11 @@ export class CreateTramaComponent implements OnInit {
         .subscribe((response) => {
           console.log(response);
           if (response['success']) {
-            
-            
             const intervaloRevisar = setInterval(() => {
               console.log('ejecutado');
 
               this.tramaSer
-                .revisarEstadoProceso(response["code"])
+                .revisarEstadoProceso(response['code'])
                 .subscribe((res) => {
                   console.log(res);
                   if (res['data'][0]['estado'] != 0) {
@@ -1070,8 +1054,7 @@ export class CreateTramaComponent implements OnInit {
                         title: 'Proceso completado',
                         text: 'El archivo se cargó exitosamente',
                       });
-    this.resetVariables()
-
+                      this.resetVariables();
                     } else {
                       Swal.fire({
                         icon: 'error',
@@ -1082,7 +1065,6 @@ export class CreateTramaComponent implements OnInit {
                   }
                 });
             }, 5000);
-
           }
         });
     }
@@ -1185,7 +1167,7 @@ export class CreateTramaComponent implements OnInit {
     }
 
     this.loadServ.listarEmpresaTipoArchivo(data).subscribe((response) => {
-      this.listaEmpresa = response['data'].filter(el=>el.estado==1);;
+      this.listaEmpresa = response['data'].filter((el) => el.estado == 1);
       console.log(this.listaEmpresa);
     });
 
@@ -1257,12 +1239,18 @@ export class CreateTramaComponent implements OnInit {
           ) {
             console.log('completado');
 
-            this.convenioRolUnidVenta =conveniosListTwo[0]["DatosCabecera"]["Convenio"] + " " + result2["DatosGenerales"]["RazonSocial"] + " " + conveniosListTwo[0]["DatosCabecera"]["DescripcionGpoVendedor"]
-            
+            this.convenioRolUnidVenta =
+              conveniosListTwo[0]['DatosCabecera']['Convenio'] +
+              ' ' +
+              result2['DatosGenerales']['RazonSocial'] +
+              ' ' +
+              conveniosListTwo[0]['DatosCabecera']['DescripcionGpoVendedor'];
+
             this.codBpVendedor =
-            conveniosList[0]['UnidadVenta'][index]['CodigoBPUnidadVenta'];
-            this.codConvenioBpVendedor = conveniosListTwo[0]["DatosCabecera"]["Convenio"]
-            this.handleThirdCall(this.brokerList)
+              conveniosList[0]['UnidadVenta'][index]['CodigoBPUnidadVenta'];
+            this.codConvenioBpVendedor =
+              conveniosListTwo[0]['DatosCabecera']['Convenio'];
+            this.handleThirdCall(this.brokerList);
 
             // if (conveniosList[i]['Broker'] != undefined) {
             //   // si tiene Broker
@@ -1287,46 +1275,52 @@ export class CreateTramaComponent implements OnInit {
     this.convenioRolRecaudador = '';
     this.convenioRolUnidVenta = '';
     this.convenioRolBroker = '';
+    this.tipoIdentificacion = '';
+    this.nroIdentificacion = '';
+    this.codigoEmpresa = '';
+    this.razonSocial = '';
+    this.grupo_vendedor = '';
+    this.numero_convenio = '';
 
     this.listaEmpresa.forEach((element) => {
       if (element.id_empresa == data) {
-        console.log("this.tipoempresaselected");
+        console.log('this.tipoempresaselected');
         console.log(element);
         console.log(this.tipoempresaselected);
         this.nroIdentificacion = '';
         this.numero_convenio = element.n_convenio_recaudador;
         this.capitalizado = element.capitalizado;
-        this.nroIdentificacion = element.ruc
+        this.nroIdentificacion = element.ruc;
         this.tipoRol = element.bp_sap_recaudador;
-        this.codBpRolCliente = element.bp_sap_cliente
-        this.nombreEmpresa = element.empresa
+        this.codBpRolCliente = element.bp_sap_cliente;
+        this.nombreEmpresa = element.empresa;
         this.codOncosys = element.cod_empresa_oncosys;
-        this.id_empresa=element.id_empresa
-        this.bp_empresa=element.bp_sap
-        this.bp_sap_cliente = element.bp_sap_cliente
-        this.nConvenioRecaudador = element.n_convenio_recaudador
-        this.codOncosys =element.cod_empresa_oncosys
+        this.id_empresa = element.id_empresa;
+        this.bp_empresa = element.bp_sap;
+        this.bp_sap_cliente = element.bp_sap_cliente;
+        this.nConvenioRecaudador = element.n_convenio_recaudador;
+        this.codOncosys = element.cod_empresa_oncosys;
 
-
-        console.log("xddd")
+        console.log('xddd');
         if (this.tipoempresaselected == '2') {
-          this.emprSer
-            .listarSubrogados(element.id_empresa)
-            .subscribe((response) => {
-              console.log("response");
+          this.emprSer.listarSubrogados(element.id_empresa).subscribe(
+            (response) => {
+              console.log('response');
               console.log(response);
-              this.listaEmpresaSub = response['data'].filter(el=>el.estado==1);;
+              this.listaEmpresaSub = response['data'].filter(
+                (el) => el.estado == 1
+              );
 
-              console.log(this.listaEmpresaSub)
-              
-
-            },(err)=>console.log("err:" + err));
+              console.log(this.listaEmpresaSub);
+            },
+            (err) => console.log('err:' + err)
+          );
         }
       }
     });
 
-    console.log("dasasd")
-    if(this.empresaSub) return
+    console.log('dasasd');
+    if (this.empresaSub) return;
     // Banca y seguros
     if (this.bancayseguros) {
       this.loadServ
@@ -1352,12 +1346,13 @@ export class CreateTramaComponent implements OnInit {
             conveniosList = [conveniosList];
           }
 
+          this.canalVenta =
+            result['DatosConvenio'][0]['DatosCabecera']['GrupoVendedor'];
+          this.codigoEmpresa = result['DatosGenerales']['CodigoEmpresa'];
+          this.brokerList = result['DatosConvenio'][0]['Broker'];
 
-          this.canalVenta = result["DatosConvenio"][0]["DatosCabecera"]["GrupoVendedor"]
-          this.codigoEmpresa = result["DatosGenerales"]["CodigoEmpresa"]
-          this.brokerList = result["DatosConvenio"][0]["Broker"]
-
-          this.grupo_vendedor = result['DatosConvenio'][0]["DatosCabecera"]["GrupoVendedor"]
+          this.grupo_vendedor =
+            result['DatosConvenio'][0]['DatosCabecera']['GrupoVendedor'];
 
           var grupoVendedorSW =
             conveniosList[0]['DatosCabecera']['GrupoVendedor'];
@@ -1373,8 +1368,6 @@ export class CreateTramaComponent implements OnInit {
           var completed = false;
           var unidadVenta = conveniosList[0]['UnidadVenta'];
           var ventaSize = unidadVenta.length;
-
-          
 
           console.log(unidadVenta);
 
@@ -1412,262 +1405,266 @@ export class CreateTramaComponent implements OnInit {
         };
     } else {
       //Otros...
-      this.consultasGrupales()
+      this.consultasGrupales();
     }
   }
 
-  handleThirdCall(brokerList,index=0){
+  handleThirdCall(brokerList, index = 0) {
     this.loadServ
       .listarEmpresa(
-        "",
         '',
-        brokerList[index]["CodigoBPBroker"],
+        '',
+        brokerList[index]['CodigoBPBroker'],
         this.razonSocial,
         '03',
         '',
         ''
-      ).subscribe(response=>{
-        console.log(response)
-        if(!response["data"]["Response"]["DatosEmpresa"]){
-          this.handleThirdCall(brokerList,1)
-        }else{
-          var result3=response["data"]["Response"]["DatosEmpresa"][0]
+      )
+      .subscribe((response) => {
+        console.log(response);
+        if (!response['data']['Response']['DatosEmpresa']) {
+          this.handleThirdCall(brokerList, 1);
+        } else {
+          var result3 = response['data']['Response']['DatosEmpresa'][0];
 
-
-          
-          this.codBpBroker= brokerList[index]["CodigoBPBroker"]
+          this.codBpBroker = brokerList[index]['CodigoBPBroker'];
           // this.codConvenioBpVendedor= brokerList[index]["CodigoBPBroker"]
-          this.codBpConvBroker = result3["DatosConvenio"][0]["DatosCabecera"]["Convenio"]
-          this.convenioRolBroker = result3["DatosConvenio"][0]["DatosCabecera"]["Convenio"] + " " + result3["DatosGenerales"]["RazonSocial"]+ " "+ result3["DatosConvenio"][0]["DatosCabecera"]["DescripcionGpoVendedor"]
+          this.codBpConvBroker =
+            result3['DatosConvenio'][0]['DatosCabecera']['Convenio'];
+          this.convenioRolBroker =
+            result3['DatosConvenio'][0]['DatosCabecera']['Convenio'] +
+            ' ' +
+            result3['DatosGenerales']['RazonSocial'] +
+            ' ' +
+            result3['DatosConvenio'][0]['DatosCabecera'][
+              'DescripcionGpoVendedor'
+            ];
         }
-      })
+      });
   }
 
-  consultasGrupales(){
-
-    if(this.empresaSub){
-      this.listaEmpresaSub.forEach(el=>{
-        if(el.id_empresa==this.empresaSubselected){
-          console.log("subrogador")
-          console.log(el)
+  consultasGrupales() {
+    if (this.empresaSub) {
+      this.listaEmpresaSub.forEach((el) => {
+        if (el.id_empresa == this.empresaSubselected) {
+          console.log('subrogador');
+          console.log(el);
           // this.nroIdentificacion = el.ruc_subrogado
-          this.codBpRolCliente = el.bp_sap_subrogador
-          this.rucSubrogada = el.ruc_subrogado
-          this.razonSocialSubrogado = el.razon_social_subrogado
-          this.bpSapSubrogador = el.bp_sap_subrogador
-          
+          this.codBpRolCliente = el.bp_sap_subrogador;
+          this.rucSubrogada = el.ruc_subrogado;
+          this.razonSocialSubrogado = el.razon_social_subrogado;
+          this.bpSapSubrogador = el.bp_sap_subrogador;
         }
-      })
+      });
     }
 
-    console.log("start grupales")
-      console.log(this.tipoIdentificacion,
-        this.nroIdentificacion,
-        this.codigoEmpresa,
+    console.log('start grupales');
+    console.log(
+      this.tipoIdentificacion,
+      this.nroIdentificacion,
+      this.codigoEmpresa,
+      this.razonSocial,
+      this.rol,
+      this.grupo_vendedor,
+      this.numero_convenio
+    );
+    this.loadServ
+      .listarEmpresa(
+        this.tipoIdentificacion,
+        this.rucSubrogada || this.nroIdentificacion,
+        '',
         this.razonSocial,
-        this.rol,
+        '02',
         this.grupo_vendedor,
-        this.numero_convenio)
-      this.loadServ
-        .listarEmpresa(
-          this.tipoIdentificacion,
-          this.rucSubrogada || this.nroIdentificacion,
-          "",
-          this.razonSocial,
-          "02",
-          this.grupo_vendedor,
-          ""
-        )
-        .subscribe((response) => {
-          console.log(response);
-          var result = response['data']['Response']['DatosEmpresa'][0];
+        ''
+      )
+      .subscribe((response) => {
+        console.log(response);
+        var result = response['data']['Response']['DatosEmpresa'][0];
 
-          console.log(response['data']['Response']['DatosEmpresa'][0])
+        console.log(response['data']['Response']['DatosEmpresa'][0]);
 
-    this.nombre_convenio = result["DatosConvenio"][0]["DatosCabecera"]["NombreConvenio"]
-          
+        this.nombre_convenio =
+          result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'];
 
-          // this.convenioRolCliente =
-          //   result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'] +
-          //   ' ' +
-          //   result['DatosGenerales']['RazonSocial'] + " " + result['DatosConvenio'][0]['DatosCabecera']["DescripcionGpoVendedor"];
+        // this.convenioRolCliente =
+        //   result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'] +
+        //   ' ' +
+        //   result['DatosGenerales']['RazonSocial'] + " " + result['DatosConvenio'][0]['DatosCabecera']["DescripcionGpoVendedor"];
 
+        // Segunda Llamada
 
-          // Segunda Llamada
+        this.codigoEmpresa =
+          result['DatosConvenio'][0]['UnidadVenta'][0]['CodigoBPUnidadVenta'];
 
+        // copia---------------------------------------------------------------
 
-          this.codigoEmpresa = result["DatosConvenio"][0]["UnidadVenta"][0]["CodigoBPUnidadVenta"]
+        console.log('3');
+        this.convenioRolRecaudador =
+          result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'] +
+          ' ' +
+          result['DatosGenerales']['RazonSocial'] +
+          ' ' +
+          result['DatosConvenio'][0]['DatosCabecera']['DescripcionGpoVendedor'];
 
+        console.log('2');
+        // this.convenioRolUnidVenta =
+        //   result['DatosConvenio'][0]['UnidadVenta'][0].Nombre1 +
+        //   ' ' +
+        //   result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2 +
+        //   ' ' +
+        //   result['DatosGenerales']['RazonSocial'] +
+        //   ' ' +
+        //   result['DatosConvenio'][0]['DatosCabecera']['DescripcionGpoVendedor'];
 
+        console.log('1');
 
-            
-            // copia---------------------------------------------------------------
-
-            console.log("3")
-          this.convenioRolRecaudador =
-            result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'] +
+        if (result['DatosConvenio'][0]['Broker']) {
+          this.convenioRolBroker =
+            result['DatosConvenio'][0]['Broker'][0].Nombre1 +
             ' ' +
-            result['DatosGenerales']['RazonSocial'] + " " + result['DatosConvenio'][0]['DatosCabecera']["DescripcionGpoVendedor"];
+            result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2 +
+            ' ' +
+            result['DatosConvenio'][0]['Broker'][0].RazonSocial +
+            ' ' +
+            result['DatosConvenio'][0]['Broker'][0]
+              .DescripcionTipoIdentificacion;
+        }
 
+        console.log('dsadsadsasdadsasd');
+        console.log('dsadsadsasdadsasd');
 
+        this.convenioRolCliente =
+          result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'];
 
-            console.log("2")
-          // this.convenioRolUnidVenta =
-          //   result['DatosConvenio'][0]['UnidadVenta'][0].Nombre1 +
-          //   ' ' +
-          //   result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2 +
-          //   ' ' +
-          //   result['DatosGenerales']['RazonSocial'] +
-          //   ' ' +
-          //   result['DatosConvenio'][0]['DatosCabecera']['DescripcionGpoVendedor'];
+        this.numero_convenio =
+          result['DatosConvenio'][0]['DatosCabecera']['Convenio'];
+        console.log(this.numero_convenio);
 
-            console.log("1")
-
-            if( result['DatosConvenio'][0]['Broker']){
-
-              this.convenioRolBroker =
-                result['DatosConvenio'][0]['Broker'][0].Nombre1 +
-                ' ' +
-                result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2 +
-                ' ' +
-                result['DatosConvenio'][0]['Broker'][0].RazonSocial +
-                ' ' +
-                result['DatosConvenio'][0]['Broker'][0].DescripcionTipoIdentificacion;
-            }
-
-          console.log("dsadsadsasdadsasd")
-          console.log("dsadsadsasdadsasd")
-          
-          this.convenioRolCliente = result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'];
-
-          
-          this.numero_convenio = result['DatosConvenio'][0]['DatosCabecera']['Convenio'];
-          console.log(this.numero_convenio)
-          
-          // --------------------SEDE-------------------
-          this.codigoBPSede  = result['DatosConvenio'][0]['Sede'][0].CodigoBPSede
-            this.descripcionSede = result['DatosConvenio'][0]['Sede'][0].DescripcionSede
+        // --------------------SEDE-------------------
+        if (result['DatosConvenio'][0].sede) {
+          this.codigoBPSede = result['DatosConvenio'][0]?.sede[0].CodigoBPSede;
+          this.descripcionSede =
+            result['DatosConvenio'][0]?.sede[0].DescripcionSede;
 
           this.sede =
-          result['DatosConvenio'][0]['Sede'][0].CodigoBPSede +
-          ' ' +
-          result['DatosConvenio'][0]['Sede'][0].RazonSocial;
-          
-          // --------------------SEDE-------------------
-          
-          console.log("dsadsadsasdadsasd")
-          
-          this.codBpVendedor = result['DatosConvenio'][0]['UnidadVenta'][0][
+            result['DatosConvenio'][0]?.sede[0].CodigoBPSede +
+            ' ' +
+            result['DatosConvenio'][0]?.sede[0].RazonSocial;
+
+          this.sede = result['DatosConvenio'][0]?.sede[0]['DescripcionSede'];
+        }
+
+        // --------------------SEDE-------------------
+
+        console.log('dsadsadsasdadsasd');
+
+        this.codBpVendedor =
+          result['DatosConvenio'][0]['UnidadVenta'][0][
             'CodigoBPUnidadVenta'
           ].toString();
-          
-          if( result['DatosConvenio'][0]['Broker']){
-            
-            this.codBpBroker = result['DatosConvenio'][0][
-              'Broker'
-            ][0].CodigoBPBroker.toString();
-            this.codBpConvBroker = result['DatosConvenio'][0][
+
+        if (result['DatosConvenio'][0]['Broker']) {
+          this.codBpBroker =
+            result['DatosConvenio'][0]['Broker'][0].CodigoBPBroker.toString();
+          this.codBpConvBroker =
+            result['DatosConvenio'][0][
               'Broker'
             ][0].CodigoConvenioVigente.toString();
-            this.nombreEmpresa = result['DatosConvenio'][0]['Broker'][0].RazonSocial;
-          }
-          
-          console.log("dsadsadsasdadsasd")
-          this.codEmpRecaud = result['DatosConvenio'][0]['DatosCabecera'][
-            'Convenio'
-          ].toString();
-          
-          console.log("dsadsadsasdadsasd")
-          
-          this.canalVenta =
+          this.nombreEmpresa =
+            result['DatosConvenio'][0]['Broker'][0].RazonSocial;
+        }
+
+        console.log('dsadsadsasdadsasd');
+        this.codEmpRecaud =
+          result['DatosConvenio'][0]['DatosCabecera']['Convenio'].toString();
+
+        console.log('dsadsadsasdadsasd');
+
+        this.canalVenta =
           result['DatosConvenio'][0]['DatosCabecera']['GrupoVendedor'];
-          
-          this.sede = result['DatosConvenio'][0]['Sede'][0]['DescripcionSede'];
-          
-          this.formaPlan =
+
+        this.formaPlan =
           result['DatosConvenio'][0]['DatosCabecera']['FormaPagoRecaudo'];
-          
-          this.tipoVia = result['DatosGenerales']['TipoVia'];
-          console.log("dsadsadsasdadsasd")
-          
-      
-          
-          this.nombreVia = result['DatosGenerales']['NombreVia'];
-          this.form_manzana = result['DatosGenerales']['Manzana'];
-          // this.lote = result['DatosGenerales']['Lote'].toString();
-          // this.dpt = result['DatosGenerales']['IntDptoTdaStd'].toString();
-          this.departamento = result['DatosGenerales'][
-            'Departamento'
-          ].toString();
-          
-          console.log("dsadsadsasdadsasd")
-          this.provincia = result['DatosGenerales']['Provincia'];
-          this.distrito = result['DatosGenerales']['Distrito'];
 
+        this.tipoVia = result['DatosGenerales']['TipoVia'];
+        console.log('dsadsadsasdadsasd');
 
-          this.loadServ
+        this.nombreVia = result['DatosGenerales']['NombreVia'];
+        this.form_manzana = result['DatosGenerales']['Manzana'];
+        // this.lote = result['DatosGenerales']['Lote'].toString();
+        // this.dpt = result['DatosGenerales']['IntDptoTdaStd'].toString();
+        this.departamento = result['DatosGenerales']['Departamento'].toString();
+
+        console.log('dsadsadsasdadsasd');
+        this.provincia = result['DatosGenerales']['Provincia'];
+        this.distrito = result['DatosGenerales']['Distrito'];
+
+        this.loadServ
           .listarEmpresa(
-            "",
-            "",
+            '',
+            '',
             this.codigoEmpresa,
             this.razonSocial,
             '00',
             this.grupo_vendedor,
-            ""
-          ).subscribe(res=>{
-            console.log(res)
+            ''
+          )
+          .subscribe((res) => {
+            console.log(res);
 
-            const result2= res["data"]["Response"]["DatosEmpresa"][0]
+            const result2 = res['data']['Response']['DatosEmpresa'][0];
 
-          // this.convenioRolUnidVenta =result2["DatosConvenio"][0]["DatosCabecera"]["Convenio"]
-            console.log(result2["DatosConvenio"][0]["DatosCabecera"]["NombreConvenio"])
-            this.convenioRolUnidVenta = result2["DatosConvenio"][0]["DatosCabecera"]["NombreConvenio"]
-            this.codConvenioBpVendedor = result2["DatosConvenio"][0]["DatosCabecera"]["Convenio"]
+            // this.convenioRolUnidVenta =result2["DatosConvenio"][0]["DatosCabecera"]["Convenio"]
+            console.log(
+              result2['DatosConvenio'][0]['DatosCabecera']['NombreConvenio']
+            );
+            this.convenioRolUnidVenta =
+              result2['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'];
+            this.codConvenioBpVendedor =
+              result2['DatosConvenio'][0]['DatosCabecera']['Convenio'];
             this.loadServ
-            .listarEmpresa(
-              this.tipoIdentificacion,
-              "",
-              "",
-              this.razonSocial,
-              '03',
-              "",
-              ""
-            ).subscribe(res2=>{
-              console.log(res2)
-  
-            })
-          })
-
-          
-
-        }),
-        (error) => {
-          console.error(error);
-        };
+              .listarEmpresa(
+                this.tipoIdentificacion,
+                '',
+                '',
+                this.razonSocial,
+                '03',
+                '',
+                ''
+              )
+              .subscribe((res2) => {
+                console.log(res2);
+              });
+          });
+      }),
+      (error) => {
+        console.error(error);
+      };
   }
 
   onChangeTipoEmpresa(value) {
     var tipo = '';
-    this.clearEmpresa()
+    this.clearEmpresa();
     this.listaEmpresa = [];
-    this.convenioRolCliente=""
-    this.sede=""
-    console.log(this.listaEmpresa)
+    this.convenioRolCliente = '';
+    this.sede = '';
+    console.log(this.listaEmpresa);
 
     if (value == 1) {
       tipo = 'Independientes';
-      this.tipoempresa= 'Empresa independiente'
+      this.tipoempresa = 'Empresa independiente';
       this.empresaSub = false;
     } else {
       tipo = 'Subrogadas';
-      this.tipoempresa= 'Empresa subrogada'
+      this.tipoempresa = 'Empresa subrogada';
       this.empresaSub = true;
     }
     this.loadServ
       .listarTipoEmpresa(this.tiposelected, tipo)
       .subscribe((response) => {
         console.log(response);
-        this.listaEmpresa = response['data'].filter(el=>el.estado==1);
+        this.listaEmpresa = response['data'].filter((el) => el.estado == 1);
       });
   }
 

@@ -1,136 +1,270 @@
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Mantenimiento Plan CMR</h1>
-    <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Plan CMR</h6>
-        <button type="button" (click)="abrirModal(0)" class="btn btn-primary" style="float: right;"><i
-            class="fa fa-plus"></i> Agregar</button>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered" width="100%">
-            <thead>
-              <tr>
-                <th style="width: 40px;text-align: center;">ID</th>
-                <th>Producto CMR</th>
-                <th>Programa CMR</th>
-                <th>Plan CMR</th>
-                <th style="width: 380px;text-align: center;">Acciones</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="listaCmr?.length != 0">
-              <tr *ngFor="let cmr of listaCmr; let i = index">
-                <td style="text-align: center">{{i +  1}}</td>
-                <td>{{ cmr.producto_cmr }}</td>
-                <td>{{ cmr.programa_cmr }}</td>
-                <td>{{ cmr.plan_cmr_sap }}</td>
-                <td *ngIf="cmr.estado == 1">
-                  <button class="btn btn-primary" (click)="abrirModalActualizar(cmr.producto_cmr, cmr.programa_cmr)"><i class="fa fa-edit"></i>
-                    Editar</button>
-                  <button class="btn btn-danger" (click)="abrirModalCambiarEstado(cmr.producto_cmr, cmr.programa_cmr, cmr.estado )"><i class="fa fa-close"></i>
-                    Desactivar</button>
-                </td>
-                <td *ngIf="cmr.estado == 0">
-                  <button class="btn btn-primary" (click)="abrirModalActualizar(cmr.producto_cmr, cmr.programa_cmr)"><i class="fa fa-edit"></i>
-                    Editar</button>
-                  <button class="btn btn-success" (click)="abrirModalCambiarEstado(cmr.producto_cmr, cmr.programa_cmr, cmr.estado)"><i class="fa fa-check"></i>
-                    Activar</button>
-                </td>
-              </tr>
-            </tbody>
-            <tbody *ngIf="listaCmr?.length == 0">
-              <tr>
-                <td colspan="8" class="no-data-available">
-                  <div class="alert alert-info">
-                    Buscando resultados...
-                  </div>
-                </td>
-              </tr>
-            <tbody>
-          </table>
-        </div>
+  <h1 class="h3 mb-2 text-gray-800">Mantenimiento Plan CMR</h1>
+  <p class="mb-4">
+    Puedes usar el buscador de la tabla de resultados para poder filtrar por
+    cualquier columna.
+  </p>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6
+        class="m-0 font-weight-bold text-primary"
+        style="float: left; line-height: 40px"
+      >
+        Plan CMR
+      </h6>
+      <button
+        type="button"
+        (click)="abrirModal(0)"
+        class="btn btn-primary"
+        style="float: right"
+      >
+        <i class="fa fa-plus"></i> Agregar
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table table-bordered"
+          width="100%"
+        >
+          <thead>
+            <tr>
+              <th style="width: 40px; text-align: center">ID</th>
+              <th>Producto CMR</th>
+              <th>Programa CMR</th>
+              <th>Plan CMR</th>
+              <th>Convenio Recaudador</th>
+              <th>Convenio Unid. Venta</th>
+              <th>Conv. Broker</th>
+              <th>BP Unid. Vta</th>
+              <th>BP Broker</th>
+              <th>Grupo vendedor</th>
+              <th style="width: 380px; text-align: center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listaCmr?.length != 0">
+            <tr *ngFor="let cmr of listaCmr; let i = index">
+              <td style="text-align: center">{{ i + 1 }}</td>
+              <td>{{ cmr.producto_cmr }}</td>
+              <td>{{ cmr.programa_cmr }}</td>
+              <td>{{ cmr.plan_cmr_sap }}</td>
+              <td>{{ cmr.convenio_recaudador }}</td>
+              <td>{{ cmr.convenio_unidad_venta }}</td>
+              <td>{{ cmr.convenio_broker }}</td>
+              <td>{{ cmr.codigo_bp_unidad_venta }}</td>
+              <td>{{ cmr.codigo_bp_broker }}</td>
+              <td>{{ cmr.gpo_vendedor }}</td>
+              <td *ngIf="cmr.estado == 1">
+                <button
+                  class="btn btn-primary"
+                  (click)="
+                    abrirModalActualizar(cmr.producto_cmr, cmr.programa_cmr)
+                  "
+                >
+                  <i class="fa fa-edit"></i> Editar
+                </button>
+                <button
+                  class="btn btn-danger"
+                  (click)="
+                    abrirModalCambiarEstado(
+                      cmr.producto_cmr,
+                      cmr.programa_cmr,
+                      cmr.estado
+                    )
+                  "
+                >
+                  <i class="fa fa-close"></i> Desactivar
+                </button>
+              </td>
+              <td *ngIf="cmr.estado == 0">
+                <button
+                  class="btn btn-primary"
+                  (click)="
+                    abrirModalActualizar(cmr.producto_cmr, cmr.programa_cmr)
+                  "
+                >
+                  <i class="fa fa-edit"></i> Editar
+                </button>
+                <button
+                  class="btn btn-success"
+                  (click)="
+                    abrirModalCambiarEstado(
+                      cmr.producto_cmr,
+                      cmr.programa_cmr,
+                      cmr.estado
+                    )
+                  "
+                >
+                  <i class="fa fa-check"></i> Activar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="listaCmr?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">
+                <div class="alert alert-info">Buscando resultados...</div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody></tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>
 
 <!-- Add -->
-<div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog"
-aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo Plan CMR</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div id="msjReponnseModal"></div>
-      <form [formGroup]="registerCmrForm">
-        <div class="alert alert-info">
-          Se determina si una empresa cuenta con un Plan CMR.
-        </div>
+<div
+  class="modal fade"
+  id="contentModalVendedor"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalVendedorLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Agregar nuevo Plan CMR
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form [formGroup]="registerCmrForm">
+          <div class="alert alert-info">
+            Se determina si una empresa cuenta con un Plan CMR.
+          </div>
           <div class="form-group">
             <label for="descripcionUpdate">Producto CMR</label>
-            <input type="text" formControlName="producto_cmr" class="form-control" id="programaTramaAdd"
-              >
+            <input
+              type="text"
+              formControlName="producto_cmr"
+              class="form-control"
+              id="programaTramaAdd"
+            />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Programa CMR</label>
-            <input type="text" formControlName="programa_cmr" class="form-control" id="codProgramaSapAdd"
-              >
+            <input
+              type="text"
+              formControlName="programa_cmr"
+              class="form-control"
+              id="codProgramaSapAdd"
+            />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Plan CMR-SAP</label>
-            <input type="text" formControlName="plan_cmr_sap" class="form-control" id="planCmrSapAdd"
-              >
+            <input
+              type="text"
+              formControlName="plan_cmr_sap"
+              class="form-control"
+              id="planCmrSapAdd"
+            />
           </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      <button id="btnUserRegister" type="button" class="btn btn-primary" (click)="btnRegistrar()" [disabled]='registerCmrForm.invalid'>Agregar</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          id="btnUserRegister"
+          type="button"
+          class="btn btn-primary"
+          (click)="btnRegistrar()"
+          [disabled]="registerCmrForm.invalid"
+        >
+          Agregar
+        </button>
+      </div>
     </div>
   </div>
-</div>
 </div>
 
 <!-- Update -->
-<div class="modal fade" id="contentModalActualizar" tabindex="-1" role="dialog"
-aria-labelledby="contentModalActualizarLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Actualizar Plan CMR</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div id="msjReponnseModal"></div>
-      <form  [formGroup]="updateCmrForm">
-        <div class="form-group">
-          <label for="descripcionUpdate">Producto CMR</label>
-          <input type="text" disabled formControlName="producto_cmr" class="form-control" id="programaTramaUpdate"
-            >
-        </div>
-        <div class="form-group">
-          <label for="descripcionUpdate">Programa CMR</label>
-          <input type="text" disabled formControlName="programa_cmr" class="form-control" id="codProgramaSapUpdate"
-            >
-        </div>
-        <div class="form-group">
-          <label for="descripcionUpdate">Plan CMR-SAP</label>
-          <input type="text" formControlName="plan_cmr_sap" class="form-control" id="planCmrSapUpdate"
-            >
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      <button id="btnActtionDataInfo" type="button" class="btn btn-primary"  (click)="btnActualizar()" [disabled]='updateCmrForm.invalid'>Actualizar</button>
+<div
+  class="modal fade"
+  id="contentModalActualizar"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalActualizarLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Plan CMR</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form [formGroup]="updateCmrForm">
+          <div class="form-group">
+            <label for="descripcionUpdate">Producto CMR</label>
+            <input
+              type="text"
+              disabled
+              formControlName="producto_cmr"
+              class="form-control"
+              id="programaTramaUpdate"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Programa CMR</label>
+            <input
+              type="text"
+              disabled
+              formControlName="programa_cmr"
+              class="form-control"
+              id="codProgramaSapUpdate"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Plan CMR-SAP</label>
+            <input
+              type="text"
+              formControlName="plan_cmr_sap"
+              class="form-control"
+              id="planCmrSapUpdate"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          id="btnActtionDataInfo"
+          type="button"
+          class="btn btn-primary"
+          (click)="btnActualizar()"
+          [disabled]="updateCmrForm.invalid"
+        >
+          Actualizar
+        </button>
+      </div>
     </div>
   </div>
-</div>
 </div>

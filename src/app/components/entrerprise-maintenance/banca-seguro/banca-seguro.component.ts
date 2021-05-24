@@ -38,6 +38,7 @@ export class BancaSeguroComponent implements OnInit {
   radioTmkReg;
   radioTmkPos;
   tipo_trama = [];
+  isCmr: boolean;
 
   constructor(
     private empServ: EmpresasService,
@@ -156,7 +157,7 @@ export class BancaSeguroComponent implements OnInit {
   }
 
   abrirModalActualizar(id_empresa) {
-    console.log(id_empresa)
+    console.log(id_empresa);
     $('#contentModalActualizar').modal('show');
     this.ruc_empresa = '';
     this.nom_empresa = '';
@@ -171,7 +172,7 @@ export class BancaSeguroComponent implements OnInit {
 
     this.listaEmpresas.forEach((element) => {
       var tipo_trama;
-      if (element.id_empresa == id_empresa  ) {
+      if (element.id_empresa == id_empresa) {
         this.id_empresa = element.id_empresa;
         this.ruc_empresa = element.ruc;
         this.nom_empresa = element.empresa;
@@ -181,16 +182,19 @@ export class BancaSeguroComponent implements OnInit {
         this.bancaSeguro = element.nombre_bca_seguro;
         this.nConvenioRec = element.n_convenio_recaudador;
         tipo_trama = element.tipo_trama;
-        console.log(element)
-        $('#actualizarCapitalizado').val(element.capitalizado==1)
-        console.log(element.capitalizado==1)
-        console.log(  $('#actualizarCapitalizado').val())
+        console.log(element);
+        $('#actualizarCapitalizado').val(element.capitalizado == 1);
+        console.log(element.capitalizado == 1);
+        console.log($('#actualizarCapitalizado').val());
 
-        $('#actualizarCapitalizado').bootstrapToggle(element.capitalizado==1?'on':'off')
+        $('#actualizarCapitalizado').bootstrapToggle(
+          element.capitalizado == 1 ? 'on' : 'off'
+        );
         if (tipo_trama.includes('2')) {
           if (tipo_trama.includes('4')) {
             if (tipo_trama.includes('6')) {
               oblig.filter('[value=0]').attr('checked', true);
+              this.isCmr = true;
             }
           }
         } else {
@@ -198,6 +202,7 @@ export class BancaSeguroComponent implements OnInit {
             if (tipo_trama.includes('3')) {
               if (tipo_trama.includes('5')) {
                 oblig.filter('[value=1]').attr('checked', true);
+                this.isCmr = false;
               }
             }
           }
@@ -227,7 +232,7 @@ export class BancaSeguroComponent implements OnInit {
     var request;
     request = {
       action: 'actualizar',
-      id_empresa: this.id_empresa+"",
+      id_empresa: this.id_empresa + '',
       ruc_empresa: this.ruc_empresa,
       nom_empresa: this.nom_empresa,
       tipo_trama: tipo_trama,
@@ -248,7 +253,7 @@ export class BancaSeguroComponent implements OnInit {
     });
     this.empServ.actualizarEmpresas(request).subscribe(
       (response) => {
-        Swal.close()
+        Swal.close();
         console.log('response');
         console.log(response);
         if (response['success'] == true) {

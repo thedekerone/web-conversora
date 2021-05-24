@@ -40,6 +40,13 @@
               <th>Procedencia</th>
               <th>Plan Sap</th>
               <th>Campaña Sap</th>
+              <th>Convenio Recaudador</th>
+              <th>Convenio Unid. Venta</th>
+              <th>Conv. Broker</th>
+              <th>BP Recaudador</th>
+              <th>BP Unid. Vta</th>
+              <th>BP Broker</th>
+              <th>Grupo vendedor</th>
               <th style="width: 380px; text-align: center">Acciones</th>
             </tr>
           </thead>
@@ -51,6 +58,13 @@
               <td>{{ plan.procedencia }}</td>
               <td>{{ plan.plan_sap }}</td>
               <td>{{ plan.campana_sap }}</td>
+              <td>{{ plan.convenio_recaudador }}</td>
+              <td>{{ plan.convenio_unidad_venta }}</td>
+              <td>{{ plan.convenio_broker }}</td>
+              <td>{{ plan.codigo_bp_recaudador }}</td>
+              <td>{{ plan.codigo_bp_unidad_venta }}</td>
+              <td>{{ plan.codigo_bp_broker }}</td>
+              <td>{{ plan.gpo_vendedor }}</td>
               <td *ngIf="plan.estado == 1">
                 <button
                   class="btn btn-primary"
@@ -179,6 +193,69 @@
               id="campanaSapAdd"
             />
           </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Convenio Recaudador</label>
+            <input
+              type="text"
+              formControlName="convenio_recaudador"
+              class="form-control"
+              id="convenio_recaudador"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Convenio Unid. Venta</label>
+            <input
+              type="text"
+              formControlName="convenio_unidad_venta"
+              class="form-control"
+              id="convenio_unidad_venta"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Conv. Broker</label>
+            <input
+              type="text"
+              formControlName="convenio_broker"
+              class="form-control"
+              id="convenio_broker"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Recaudador</label>
+            <input
+              type="text"
+              formControlName="codigo_bp_recaudador"
+              class="form-control"
+              id="codigo_bp_unidad_venta"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Unid. Vta</label>
+            <input
+              type="text"
+              formControlName="codigo_bp_unidad_venta"
+              class="form-control"
+              id="codigo_bp_unidad_venta"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Broker</label>
+            <input
+              type="text"
+              formControlName="codigo_bp_broker"
+              class="form-control"
+              id="codigo_bp_broker"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Grupo vendedor</label>
+            <input
+              type="text"
+              formControlName="gpo_vendedor"
+              class="form-control"
+              id="gpo_vendedor"
+            />
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -229,31 +306,28 @@
           <div class="form-group">
             <label for="descripcionUpdate">Cod Empresa</label>
             <input
-              disabled
               type="text"
               formControlName="cod_empresa"
               class="form-control"
-              id="codEmpresaUpdate"
+              id="codEmpresaAdd"
             />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Programa</label>
             <input
-              disabled
               type="text"
               formControlName="programa"
               class="form-control"
-              id="procedenciaUpdate"
+              id="procedenciaAdd"
             />
           </div>
           <div class="form-group">
             <label for="descripcionUpdate">Procedencia</label>
             <input
-              disabled
               type="text"
               formControlName="procedencia"
               class="form-control"
-              id="procedenciaUpdate"
+              id="procedenciaAdd"
             />
           </div>
           <div class="form-group">
@@ -262,7 +336,7 @@
               type="text"
               formControlName="plan_sap"
               class="form-control"
-              id="planSapUpdate"
+              id="planSapAdd"
             />
           </div>
           <div class="form-group">
@@ -271,7 +345,70 @@
               type="text"
               formControlName="campana_sap"
               class="form-control"
-              id="campanaSapUpdate"
+              id="campanaSapAdd"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Convenio Recaudador</label>
+            <input
+              type="text"
+              formControlName="convenio_recaudador"
+              class="form-control"
+              id="convenio_recaudador"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Convenio Unid. Venta</label>
+            <input
+              type="text"
+              formControlName="convenio_unidad_venta"
+              class="form-control"
+              id="convenio_unidad_venta"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Conv. Broker</label>
+            <input
+              type="text"
+              formControlName="convenio_broker"
+              class="form-control"
+              id="convenio_broker"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Recaudador</label>
+            <input
+              type="text"
+              formControlName="codigo_bp_recaudador"
+              class="form-control"
+              id="codigo_bp_unidad_venta"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Unid. Vta</label>
+            <input
+              type="text"
+              formControlName="codigo_bp_unidad_venta"
+              class="form-control"
+              id="codigo_bp_unidad_venta"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Broker</label>
+            <input
+              type="text"
+              formControlName="codigo_bp_broker"
+              class="form-control"
+              id="codigo_bp_broker"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Grupo vendedor</label>
+            <input
+              type="text"
+              formControlName="gpo_vendedor"
+              class="form-control"
+              id="gpo_vendedor"
             />
           </div>
         </form>
