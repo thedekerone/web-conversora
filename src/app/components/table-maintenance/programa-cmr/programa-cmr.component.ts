@@ -37,12 +37,26 @@ export class ProgramaCmrComponent implements OnInit {
       producto_cmr: ['', [Validators.required]],
       programa_cmr: ['', [Validators.required]],
       plan_cmr_sap: ['', [Validators.required]],
+      convenio_recaudador: ['', [Validators.required]],
+      convenio_unidad_venta: ['', [Validators.required]],
+      codigo_bp_unidad_venta: ['', [Validators.required]],
+      codigo_bp_recaudador: ['', [Validators.required]],
+      convenio_broker: [''],
+      codigo_bp_broker: [''],
+      gpo_vendedor: ['', [Validators.required]],
     });
     this.updateCmrForm = this.formBuilder.group({
       action: 'actualizar',
       producto_cmr: ['', [Validators.required]],
       programa_cmr: ['', [Validators.required]],
       plan_cmr_sap: ['', [Validators.required]],
+      convenio_recaudador: ['', [Validators.required]],
+      convenio_unidad_venta: ['', [Validators.required]],
+      codigo_bp_unidad_venta: ['', [Validators.required]],
+      codigo_bp_recaudador: ['', [Validators.required]],
+      convenio_broker: [''],
+      codigo_bp_broker: [''],
+      gpo_vendedor: ['', [Validators.required]],
     });
   }
 
@@ -85,6 +99,27 @@ export class ProgramaCmrComponent implements OnInit {
         );
         this.updateCmrForm.controls.plan_cmr_sap.setValue(
           listaPCmr.plan_cmr_sap
+        );
+        this.updateCmrForm.controls.convenio_recaudador.setValue(
+          listaPCmr.convenio_recaudador
+        );
+        this.updateCmrForm.controls.convenio_unidad_venta.setValue(
+          listaPCmr.convenio_unidad_venta
+        );
+        this.updateCmrForm.controls.codigo_bp_unidad_venta.setValue(
+          listaPCmr.codigo_bp_unidad_venta
+        );
+        this.updateCmrForm.controls.codigo_bp_recaudador.setValue(
+          listaPCmr.codigo_bp_recaudador
+        );
+        this.updateCmrForm.controls.convenio_broker.setValue(
+          listaPCmr.convenio_broker
+        );
+        this.updateCmrForm.controls.codigo_bp_broker.setValue(
+          listaPCmr.codigo_bp_broker
+        );
+        this.updateCmrForm.controls.gpo_vendedor.setValue(
+          listaPCmr.gpo_vendedor
         );
       });
   }
