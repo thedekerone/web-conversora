@@ -369,6 +369,7 @@ export class CreateTramaComponent implements OnInit {
     this.codConvenioBpVendedor = null;
     this.bp_sap_cliente = null;
     this.brokerList = null;
+    this.clearEmpresa();
   }
 
   alertError() {
@@ -1493,9 +1494,13 @@ export class CreateTramaComponent implements OnInit {
         //   result['DatosGenerales']['RazonSocial'] + " " + result['DatosConvenio'][0]['DatosCabecera']["DescripcionGpoVendedor"];
 
         // Segunda Llamada
-
-        this.codigoEmpresa =
-          result['DatosConvenio'][0]['UnidadVenta'][0]['CodigoBPUnidadVenta'];
+        if (
+          result['DatosConvenio'][0]['UnidadVenta'] &&
+          result['DatosConvenio'][0]['UnidadVenta'][0]['CodigoBPUnidadVenta']
+        ) {
+          this.codigoEmpresa =
+            result['DatosConvenio'][0]['UnidadVenta'][0]['CodigoBPUnidadVenta'];
+        }
 
         // copia---------------------------------------------------------------
 
@@ -1523,12 +1528,14 @@ export class CreateTramaComponent implements OnInit {
           this.convenioRolBroker =
             result['DatosConvenio'][0]['Broker'][0].Nombre1 +
             ' ' +
-            result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2 +
-            ' ' +
-            result['DatosConvenio'][0]['Broker'][0].RazonSocial +
-            ' ' +
-            result['DatosConvenio'][0]['Broker'][0]
-              .DescripcionTipoIdentificacion;
+            result['DatosConvenio'][0]['UnidadVenta']
+              ? result['DatosConvenio'][0]['UnidadVenta'][0].Nombre2
+              : '' +
+                ' ' +
+                result['DatosConvenio'][0]['Broker'][0].RazonSocial +
+                ' ' +
+                result['DatosConvenio'][0]['Broker'][0]
+                  .DescripcionTipoIdentificacion;
         }
 
         console.log('dsadsadsasdadsasd');

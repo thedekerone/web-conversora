@@ -182,24 +182,9 @@
               formControlName="convenio_recaudador"
               class="form-control"
               id="convenio_recaudador"
-            />
-          </div>
-          <div class="form-group">
-            <label for="descripcionUpdate">Convenio Unid. Venta</label>
-            <input
-              type="text"
-              formControlName="convenio_unidad_venta"
-              class="form-control"
-              id="convenio_unidad_venta"
-            />
-          </div>
-          <div class="form-group">
-            <label for="descripcionUpdate">Conv. Broker</label>
-            <input
-              type="text"
-              formControlName="convenio_broker"
-              class="form-control"
-              id="convenio_broker"
+              mask="00000000000"
+              maxlength="10"
+              (focusout)="format($event)"
             />
           </div>
           <div class="form-group">
@@ -209,6 +194,20 @@
               formControlName="codigo_bp_recaudador"
               class="form-control"
               id="codigo_bp_unidad_venta"
+              mask="00000000000"
+              maxlength="10"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Convenio Unid. Venta</label>
+            <input
+              type="text"
+              formControlName="convenio_unidad_venta"
+              class="form-control"
+              id="convenio_unidad_venta"
+              mask="00000000000"
+              maxlength="10"
+              (focusout)="format($event)"
             />
           </div>
           <div class="form-group">
@@ -218,8 +217,23 @@
               formControlName="codigo_bp_unidad_venta"
               class="form-control"
               id="codigo_bp_unidad_venta"
+              mask="00000000000"
+              maxlength="10"
             />
           </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Conv. Broker</label>
+            <input
+              type="text"
+              formControlName="convenio_broker"
+              class="form-control"
+              id="convenio_broker"
+              mask="00000000000"
+              maxlength="10"
+              (focusout)="format($event)"
+            />
+          </div>
+
           <div class="form-group">
             <label for="descripcionUpdate">BP Broker</label>
             <input
@@ -227,6 +241,8 @@
               formControlName="codigo_bp_broker"
               class="form-control"
               id="codigo_bp_broker"
+              mask="00000000000"
+              maxlength="10"
             />
           </div>
           <div class="form-group">
@@ -301,6 +317,8 @@
               formControlName="programa_cmr"
               class="form-control"
               id="codProgramaSapUpdate"
+              mask="00"
+              maxlength="2"
             />
           </div>
           <div class="form-group">
@@ -319,24 +337,9 @@
               formControlName="convenio_recaudador"
               class="form-control"
               id="convenio_recaudador"
-            />
-          </div>
-          <div class="form-group">
-            <label for="descripcionUpdate">Convenio Unid. Venta</label>
-            <input
-              type="text"
-              formControlName="convenio_unidad_venta"
-              class="form-control"
-              id="convenio_unidad_venta"
-            />
-          </div>
-          <div class="form-group">
-            <label for="descripcionUpdate">Conv. Broker</label>
-            <input
-              type="text"
-              formControlName="convenio_broker"
-              class="form-control"
-              id="convenio_broker"
+              mask="00000000000"
+              maxlength="10"
+              (focusout)="format($event)"
             />
           </div>
           <div class="form-group">
@@ -346,6 +349,20 @@
               formControlName="codigo_bp_recaudador"
               class="form-control"
               id="codigo_bp_unidad_venta"
+              mask="00000000000"
+              maxlength="10"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Convenio Unid. Venta</label>
+            <input
+              type="text"
+              formControlName="convenio_unidad_venta"
+              class="form-control"
+              id="convenio_unidad_venta"
+              mask="00000000000"
+              maxlength="10"
+              (focusout)="format($event)"
             />
           </div>
           <div class="form-group">
@@ -355,8 +372,23 @@
               formControlName="codigo_bp_unidad_venta"
               class="form-control"
               id="codigo_bp_unidad_venta"
+              mask="00000000000"
+              maxlength="10"
             />
           </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">Conv. Broker</label>
+            <input
+              type="text"
+              formControlName="convenio_broker"
+              class="form-control"
+              id="convenio_broker"
+              mask="00000000000"
+              maxlength="10"
+              (focusout)="format($event)"
+            />
+          </div>
+
           <div class="form-group">
             <label for="descripcionUpdate">BP Broker</label>
             <input
@@ -364,6 +396,8 @@
               formControlName="codigo_bp_broker"
               class="form-control"
               id="codigo_bp_broker"
+              mask="00000000000"
+              maxlength="10"
             />
           </div>
           <div class="form-group">

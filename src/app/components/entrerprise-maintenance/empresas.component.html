@@ -1,445 +1,775 @@
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Mantenimiento Empresas</h1>
-    <p class="mb-4">Puedes usar el buscador de la tabla de resultados para poder filtrar por cualquier columna.</p>
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary" style="float: left;line-height: 40px;">Empresas</h6>
-            <button type="button" (click)="abrirModal()" class="btn btn-primary" style="float: right;"><i
-                    class="fa fa-plus"></i> Agregar</button>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered"
-                    width="100%">
-                    <thead>
-                        <tr>
-                            <th style="width: 40px;text-align: center;">ID</th>
-                            <th>Razón Social</th>
-                            <th>Canal</th>
-                            <th style="width: 380px;text-align: center;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody *ngIf="listaEmpresas?.length != 0">
-                        <tr *ngFor="let empresa of listaEmpresas; let i = index">
-                            <td style="text-align: center">{{i + 1}}</td>
-                            <td>{{ empresa.empresa }}</td>
-                            <td>{{ empresa.canal }}</td>
-                            <td *ngIf="empresa.estado == 1">
-                                <button class="btn btn-primary" (click)="abrirModalActualizar(empresa.ruc)"><i
-                                        class="fa fa-edit"></i>
-                                    Editar</button>
-                                <button class="btn btn-danger"
-                                    (click)="abrirModalCambiarEstado(empresa.empresa, empresa.estado )"><i
-                                        class="fa fa-close"></i>
-                                    Desactivar</button>
-                            </td>
-                            <td *ngIf="empresa.estado == 0">
-                                <button class="btn btn-primary" (click)="abrirModalActualizar(empresa.ruc)"><i
-                                        class="fa fa-edit"></i>
-                                    Editar</button>
-                                <button class="btn btn-success"
-                                    (click)="abrirModalCambiarEstado(empresa.empresa, empresa.estado)"><i
-                                        class="fa fa-check"></i>
-                                    Activar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody *ngIf="listaEmpresas?.length == 0">
-                        <tr>
-                            <td colspan="8" class="no-data-available">
-                                <div class="alert alert-info">
-                                    Buscando resultados...
-                                </div>
-                            </td>
-                        </tr>
-                    <tbody>
-                </table>
-            </div>
-        </div>
+  <h1 class="h3 mb-2 text-gray-800">Mantenimiento Empresas</h1>
+  <p class="mb-4">
+    Puedes usar el buscador de la tabla de resultados para poder filtrar por
+    cualquier columna.
+  </p>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6
+        class="m-0 font-weight-bold text-primary"
+        style="float: left; line-height: 40px"
+      >
+        Empresas
+      </h6>
+      <button
+        type="button"
+        (click)="abrirModal()"
+        class="btn btn-primary"
+        style="float: right"
+      >
+        <i class="fa fa-plus"></i> Agregar
+      </button>
     </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table table-bordered"
+          width="100%"
+        >
+          <thead>
+            <tr>
+              <th style="width: 40px; text-align: center">ID</th>
+              <th>Razón Social</th>
+              <th>Canal</th>
+              <th style="width: 380px; text-align: center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listaEmpresas?.length != 0">
+            <tr *ngFor="let empresa of listaEmpresas; let i = index">
+              <td style="text-align: center">{{ i + 1 }}</td>
+              <td>{{ empresa.empresa }}</td>
+              <td>{{ empresa.canal }}</td>
+              <td *ngIf="empresa.estado == 1">
+                <button
+                  class="btn btn-primary"
+                  (click)="abrirModalActualizar(empresa.ruc)"
+                >
+                  <i class="fa fa-edit"></i> Editar
+                </button>
+                <button
+                  class="btn btn-danger"
+                  (click)="
+                    abrirModalCambiarEstado(empresa.empresa, empresa.estado)
+                  "
+                >
+                  <i class="fa fa-close"></i> Desactivar
+                </button>
+              </td>
+              <td *ngIf="empresa.estado == 0">
+                <button
+                  class="btn btn-primary"
+                  (click)="abrirModalActualizar(empresa.ruc)"
+                >
+                  <i class="fa fa-edit"></i> Editar
+                </button>
+                <button
+                  class="btn btn-success"
+                  (click)="
+                    abrirModalCambiarEstado(empresa.empresa, empresa.estado)
+                  "
+                >
+                  <i class="fa fa-check"></i> Activar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="listaEmpresas?.length == 0">
+            <tr>
+              <td colspan="8" class="no-data-available">
+                <div class="alert alert-info">Buscando resultados...</div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Add -->
-<div class="modal fade" id="contentModalVendedor" tabindex="-1" role="dialog"
-    aria-labelledby="contentModalVendedorLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar nueva empresa</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div
+  class="modal fade"
+  id="contentModalVendedor"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalVendedorLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Agregar nueva empresa
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="alert alert-info">Se ingresa una empresa.</div>
+          <div class="form-group">
+            <label for="staticEmail">Canal</label>
+            <div class="form-group">
+              <select
+                name="canalSelected"
+                [(ngModel)]="canalSelected"
+                id=""
+                (change)="onChangeCanal($event.target.value)"
+                class="form-control"
+              >
+                <option value="0" selected>Seleccione un canal</option>
+                <option value="2">Telemarketing</option>
+                <option value="3">Banco seguro</option>
+                <option value="4">Grupales</option>
+              </select>
             </div>
-            <div class="modal-body">
-                <form>
-                    <div class="alert alert-info">
-                        Se ingresa una empresa.
+            <div *ngIf="mostrar">
+              <fieldset class="form-group" *ngIf="mostrarRadioTmk">
+                <div class="row">
+                  <legend class="col-form-label col-sm-2 pt-0">Tipo</legend>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radioTmkReg"
+                        [(ngModel)]="radioTmkReg"
+                        id="gridRadios1"
+                        value="11,12"
+                        checked
+                      />
+                      <label class="form-check-label" for="gridRadios1">
+                        Alta Regular
+                      </label>
                     </div>
-                    <div class="form-group">
-                        <label for="staticEmail">Canal</label>
-                        <div class="form-group">
-                            <select name="canalSelected" [(ngModel)]="canalSelected" id=""
-                                (change)="onChangeCanal($event.target.value)" class="form-control">
-                                <option value="0" selected>Seleccione un canal</option>
-                                <option value="2">Telemarketing</option>
-                                <option value="3">Banco seguro</option>
-                                <option value="4">Grupales</option>
-                            </select>
-                        </div>
-                        <div *ngIf="mostrar">
-                            <fieldset class="form-group" *ngIf="mostrarRadioTmk">
-                                <div class="row">
-                                    <legend class="col-form-label col-sm-2 pt-0">Tipo</legend>
-                                    <div class="col-sm-10">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radioTmkReg" [(ngModel)]="radioTmkReg" 
-                                                id="gridRadios1" value="11,12" checked>
-                                            <label class="form-check-label" for="gridRadios1">
-                                                Alta Regular
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radioTmkPos" [(ngModel)]="radioTmkPos" 
-                                                id="gridRadios2" value="13,14">
-                                            <label class="form-check-label" for="gridRadios2">
-                                                Alta POS PC
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset class="form-group" *ngIf="mostrarRadioBS">
-                                <div class="row">
-                                    <legend class="col-form-label col-sm-2 pt-0">Tipo</legend>
-                                    <div class="col-sm-10">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gridRadios"
-                                                id="gridRadios1" value="option1" checked>
-                                            <label class="form-check-label" for="gridRadios1">
-                                                CMR
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gridRadios"
-                                                id="gridRadios2" value="option2">
-                                            <label class="form-check-label" for="gridRadios2">
-                                                Regular
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="form-group">
-                                <label for="descripcionUpdate">RUC</label>
-                                <input type="text" name="ruc_empresa" [(ngModel)]="ruc_empresa"
-                                    class="form-control errorborderdata" id="rucAdd" maxlength="11" mask="00000000000">
-                            </div>
-                            <span *ngIf="errorRucTmk" class="colorError">Seleccione un tipo de archivo</span>
-                            <div class="form-group">
-                                <label for="descripcionUpdate">Razón Social</label>
-                                <input type="text" name="nom_empresa" [(ngModel)]="nom_empresa" class="form-control"
-                                    id="razonSocialAdd">
-                            </div>
-                        </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radioTmkPos"
+                        [(ngModel)]="radioTmkPos"
+                        id="gridRadios2"
+                        value="13,14"
+                      />
+                      <label class="form-check-label" for="gridRadios2">
+                        Alta POS PC
+                      </label>
                     </div>
-                    <div *ngIf="telemarketing">
-                        <div class="form-group">
-                            <label for="descripcionUpdate">BP SAP Recaudador</label>
-                            <input type="text" name="bp_sap" [(ngModel)]="bp_sap" class="form-control"
-                                id="bpSapRecaudAdd">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button id="btnUserRegister" type="button" class="btn btn-primary"
-                                (click)="btnRegistrar(2)">Agregar</button>
-                        </div>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="form-group" *ngIf="mostrarRadioBS">
+                <div class="row">
+                  <legend class="col-form-label col-sm-2 pt-0">Tipo</legend>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="gridRadios"
+                        id="gridRadios1"
+                        value="option1"
+                        checked
+                      />
+                      <label class="form-check-label" for="gridRadios1">
+                        CMR
+                      </label>
                     </div>
-                    <div *ngIf="bancayseguros">
-                        <div class="form-group">
-                            <label for="descripcionUpdate">Cod Empresa Oncosys</label>
-                            <input type="text" name="codEmprOn" [(ngModel)]="codEmprOn" class="form-control"
-                                id="CodEmpraOncoAdd">
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">BP SAP Recaudador</label>
-                            <input type="text" name="bpSapRec" [(ngModel)]="bpSapRec" class="form-control"
-                                id="bpSapRecaudAdd">
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">Nombre banca seguro</label>
-                            <input type="text" name="bancaSeguro" [(ngModel)]="bancaSeguro" class="form-control"
-                                id="nomBancaSeguroAdd">
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">N Convenio recaudador</label>
-                            <input type="text" name="nConvenioRec" [(ngModel)]="nConvenioRec" class="form-control"
-                                id="nConvenioRecAdd">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button id="btnUserRegister" type="button" class="btn btn-primary"
-                                (click)="btnRegistrar(3)">Agregar</button>
-                        </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="gridRadios"
+                        id="gridRadios2"
+                        value="option2"
+                      />
+                      <label class="form-check-label" for="gridRadios2">
+                        Regular
+                      </label>
                     </div>
-                    <div *ngIf="grupales">
-                        <div class="form-group">
-                            <label for="descripcionUpdate">BP SAP Cliente</label>
-                            <input type="text" name="bpSapCliente" [(ngModel)]="bpSapCliente" class="form-control"
-                                id="bpSapClienAdd">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" *ngIf="addSubrogado" class="btn btn-secondary"
-                                (click)="AbrirModalSubrogado()">Sub rogada</button>
-                            <button id="btnUserRegister" type="button" class="btn btn-primary"
-                                (click)="btnRegistrar(4)">Agregar</button>
-                        </div>
-                        <div *ngIf="showTable">
-                            <div class="table-responsive" id="dataG">
-                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                    class="table table-bordered" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Empresa Subrogada</th>
-                                            <th>RUC Subrogada</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let lista of listaSubrog; let i = index">
-                                            <td>{{i + 1}}</td>
-                                            <td>{{ lista.emprSubrogada }}</td>
-                                            <td>{{ lista.rucSubrogada }}</td>
-                                            <td><button class="btn btn-danger" (click)="quitarEmpresaSubr(i)"><i
-                                                        class="fa fa-close"></i>
-                                                    Quitar</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                  </div>
+                </div>
+              </fieldset>
+              <div class="form-group">
+                <label for="descripcionUpdate">RUC</label>
+                <input
+                  type="text"
+                  name="ruc_empresa"
+                  [(ngModel)]="ruc_empresa"
+                  class="form-control errorborderdata"
+                  id="rucAdd"
+                  maxlength="11"
+                  mask="00000000000"
+                />
+              </div>
+              <span *ngIf="errorRucTmk" class="colorError"
+                >Seleccione un tipo de archivo</span
+              >
+              <div class="form-group">
+                <label for="descripcionUpdate">Razón Social</label>
+                <input
+                  type="text"
+                  name="nom_empresa"
+                  [(ngModel)]="nom_empresa"
+                  class="form-control"
+                  id="razonSocialAdd"
+                />
+              </div>
             </div>
-            <!--<div class="modal-footer">
+          </div>
+          <div *ngIf="telemarketing">
+            <div class="form-group">
+              <label for="descripcionUpdate">BP SAP</label>
+              <input
+                type="text"
+                name="bp_sap"
+                [(ngModel)]="bp_sap"
+                class="form-control"
+                id="bpSapRecaudAdd"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button
+                id="btnUserRegister"
+                type="button"
+                class="btn btn-primary"
+                (click)="btnRegistrar(2)"
+              >
+                Agregar
+              </button>
+            </div>
+          </div>
+          <div *ngIf="bancayseguros">
+            <div class="form-group">
+              <label for="descripcionUpdate">Cod Empresa Oncosys</label>
+              <input
+                type="text"
+                name="codEmprOn"
+                [(ngModel)]="codEmprOn"
+                class="form-control"
+                id="CodEmpraOncoAdd"
+              />
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">BP SAP</label>
+              <input
+                type="text"
+                name="bpSapRec"
+                [(ngModel)]="bpSapRec"
+                class="form-control"
+                id="bpSapRecaudAdd"
+              />
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Nombre banca seguro</label>
+              <input
+                type="text"
+                name="bancaSeguro"
+                [(ngModel)]="bancaSeguro"
+                class="form-control"
+                id="nomBancaSeguroAdd"
+              />
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">N Convenio recaudador</label>
+              <input
+                type="text"
+                name="nConvenioRec"
+                [(ngModel)]="nConvenioRec"
+                class="form-control"
+                id="nConvenioRecAdd"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button
+                id="btnUserRegister"
+                type="button"
+                class="btn btn-primary"
+                (click)="btnRegistrar(3)"
+              >
+                Agregar
+              </button>
+            </div>
+          </div>
+          <div *ngIf="grupales">
+            <div class="form-group">
+              <label for="descripcionUpdate">BP SAP Cliente</label>
+              <input
+                type="text"
+                name="bpSapCliente"
+                [(ngModel)]="bpSapCliente"
+                class="form-control"
+                id="bpSapClienAdd"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                *ngIf="addSubrogado"
+                class="btn btn-secondary"
+                (click)="AbrirModalSubrogado()"
+              >
+                Sub rogada
+              </button>
+              <button
+                id="btnUserRegister"
+                type="button"
+                class="btn btn-primary"
+                (click)="btnRegistrar(4)"
+              >
+                Agregar
+              </button>
+            </div>
+            <div *ngIf="showTable">
+              <div class="table-responsive" id="dataG">
+                <table
+                  datatable
+                  [dtOptions]="dtOptions"
+                  [dtTrigger]="dtTrigger"
+                  class="table table-bordered"
+                  width="100%"
+                >
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Empresa Subrogada</th>
+                      <th>RUC Subrogada</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let lista of listaSubrog; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ lista.emprSubrogada }}</td>
+                      <td>{{ lista.rucSubrogada }}</td>
+                      <td>
+                        <button
+                          class="btn btn-danger"
+                          (click)="quitarEmpresaSubr(i)"
+                        >
+                          <i class="fa fa-close"></i> Quitar
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--<div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button id="btnUserRegister" type="button" class="btn btn-primary" (click)="btnRegistrar()"
                     [disabled]='registerCmrForm.invalid'>Agregar</button>
             </div>-->
-        </div>
     </div>
+  </div>
 </div>
 
 <!-- Update -->
-<div class="modal fade" id="contentModalActualizar" tabindex="-1" role="dialog"
-    aria-labelledby="contentModalActualizarLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Actualizar empresa</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div
+  class="modal fade"
+  id="contentModalActualizar"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalActualizarLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar empresa</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form>
+          <div class="alert alert-info">Actualiza una empresa.</div>
+          <div class="form-group">
+            <label for="staticEmail">Canal</label>
+            <div class="form-group">
+              <select
+                name="canalSelected"
+                [(ngModel)]="canalSelected"
+                id=""
+                (change)="onChangeCanal($event.target.value)"
+                class="form-control"
+              >
+                <option value="0" selected>Seleccione un canal</option>
+                <option value="2">Telemarketing</option>
+                <option value="3">Banco seguro</option>
+                <option value="4">Grupales</option>
+              </select>
             </div>
-            <div class="modal-body">
-                <div id="msjReponnseModal"></div>
-                <form>
-                    <div class="alert alert-info">
-                        Actualiza una empresa.
-                    </div>
-                    <div class="form-group">
-                        <label for="staticEmail">Canal</label>
-                        <div class="form-group">
-                            <select name="canalSelected" [(ngModel)]="canalSelected" id=""
-                                (change)="onChangeCanal($event.target.value)" class="form-control">
-                                <option value="0" selected>Seleccione un canal</option>
-                                <option value="2">Telemarketing</option>
-                                <option value="3">Banco seguro</option>
-                                <option value="4">Grupales</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">RUC</label>
-                            <input type="text" name="ruc_empresa" [(ngModel)]="ruc_empresa" class="form-control"
-                                id="rucAdd" maxlength="11" mask="00000000000" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">Razón Social</label>
-                            <input type="text" name="nom_empresa" [(ngModel)]="nom_empresa" class="form-control"
-                                id="razonSocialAdd" disabled>
-                        </div>
-                    </div>
-                    <div *ngIf="telemarketing">
-                        <div class="form-group">
-                            <label for="descripcionUpdate">BP SAP Recaudador</label>
-                            <input type="text" name="bp_sap" [(ngModel)]="bp_sap" class="form-control"
-                                id="bpSapRecaudAdd">
-                        </div>
-
-                    </div>
-                    <div *ngIf="bancayseguros">
-                        <div class="form-group">
-                            <label for="descripcionUpdate">Cod Empresa Oncosys</label>
-                            <input type="text" name="codEmprOn" [(ngModel)]="codEmprOn" class="form-control"
-                                id="CodEmpraOncoAdd">
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">BP SAP Recaudador</label>
-                            <input type="text" name="bpSapRec" [(ngModel)]="bpSapRec" class="form-control"
-                                id="bpSapRecaudAdd">
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">Nombre banca seguro</label>
-                            <input type="text" name="bancaSeguro" [(ngModel)]="bancaSeguro" class="form-control"
-                                id="nomBancaSeguroAdd">
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionUpdate">N Convenio recaudador</label>
-                            <input type="text" name="nConvenioRec" [(ngModel)]="nConvenioRec" class="form-control"
-                                id="nConvenioRecAdd">
-                        </div>
-                    </div>
-                    <div *ngIf="grupales">
-                        <div class="form-group">
-                            <label for="descripcionUpdate">BP SAP Cliente</label>
-                            <input type="text" name="bpSapCliente" [(ngModel)]="bpSapCliente" class="form-control"
-                                id="bpSapClienAdd">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <!--<button *ngIf="updateSubrogado" type="button" class="btn btn-secondary" data-dismiss="modal"
+            <div class="form-group">
+              <label for="descripcionUpdate">RUC</label>
+              <input
+                type="text"
+                name="ruc_empresa"
+                [(ngModel)]="ruc_empresa"
+                class="form-control"
+                id="rucAdd"
+                maxlength="11"
+                mask="00000000000"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Razón Social</label>
+              <input
+                type="text"
+                name="nom_empresa"
+                [(ngModel)]="nom_empresa"
+                class="form-control"
+                id="razonSocialAdd"
+                disabled
+              />
+            </div>
+          </div>
+          <div *ngIf="telemarketing">
+            <div class="form-group">
+              <label for="descripcionUpdate">BP SAP</label>
+              <input
+                type="text"
+                name="bp_sap"
+                [(ngModel)]="bp_sap"
+                class="form-control"
+                id="bpSapRecaudAdd"
+              />
+            </div>
+          </div>
+          <div *ngIf="bancayseguros">
+            <div class="form-group">
+              <label for="descripcionUpdate">Cod Empresa Oncosys</label>
+              <input
+                type="text"
+                name="codEmprOn"
+                [(ngModel)]="codEmprOn"
+                class="form-control"
+                id="CodEmpraOncoAdd"
+              />
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">BP SAP</label>
+              <input
+                type="text"
+                name="bpSapRec"
+                [(ngModel)]="bpSapRec"
+                class="form-control"
+                id="bpSapRecaudAdd"
+              />
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">Nombre banca seguro</label>
+              <input
+                type="text"
+                name="bancaSeguro"
+                [(ngModel)]="bancaSeguro"
+                class="form-control"
+                id="nomBancaSeguroAdd"
+              />
+            </div>
+            <div class="form-group">
+              <label for="descripcionUpdate">N Convenio recaudador</label>
+              <input
+                type="text"
+                name="nConvenioRec"
+                [(ngModel)]="nConvenioRec"
+                class="form-control"
+                id="nConvenioRecAdd"
+              />
+            </div>
+          </div>
+          <div *ngIf="grupales">
+            <div class="form-group">
+              <label for="descripcionUpdate">BP SAP Cliente</label>
+              <input
+                type="text"
+                name="bpSapCliente"
+                [(ngModel)]="bpSapCliente"
+                class="form-control"
+                id="bpSapClienAdd"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <!--<button *ngIf="updateSubrogado" type="button" class="btn btn-secondary" data-dismiss="modal"
                             (click)="abrirModalActualizSubrogado()">Actualizar Subrogado</button>-->
-                        <button id="btnActtionDataInfo" type="button" class="btn btn-primary"
-                            (click)="btnActualizar()">Actualizar</button>
-                    </div>
+            <button
+              id="btnActtionDataInfo"
+              type="button"
+              class="btn btn-primary"
+              (click)="btnActualizar()"
+            >
+              Actualizar
+            </button>
+          </div>
 
-                    <div *ngIf="showTableEdit">
-                        <div class="table-responsive" id="dataG">
-                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                class="table table-bordered" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Razon Social Subrogada</th>
-                                        <th>RUC Subrogada</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let lista of listaSubrog2; let i = index">
-                                        <td>{{i + 1}}</td>
-                                        <td>{{ lista.razon_social_subrogado }}</td>
-                                        <td>{{ lista.ruc_subrogador }}</td>
-                                        <td *ngIf="lista.estado == 1">
-                                            <button class="btn btn-primary" (click)="abrirModalActualizarSub(i)"><i
-                                                    class="fa fa-edit"></i>
-                                                Editar</button>
-                                            <button class="btn btn-danger"
-                                                (click)="abrirModalDesactivarSub(lista.id_empresa_subrogada)"><i
-                                                    class="fa fa-close"></i>
-                                                Desactivar</button>
-                                        </td>
-                                        <td *ngIf="lista.estado == 0">
-                                            <button class="btn btn-primary" (click)="abrirModalActualizarSub(i)"><i
-                                                    class="fa fa-edit"></i>
-                                                Editar</button>
-                                            <button class="btn btn-success"
-                                                (click)="abrirModalActivarSub(lista.id_empresa_subrogada)"><i
-                                                    class="fa fa-check"></i>
-                                                Activar</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </form>
+          <div *ngIf="showTableEdit">
+            <div class="table-responsive" id="dataG">
+              <table
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+                class="table table-bordered"
+                width="100%"
+              >
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Razon Social Subrogada</th>
+                    <th>RUC Subrogada</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let lista of listaSubrog2; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ lista.razon_social_subrogado }}</td>
+                    <td>{{ lista.ruc_subrogador }}</td>
+                    <td *ngIf="lista.estado == 1">
+                      <button
+                        class="btn btn-primary"
+                        (click)="abrirModalActualizarSub(i)"
+                      >
+                        <i class="fa fa-edit"></i> Editar
+                      </button>
+                      <button
+                        class="btn btn-danger"
+                        (click)="
+                          abrirModalDesactivarSub(lista.id_empresa_subrogada)
+                        "
+                      >
+                        <i class="fa fa-close"></i> Desactivar
+                      </button>
+                    </td>
+                    <td *ngIf="lista.estado == 0">
+                      <button
+                        class="btn btn-primary"
+                        (click)="abrirModalActualizarSub(i)"
+                      >
+                        <i class="fa fa-edit"></i> Editar
+                      </button>
+                      <button
+                        class="btn btn-success"
+                        (click)="
+                          abrirModalActivarSub(lista.id_empresa_subrogada)
+                        "
+                      >
+                        <i class="fa fa-check"></i> Activar
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-        </div>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Add Subrogada -->
-<div class="modal fade" id="contentModalSubrogada" tabindex="-1" role="dialog"
-    aria-labelledby="contentModalSubrogadaLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Empresa subrogada</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="msjReponnseModal"></div>
-                <form>
-                    <div class="form-group">
-                        <label for="descripcionUpdate">Empresa subrogada</label>
-                        <input type="text" name="emprSubrogada" [(ngModel)]="emprSubrogada" class="form-control"
-                            id="programaTramaUpdate">
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcionUpdate">RUC Subrogada</label>
-                        <input type="text" name="rucSubrogada" [(ngModel)]="rucSubrogada" class="form-control"
-                            maxlength="11" mask="00000000000" id="codProgramaSapUpdate">
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcionUpdate">BP Subrogada</label>
-                        <input type="text" name="bpSubrogada" [(ngModel)]="bpSubrogada" class="form-control"
-                            id="planCmrSapUpdate">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnActtionDataInfo" type="button" class="btn btn-primary"
-                    (click)="btnAgregarSubrogado(emprSubrogada, rucSubrogada, bpSubrogada)">Agregar</button>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="contentModalSubrogada"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalSubrogadaLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Empresa subrogada</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form>
+          <div class="form-group">
+            <label for="descripcionUpdate">Empresa subrogada</label>
+            <input
+              type="text"
+              name="emprSubrogada"
+              [(ngModel)]="emprSubrogada"
+              class="form-control"
+              id="programaTramaUpdate"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">RUC Subrogada</label>
+            <input
+              type="text"
+              name="rucSubrogada"
+              [(ngModel)]="rucSubrogada"
+              class="form-control"
+              maxlength="11"
+              mask="00000000000"
+              id="codProgramaSapUpdate"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Subrogada</label>
+            <input
+              type="text"
+              name="bpSubrogada"
+              [(ngModel)]="bpSubrogada"
+              class="form-control"
+              id="planCmrSapUpdate"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          id="btnActtionDataInfo"
+          type="button"
+          class="btn btn-primary"
+          (click)="
+            btnAgregarSubrogado(emprSubrogada, rucSubrogada, bpSubrogada)
+          "
+        >
+          Agregar
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Update Subrogada -->
-<div class="modal fade" id="contentModalUpdateSubrogada" tabindex="-1" role="dialog"
-    aria-labelledby="contentModalSubrogadaLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Empresa subrogada</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="msjReponnseModal"></div>
-                <form>
-                    <div class="form-group">
-                        <label for="descripcionUpdate">Empresa subrogada</label>
-                        <input type="text" name="emprSubrogadaUpdate" [(ngModel)]="emprSubrogadaUpdate"
-                            class="form-control" id="programaTramaUpdate" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcionUpdate">RUC Subrogada</label>
-                        <input type="text" name="rucSubrogadaUpdate" [(ngModel)]="rucSubrogadaUpdate"
-                            class="form-control" maxlength="11" mask="00000000000" id="codProgramaSapUpdate" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcionUpdate">BP Subrogador</label>
-                        <input type="text" name="bpSubrogadaUpdate" [(ngModel)]="bpSubrogadaUpdate" class="form-control"
-                            id="planCmrSapUpdate">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnActtionDataInfo" type="button" class="btn btn-primary"
-                    (click)="btnActualizarSubrogado()">Actualizar</button>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="contentModalUpdateSubrogada"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="contentModalSubrogadaLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Empresa subrogada</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="msjReponnseModal"></div>
+        <form>
+          <div class="form-group">
+            <label for="descripcionUpdate">Empresa subrogada</label>
+            <input
+              type="text"
+              name="emprSubrogadaUpdate"
+              [(ngModel)]="emprSubrogadaUpdate"
+              class="form-control"
+              id="programaTramaUpdate"
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">RUC Subrogada</label>
+            <input
+              type="text"
+              name="rucSubrogadaUpdate"
+              [(ngModel)]="rucSubrogadaUpdate"
+              class="form-control"
+              maxlength="11"
+              mask="00000000000"
+              id="codProgramaSapUpdate"
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcionUpdate">BP Subrogador</label>
+            <input
+              type="text"
+              name="bpSubrogadaUpdate"
+              [(ngModel)]="bpSubrogadaUpdate"
+              class="form-control"
+              id="planCmrSapUpdate"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          id="btnActtionDataInfo"
+          type="button"
+          class="btn btn-primary"
+          (click)="btnActualizarSubrogado()"
+        >
+          Actualizar
+        </button>
+      </div>
     </div>
+  </div>
 </div>

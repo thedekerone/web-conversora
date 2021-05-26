@@ -35,7 +35,7 @@ export class ProgramaCmrComponent implements OnInit {
     this.registerCmrForm = this.formBuilder.group({
       action: 'crear',
       producto_cmr: ['', [Validators.required]],
-      programa_cmr: ['', [Validators.required]],
+      programa_cmr: ['', [Validators.required, Validators.minLength(2)]],
       plan_cmr_sap: ['', [Validators.required]],
       convenio_recaudador: ['', [Validators.required]],
       convenio_unidad_venta: ['', [Validators.required]],
@@ -52,8 +52,14 @@ export class ProgramaCmrComponent implements OnInit {
       plan_cmr_sap: ['', [Validators.required]],
       convenio_recaudador: ['', [Validators.required]],
       convenio_unidad_venta: ['', [Validators.required]],
-      codigo_bp_unidad_venta: ['', [Validators.required]],
-      codigo_bp_recaudador: ['', [Validators.required]],
+      codigo_bp_unidad_venta: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
+      codigo_bp_recaudador: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
       convenio_broker: [''],
       codigo_bp_broker: [''],
       gpo_vendedor: ['', [Validators.required]],
@@ -73,11 +79,21 @@ export class ProgramaCmrComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
+  format(event) {
+    console.log(event);
+    event.target.value = this.padLeft(event.target.value, '0', 10);
+  }
+
+  padLeft(text: string, padChar: string, size: number): string {
+    return (String(padChar).repeat(size) + text).substr(size * -1, size);
+  }
+
   abrirModal(iduser) {
     $('#contentModalVendedor').modal('show');
     $('#programaTramaAdd').val('');
     $('#codProgramaSapAdd').val('');
     $('#planCmrSapAdd').val('');
+    this.registerCmrForm.reset();
   }
 
   abrirModalActualizar(producto_cmr, programa_cmr) {

@@ -34,30 +34,42 @@ export class PlanCampanaComponent implements OnInit {
 
     this.registerPYCForm = this.formBuilder.group({
       action: 'crear',
-      procedencia: ['', [Validators.required]],
-      cod_empresa: ['', [Validators.required]],
+      procedencia: ['', [Validators.required, Validators.minLength(3)]],
+      cod_empresa: ['', [Validators.required, Validators.minLength(2)]],
       plan_sap: ['', [Validators.required]],
       campana_sap: [''],
-      programa: ['', [Validators.required]],
+      programa: ['', [Validators.required, Validators.minLength(2)]],
       convenio_recaudador: ['', [Validators.required]],
       convenio_unidad_venta: ['', [Validators.required]],
-      codigo_bp_unidad_venta: ['', [Validators.required]],
-      codigo_bp_recaudador: ['', [Validators.required]],
+      codigo_bp_unidad_venta: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
+      codigo_bp_recaudador: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
       convenio_broker: [''],
       codigo_bp_broker: [''],
       gpo_vendedor: ['', [Validators.required]],
     });
     this.updatePYCForm = this.formBuilder.group({
       action: 'actualizar',
-      procedencia: ['', [Validators.required]],
-      cod_empresa: ['', [Validators.required]],
+      procedencia: ['', [Validators.required, Validators.minLength(3)]],
+      cod_empresa: ['', [Validators.required, Validators.minLength(2)]],
       plan_sap: ['', [Validators.required]],
       campana_sap: [''],
-      programa: ['', [Validators.required]],
+      programa: ['', [Validators.required, Validators.minLength(2)]],
       convenio_recaudador: ['', [Validators.required]],
       convenio_unidad_venta: ['', [Validators.required]],
-      codigo_bp_unidad_venta: ['', [Validators.required]],
-      codigo_bp_recaudador: ['', [Validators.required]],
+      codigo_bp_unidad_venta: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
+      codigo_bp_recaudador: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
       convenio_broker: [''],
       codigo_bp_broker: [''],
       gpo_vendedor: ['', [Validators.required]],
@@ -83,15 +95,18 @@ export class PlanCampanaComponent implements OnInit {
     $('#codEmpresaAdd').val('');
     $('#planSapAdd').val('');
     $('#campanaSapAdd').val('');
+    this.registerPYCForm.reset();
   }
 
   abrirModalActualizar(procedencia, cod_empresa) {
     $('#contentModalActualizar').modal('show');
+    console.log(procedencia);
+    console.log(cod_empresa);
     this.plancampanaServ
       .editarCampanas(procedencia, cod_empresa)
       .subscribe((response) => {
-        var listaPlan = response['data'][0];
         console.log(response);
+        var listaPlan = response['data'][0];
         $('#procedenciaUpdate').val(listaPlan.procedencia);
         $('#codEmpresaUpdate').val(listaPlan.cod_empresa);
         $('#planSapUpdate').val(listaPlan.plan_sap);
@@ -128,7 +143,17 @@ export class PlanCampanaComponent implements OnInit {
       });
   }
 
+  format(event) {
+    console.log(event);
+    event.target.value = this.padLeft(event.target.value, '0', 10);
+  }
+
+  padLeft(text: string, padChar: string, size: number): string {
+    return (String(padChar).repeat(size) + text).substr(size * -1, size);
+  }
+
   btnRegistrar() {
+    console.log(this.registerPYCForm);
     this.plancampanaServ
       .crearCampanas(this.registerPYCForm.value)
       .subscribe((response) => {
