@@ -118,6 +118,7 @@ export class CreateTramaComponent implements OnInit {
   mostrarGrupales: boolean;
   mostrarSubrogada: boolean;
   nombre_convenio: any;
+  convenioRolList: any = [];
 
   constructor(
     public loadServ: LoadService,
@@ -1543,6 +1544,14 @@ export class CreateTramaComponent implements OnInit {
 
         this.convenioRolCliente =
           result['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'];
+        console.log(result);
+        for (let i = 1; i < result['DatosConvenio'].length; i++) {
+          this.convenioRolList.push(
+            result['DatosConvenio'][i]['DatosCabecera']['NombreConvenio'] ||
+              'Sin registro'
+          );
+        }
+        console.log(this.convenioRolList);
 
         this.numero_convenio =
           result['DatosConvenio'][0]['DatosCabecera']['Convenio'];
@@ -1626,8 +1635,10 @@ export class CreateTramaComponent implements OnInit {
             console.log(
               result2['DatosConvenio'][0]['DatosCabecera']['NombreConvenio']
             );
+            console.log(result2);
             this.convenioRolUnidVenta =
               result2['DatosConvenio'][0]['DatosCabecera']['NombreConvenio'];
+
             this.codConvenioBpVendedor =
               result2['DatosConvenio'][0]['DatosCabecera']['Convenio'];
             this.loadServ

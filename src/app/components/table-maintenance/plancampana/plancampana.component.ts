@@ -1,5 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+  AbstractControl,
+} from '@angular/forms';
 import { DatatableService } from 'src/app/services/utils/datatable.service';
 import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -39,8 +45,14 @@ export class PlanCampanaComponent implements OnInit {
       plan_sap: ['', [Validators.required]],
       campana_sap: [''],
       programa: ['', [Validators.required, Validators.minLength(2)]],
-      convenio_recaudador: ['', [Validators.required]],
-      convenio_unidad_venta: ['', [Validators.required]],
+      convenio_recaudador: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
+      convenio_unidad_venta: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
       codigo_bp_unidad_venta: [
         '',
         [Validators.required, Validators.minLength(10)],
@@ -49,8 +61,8 @@ export class PlanCampanaComponent implements OnInit {
         '',
         [Validators.required, Validators.minLength(10)],
       ],
-      convenio_broker: [''],
-      codigo_bp_broker: [''],
+      convenio_broker: ['', [Validators.minLength(10)]],
+      codigo_bp_broker: ['', [Validators.minLength(10)]],
       gpo_vendedor: ['', [Validators.required]],
     });
     this.updatePYCForm = this.formBuilder.group({
@@ -60,8 +72,14 @@ export class PlanCampanaComponent implements OnInit {
       plan_sap: ['', [Validators.required]],
       campana_sap: [''],
       programa: ['', [Validators.required, Validators.minLength(2)]],
-      convenio_recaudador: ['', [Validators.required]],
-      convenio_unidad_venta: ['', [Validators.required]],
+      convenio_recaudador: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
+      convenio_unidad_venta: [
+        '',
+        [Validators.required, Validators.minLength(10)],
+      ],
       codigo_bp_unidad_venta: [
         '',
         [Validators.required, Validators.minLength(10)],
@@ -70,8 +88,8 @@ export class PlanCampanaComponent implements OnInit {
         '',
         [Validators.required, Validators.minLength(10)],
       ],
-      convenio_broker: [''],
-      codigo_bp_broker: [''],
+      convenio_broker: ['', [Validators.minLength(10)]],
+      codigo_bp_broker: ['', [Validators.minLength(10)]],
       gpo_vendedor: ['', [Validators.required]],
     });
   }
@@ -143,17 +161,32 @@ export class PlanCampanaComponent implements OnInit {
       });
   }
 
-  format(event) {
-    console.log(event);
-    event.target.value = this.padLeft(event.target.value, '0', 10);
+  format(event, control: AbstractControl) {
+    console.log(control);
+    if (Number(event.target.value) != 0) {
+      control.setValue(this.padLeft(event.target.value, '0', 10));
+    } else {
+      control.setValue('');
+    }
+  }
+  formatGrupoV(control: AbstractControl) {
+    if (Number(control.value) != 0) {
+      control.setValue(this.padRight(control.value, ' ', 3));
+    } else {
+      control.setValue('');
+    }
   }
 
   padLeft(text: string, padChar: string, size: number): string {
     return (String(padChar).repeat(size) + text).substr(size * -1, size);
   }
+  padRight(text: string, padChar: string, size: number): string {
+    return (text + String(padChar).repeat(size)).substr(0, size);
+  }
 
   btnRegistrar() {
     console.log(this.registerPYCForm);
+    this.registerPYCForm.get('action').setValue('crear');
     this.plancampanaServ
       .crearCampanas(this.registerPYCForm.value)
       .subscribe((response) => {
@@ -182,6 +215,7 @@ export class PlanCampanaComponent implements OnInit {
   }
 
   btnActualizar() {
+    this.updatePYCForm.get('action').setValue('actualizar');
     this.plancampanaServ
       .actualizarCampanas(this.updatePYCForm.value)
       .subscribe((response) => {

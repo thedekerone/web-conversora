@@ -1,5 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { DatatableService } from 'src/app/services/utils/datatable.service';
 import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -42,7 +47,7 @@ export class ProgramaCmrComponent implements OnInit {
       codigo_bp_unidad_venta: ['', [Validators.required]],
       codigo_bp_recaudador: ['', [Validators.required]],
       convenio_broker: [''],
-      codigo_bp_broker: [''],
+      codigo_bp_broker: ['', [Validators.minLength(10)]],
       gpo_vendedor: ['', [Validators.required]],
     });
     this.updateCmrForm = this.formBuilder.group({
@@ -61,7 +66,7 @@ export class ProgramaCmrComponent implements OnInit {
         [Validators.required, Validators.minLength(10)],
       ],
       convenio_broker: [''],
-      codigo_bp_broker: [''],
+      codigo_bp_broker: ['', [Validators.minLength(10)]],
       gpo_vendedor: ['', [Validators.required]],
     });
   }
@@ -79,13 +84,28 @@ export class ProgramaCmrComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  format(event) {
-    console.log(event);
-    event.target.value = this.padLeft(event.target.value, '0', 10);
+  format(event, control: AbstractControl) {
+    console.log(control);
+    if (Number(event.target.value) != 0) {
+      control.setValue(this.padLeft(event.target.value, '0', 10));
+    } else {
+      control.setValue('');
+    }
+  }
+
+  formatGrupoV(control: AbstractControl) {
+    if (Number(control.value) != 0) {
+      control.setValue(this.padRight(control.value, ' ', 3));
+    } else {
+      control.setValue('');
+    }
   }
 
   padLeft(text: string, padChar: string, size: number): string {
     return (String(padChar).repeat(size) + text).substr(size * -1, size);
+  }
+  padRight(text: string, padChar: string, size: number): string {
+    return (text + String(padChar).repeat(size)).substr(0, size);
   }
 
   abrirModal(iduser) {
@@ -141,6 +161,7 @@ export class ProgramaCmrComponent implements OnInit {
   }
 
   btnRegistrar() {
+    this.registerCmrForm.get('action').setValue('crear');
     this.pgCmrServ
       .crearCmr(this.registerCmrForm.value)
       .subscribe((response) => {
@@ -169,6 +190,8 @@ export class ProgramaCmrComponent implements OnInit {
 
   btnActualizar() {
     console.log(this.updateCmrForm.value);
+    this.updateCmrForm.get('action').setValue('actualizar');
+
     this.pgCmrServ.actualizarCmr(this.updateCmrForm.value).subscribe(
       (response) => {
         if (response['success'] == true) {

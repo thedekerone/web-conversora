@@ -35,19 +35,113 @@
           <thead>
             <tr>
               <th style="width: 40px; text-align: center">ID</th>
-              <th>Cod Empresa</th>
-              <th>Programa</th>
-              <th>Procedencia</th>
-              <th>Plan Sap</th>
-              <th>Campaña Sap</th>
-              <th>Convenio Recaudador</th>
-              <th>Convenio Unid. Venta</th>
-              <th>Conv. Broker</th>
-              <th>BP Recaudador</th>
-              <th>BP Unid. Vta</th>
-              <th>BP Broker</th>
-              <th>Grupo vendedor</th>
-              <th style="width: 380px; text-align: center">Acciones</th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Cod Empresa
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Programa
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Procedencia
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Plan Sap
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Campaña Sap
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Convenio Recaudador
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                BP Recaudador
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Convenio Unid. Venta
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                BP Unid. Vta
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Conv. Broker
+              </th>
+
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                BP Broker
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Grupo vendedor
+              </th>
+              <th
+                style="
+                  width: 380px;
+                  text-align: center;
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody *ngIf="listaPlanes?.length != 0">
@@ -59,10 +153,10 @@
               <td>{{ plan.plan_sap }}</td>
               <td>{{ plan.campana_sap }}</td>
               <td>{{ plan.convenio_recaudador }}</td>
-              <td>{{ plan.convenio_unidad_venta }}</td>
-              <td>{{ plan.convenio_broker }}</td>
               <td>{{ plan.codigo_bp_recaudador }}</td>
+              <td>{{ plan.convenio_unidad_venta }}</td>
               <td>{{ plan.codigo_bp_unidad_venta }}</td>
+              <td>{{ plan.convenio_broker }}</td>
               <td>{{ plan.codigo_bp_broker }}</td>
               <td>{{ plan.gpo_vendedor }}</td>
               <td *ngIf="plan.estado == 1">
@@ -207,7 +301,9 @@
               id="convenio_recaudador"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, registerPYCForm.get('convenio_recaudador'))
+              "
             />
           </div>
           <div class="form-group">
@@ -229,7 +325,9 @@
               class="form-control"
               id="convenio_unidad_venta"
               mask="00000000000"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, registerPYCForm.get('convenio_unidad_venta'))
+              "
               maxlength="10"
             />
           </div>
@@ -251,7 +349,9 @@
               formControlName="convenio_broker"
               class="form-control"
               id="convenio_broker"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, registerPYCForm.get('convenio_broker'))
+              "
               mask="00000000000"
               maxlength="10"
             />
@@ -275,6 +375,8 @@
               formControlName="gpo_vendedor"
               class="form-control"
               id="gpo_vendedor"
+              maxlength="3"
+              (focusout)="formatGrupoV(registerPYCForm.get('gpo_vendedor'))"
             />
           </div>
         </form>
@@ -383,7 +485,9 @@
               id="convenio_recaudador"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, updatePYCForm.get('convenio_recaudador'))
+              "
             />
           </div>
           <div class="form-group">
@@ -406,7 +510,9 @@
               id="convenio_unidad_venta"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, updatePYCForm.get('convenio_unidad_venta'))
+              "
             />
           </div>
           <div class="form-group">
@@ -429,7 +535,7 @@
               id="convenio_broker"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="format($event, updatePYCForm.get('convenio_broker'))"
             />
           </div>
 
@@ -451,6 +557,8 @@
               formControlName="gpo_vendedor"
               class="form-control"
               id="gpo_vendedor"
+              maxlength="3"
+              (focusout)="formatGrupoV(updatePYCForm.get('gpo_vendedor'))"
             />
           </div>
         </form>

@@ -33,16 +33,97 @@
           <thead>
             <tr>
               <th style="width: 40px; text-align: center">ID</th>
-              <th>Producto CMR</th>
-              <th>Programa CMR</th>
-              <th>Plan CMR</th>
-              <th>Convenio Recaudador</th>
-              <th>Convenio Unid. Venta</th>
-              <th>Conv. Broker</th>
-              <th>BP Unid. Vta</th>
-              <th>BP Broker</th>
-              <th>Grupo vendedor</th>
-              <th style="width: 380px; text-align: center">Acciones</th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Producto CMR
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Programa CMR
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Plan CMR
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Convenio Recaudador
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                BP Recaudador
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Convenio Unid. Venta
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                BP Unid. Vta
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Conv. Broker
+              </th>
+
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                BP Broker
+              </th>
+              <th
+                style="
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Grupo vendedor
+              </th>
+              <th
+                style="
+                  width: 380px;
+                  text-align: center;
+                  white-space: nowrap !important;
+                  vertical-align: middle !important;
+                "
+              >
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody *ngIf="listaCmr?.length != 0">
@@ -52,9 +133,10 @@
               <td>{{ cmr.programa_cmr }}</td>
               <td>{{ cmr.plan_cmr_sap }}</td>
               <td>{{ cmr.convenio_recaudador }}</td>
+              <td>{{ cmr.codigo_bp_recaudador }}</td>
               <td>{{ cmr.convenio_unidad_venta }}</td>
-              <td>{{ cmr.convenio_broker }}</td>
               <td>{{ cmr.codigo_bp_unidad_venta }}</td>
+              <td>{{ cmr.convenio_broker }}</td>
               <td>{{ cmr.codigo_bp_broker }}</td>
               <td>{{ cmr.gpo_vendedor }}</td>
               <td *ngIf="cmr.estado == 1">
@@ -164,6 +246,8 @@
               formControlName="programa_cmr"
               class="form-control"
               id="codProgramaSapAdd"
+              mask="00"
+              maxlength="2"
             />
           </div>
           <div class="form-group">
@@ -184,7 +268,9 @@
               id="convenio_recaudador"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, registerCmrForm.get('convenio_recaudador'))
+              "
             />
           </div>
           <div class="form-group">
@@ -207,7 +293,9 @@
               id="convenio_unidad_venta"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, registerCmrForm.get('convenio_unidad_venta'))
+              "
             />
           </div>
           <div class="form-group">
@@ -230,7 +318,9 @@
               id="convenio_broker"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, registerCmrForm.get('convenio_broker'))
+              "
             />
           </div>
 
@@ -252,6 +342,8 @@
               formControlName="gpo_vendedor"
               class="form-control"
               id="gpo_vendedor"
+              (focusout)="formatGrupoV(registerCmrForm.get('gpo_vendedor'))"
+              maxlength="3"
             />
           </div>
         </form>
@@ -339,7 +431,9 @@
               id="convenio_recaudador"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, updateCmrForm.get('convenio_recaudador'))
+              "
             />
           </div>
           <div class="form-group">
@@ -362,7 +456,9 @@
               id="convenio_unidad_venta"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="
+                format($event, updateCmrForm.get('convenio_unidad_venta'))
+              "
             />
           </div>
           <div class="form-group">
@@ -385,7 +481,7 @@
               id="convenio_broker"
               mask="00000000000"
               maxlength="10"
-              (focusout)="format($event)"
+              (focusout)="format($event, updateCmrForm.get('convenio_broker'))"
             />
           </div>
 
@@ -407,6 +503,8 @@
               formControlName="gpo_vendedor"
               class="form-control"
               id="gpo_vendedor"
+              maxlength="3"
+              (focusout)="formatGrupoV(updateCmrForm.get('gpo_vendedor'))"
             />
           </div>
         </form>
