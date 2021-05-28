@@ -412,10 +412,17 @@
                 >Convenio rol cliente</label
               >
               <div class="col-sm-10">
-                <select type="text" class="form-control" id="convenioAdd">
+                <select
+                  (change)="grupalesChangeConvenio($event.target.value)"
+                  type="text"
+                  class="form-control"
+                  id="convenioAdd"
+                >
                   <option selected>{{ convenioRolCliente }}</option>
-                  <ng-container *ngFor="let nombreConvenio of convenioRolList">
-                    <option>
+                  <ng-container
+                    *ngFor="let nombreConvenio of convenioRolList; index as i"
+                  >
+                    <option [value]="(-i - 1) * -1">
                       {{ nombreConvenio }}
                     </option>
                   </ng-container>
