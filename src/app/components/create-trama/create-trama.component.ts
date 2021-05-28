@@ -575,6 +575,8 @@ export class CreateTramaComponent implements OnInit {
             file: string;
           }) => {
             console.log(response);
+            this.resetVariables();
+
             const intervaloRevisar = setInterval(() => {
               console.log('ejecutado');
 
@@ -594,7 +596,6 @@ export class CreateTramaComponent implements OnInit {
                         title: 'Proceso completado',
                         text: 'El archivo se cargó exitosamente',
                       });
-                      this.resetVariables();
                     } else {
                       Swal.fire({
                         icon: 'error',
@@ -692,7 +693,6 @@ export class CreateTramaComponent implements OnInit {
                           title: 'Proceso completado',
                           text: 'El archivo se cargó exitosamente',
                         });
-                        this.resetVariables();
                       } else {
                         Swal.fire({
                           icon: 'error',
@@ -703,6 +703,7 @@ export class CreateTramaComponent implements OnInit {
                     }
                   });
               }, 5000);
+              this.resetVariables();
             }
           });
       } else {
@@ -754,7 +755,6 @@ export class CreateTramaComponent implements OnInit {
                           title: 'Proceso completado',
                           text: 'El archivo se cargó exitosamente',
                         });
-                        this.resetVariables();
                       } else {
                         Swal.fire({
                           icon: 'error',
@@ -765,6 +765,7 @@ export class CreateTramaComponent implements OnInit {
                     }
                   });
               }, 5000);
+              this.resetVariables();
             }
           });
       }
