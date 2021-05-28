@@ -152,7 +152,7 @@
               "
             >
               <th scope="row">{{ i + 1 }}</th>
-              <th scope="row">Sistema</th>
+              <th scope="row">{{ log.tipo == 0 ? "Sistema" : "Sap" }}</th>
               <th scope="row">{{ log.Log }}</th>
             </tr>
           </tbody>
